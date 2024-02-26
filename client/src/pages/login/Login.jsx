@@ -15,21 +15,34 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 const Login = () => {
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleClickSnack = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const handleClick = async (values, actions) => {
     dispatch({ type: "LOGIN_START" });
     try {
       const res = await axios.post("/auth/login", values);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-      navigate("/Main");
-    } catch (err) {
+      navigate("/Main", {state: { fromLogin: true }});
+      handleClickSnack();
+    } catch (err) { 
       setShowAlert(true)
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
-
     }
   };
 
@@ -142,11 +155,21 @@ const Login = () => {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/register" variant  ="body2">
                       {"Don't have an account? Sign Up"}
                     </Link>
                   </Grid>
                 </Grid>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                  <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                  >
+                    This is a success Alert inside a Snackbar!
+                  </Alert>
+                </Snackbar>
               </Box>
             )}
           </Formik>

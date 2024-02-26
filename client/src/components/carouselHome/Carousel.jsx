@@ -55,7 +55,6 @@ const data = [
   },
   {
     image: "https://www.oyorooms.com/travel-guide/wp-content/uploads/2019/02/summer-7.jpg",
-
   }
 ];
 const  CarouselHome =({MoviesPath_Description_JSON}) => {
@@ -70,7 +69,7 @@ const  CarouselHome =({MoviesPath_Description_JSON}) => {
             width="100vw"
             height="45vh"
             captionStyle={captionStyle}
-            radius="10px"
+            // radius="10px"
             slideNumber={true}
             slideNumberStyle={slideNumberStyle}
             captionPosition="bottom"

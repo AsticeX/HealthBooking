@@ -11,25 +11,29 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    country: {
+    name: {
       type: String,
       required: true,
     },
-    img: {
+    lastname: {
       type: String,
     },
-    city: {
-      type: String,
+    nation: {
+      type: Number,
       required: true,
     },
     phone: {
-      type: String,
+      type: Number,
       required: true,
     },
     password: {
       type: String,
       required: true,
     },
+    gender: { 
+      type: String,
+      required: true,
+     },
     isAdmin: {
       type: Boolean,
       default: false,

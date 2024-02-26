@@ -32,7 +32,8 @@ const NavbarHome = () => {
   <div className="navContainer">
     <Link to="/" style={{ color: "#32b372", textDecoration: "none" }}>
       <h2 className="logo">Vaccine logo</h2>
-    </Link><React.Fragment>
+    </Link>
+    <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Typography sx={{ minWidth: 100 }}>Contact</Typography>
         <Typography sx={{ minWidth: 100 }}>Profile</Typography>
