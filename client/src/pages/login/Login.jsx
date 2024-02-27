@@ -52,7 +52,7 @@ const Login = () => {
       .required("Email is a required field"),
     password: Yup.string()
       .required("Password is a required field")
-      .min(8, "Password must be at least 8 characters"),
+      // .min(8, "Password must be at least 8 characters"),
   });
 
   return (
@@ -64,11 +64,10 @@ const Login = () => {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(https://i.pinimg.com/564x/9a/1c/82/9a1c820067facf2db26fca2f11fe1c9d.jpg), url(path/to/your/logo.png)',
+          backgroundImage: `url(${process.env.PUBLIC_URL}/logo.png)`,
           backgroundRepeat: 'no-repeat',
-          backgroundColor: (t) =>
-            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-          backgroundSize: 'cover',
+          backgroundColor: '#32b372',
+          backgroundSize: '256px',
           backgroundPosition: 'center',
         }}
       />
