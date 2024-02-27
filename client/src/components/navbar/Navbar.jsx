@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Carousel from 'react-material-ui-carousel';
+import { Grid } from '@mui/material';
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
 
@@ -30,7 +31,17 @@ const Navbar = (props) => {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        LOGO
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+        >
+          <img
+            src={`${process.env.PUBLIC_URL}/logo.png`}
+            alt="Logo"
+            style={{ maxWidth: '128px', maxHeight: '128px' }}
+          />
+        </Grid>
       </Typography>
       <Divider />
       <List>
@@ -50,8 +61,8 @@ const Navbar = (props) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{backgroundColor:"#32b372"}}>
-        <Toolbar sx={{justifyContent:"space-between"}}>
+      <AppBar component="nav" sx={{ backgroundColor: "#32b372" }}>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -66,7 +77,18 @@ const Navbar = (props) => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            LOGO
+            <Grid
+              container
+            >
+              <a href="/">
+              <img
+
+                src={`${process.env.PUBLIC_URL}/logo.png`}
+                alt="Logo"
+                style={{ maxWidth: '64px', maxHeight: '64px' }}
+              />
+              </a>
+            </Grid>
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
@@ -75,8 +97,8 @@ const Navbar = (props) => {
               </Button>
             ))}
           </Box>
-          <Button href='/login' sx={{ color: '#fff',backgroundColor:"black" , display: "flex", justifyContent: "center", alignItems: "center"}}>
-                Login
+          <Button href='/login' sx={{ color: '#fff', backgroundColor: "black", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            Login
           </Button>
         </Toolbar>
       </AppBar>
@@ -97,7 +119,7 @@ const Navbar = (props) => {
           {drawer}
         </Drawer>
       </nav>
-      
+
     </Box>
   );
 }

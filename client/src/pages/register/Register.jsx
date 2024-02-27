@@ -24,6 +24,11 @@ const Register = () => {
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [open, setOpen] = useState(false);
+  const [phone, setPhone] = React.useState('');
+
+  const handleChangeTel = (newPhone) => {
+    setPhone(newPhone);
+  };
 
 
   const handleClickSnack = () => {
@@ -40,12 +45,14 @@ const Register = () => {
   const handleClick = async (values, actions) => {
     dispatch({ type: "REGISTER_START" });
     try {
-      const res = await axios.post("/auth/register", values);
+      const dataToSend = { ...values, phone };
+      const res = await axios.post("/auth/register", dataToSend);
       dispatch({ type: "REGISTER_SUCCESS", payload: res.data.details });
       navigate("/Login", { state: { fromLogin: true } });
       handleClickSnack();
     } catch (err) {
-      setShowAlert(true)
+      console.error("Registration failed:", err);
+      setShowAlert(true);
       dispatch({ type: "REGISTER_FAILURE", payload: err.response.data });
     }
   };
@@ -61,12 +68,11 @@ const Register = () => {
     lastname: Yup.string()
       .required("Lastname is a required field"),
     nation_id: Yup.number()
-      .min(13, "Nation ID must be at least 13 digits")
+      .min(13, "Nation ID must  13 digits")
       .typeError("Nation ID must be a number")
-      .required("Nation ID is a required field")
-      .positive("Nation ID must be a positive number"),
+      .required("Nation ID is a required field"),
+    // .positive("Nation ID must be a positive number"),
     phone: Yup.number()
-      .required("Phone Number is a required field")
       .typeError("Phone Number must be a number")
       .required("Phone Number is a required field"),
     password: Yup.string()
@@ -83,11 +89,10 @@ const Register = () => {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(https://i.pinimg.com/564x/9a/1c/82/9a1c820067facf2db26fca2f11fe1c9d.jpg), url(path/to/your/logo.png)',
+          backgroundImage: `url(${process.env.PUBLIC_URL}/logo.png)`,
           backgroundRepeat: 'no-repeat',
-          backgroundColor: (t) =>
-            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-          backgroundSize: 'cover',
+          backgroundColor: '#32b372',
+          backgroundSize: '256px',
           backgroundPosition: 'center',
         }}
       />
@@ -106,7 +111,7 @@ const Register = () => {
           </Typography>
           <Formik
             validationSchema={schema}
-            initialValues={{ username: "", email: "", name: "", lastname: "", nation_id: 0, phone: 0, password: "", gender: "MALE" }}
+            initialValues={{ username: "", email: "", name: "", lastname: "", nation_id:  "", phone: 0, password: "", gender: "MALE" }}
             onSubmit={(values, actions) => handleClick(values, actions)}
           >
             {({
@@ -117,152 +122,158 @@ const Register = () => {
               handleBlur,
               handleSubmit,
             }) => (
-              <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                <TextField
-                  margin="normal"
-                  required
-                  sx={{ mr: 1, width: 280 }}
-                  // fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  autoComplete="username"
-                  autoFocus
-                  value={values.username}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.username && !!errors.username}
-                  helperText={touched.username && errors.username}
-                  variant="outlined"
-                  className={touched.username && errors.username}
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  // fullWidth
-                  sx={{ width: 280 }}
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.password && !!errors.password}
-                  helperText={touched.password && errors.password}
-                  variant="outlined"
-                  className={touched.password && errors.password}
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.email && !!errors.email}
-                  helperText={touched.email && errors.email}
-                  variant="outlined"
-                  className={touched.email && errors.email}
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  sx={{ mr: 1, width: 280 }}
-                  // fullWidth
-                  name="name"
-                  label="Name"
-                  type="name"
-                  id="name"
-                  autoComplete="name"
-                  value={values.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.name && !!errors.name}
-                  helperText={touched.name && errors.name}
-                  variant="outlined"
-                  className={touched.name && errors.name}
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  // fullWidth
-                  sx={{ width: 280 }}
-                  name="lastname"
-                  label="Lastname"
-                  type="lastname"
-                  id="lastname"
-                  autoComplete="current-lastname"
-                  value={values.lastname}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.lastname && !!errors.lastname}
-                  helperText={touched.lastname && errors.lastname}
-                  variant="outlined"
-                  className={touched.lastname && errors.lastname}
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="nation_id"
-                  label="Nation ID"
-                  name="nation_id"
-                  autoComplete="nation_id"
-                  autoFocus
-                  value={values.nation_id}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.nation_id && !!errors.nation_id}
-                  helperText={touched.nation_id && errors.nation_id}
-                  variant="outlined"
-                  className={touched.nation_id && errors.nation_id}
-                />
-                <MuiTelInput
-                  fullWidth
-                  sx={{ mt: 2 }}
-                  name="phone"
-                  label="Phone Number"
-                  type="phone"
-                  id="phone"
-                  defaultCountry="TH"
-                  autoComplete="current-phone"
-                  // value={values.phone}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.phone && !!errors.phone}
-                  helperText={touched.phone && errors.phone}
-                  variant="outlined"
-                  className={touched.phone && errors.phone}
-                />
-                {/* <FormControl> */}
-                <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                  defaultValue="MALE"
-                  value={values.gender}
-                  onChange={handleChange}
-                >
-                  <FormControlLabel value="MALE" control={<Radio />} label="Male" />
-                  <FormControlLabel value="FEMALE" control={<Radio />} label="Female" />
-                  <FormControlLabel value="other" control={<Radio />} label="Other" />
-                </RadioGroup>
-                {/* </FormControl> */}
+              <Box component="form" onSubmit={handleSubmit} noValidate  >
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="username"
+                      label="Username"
+                      name="username"
+                      autoComplete="username"
+                      autoFocus
+                      value={values.username}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.username && !!errors.username}
+                      helperText={touched.username && errors.username}
+                      variant="outlined"
+                      className={touched.username && errors.username}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="password"
+                      label="Password"
+                      name="password"
+                      type="password"
+                      autoComplete="current-password"
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.password && !!errors.password}
+                      helperText={touched.password && errors.password}
+                      variant="outlined"
+                      className={touched.password && errors.password}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email address"
+                      name="email"
+                      autoComplete="email"
+                      value={values.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.email && !!errors.email}
+                      helperText={touched.email && errors.email}
+                      variant="outlined"
+                      className={touched.email && errors.email}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="name"
+                      label="Name"
+                      name="name"
+                      autoComplete="name"
+                      value={values.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.name && !!errors.name}
+                      helperText={touched.name && errors.name}
+                      variant="outlined"
+                      className={touched.name && errors.name}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="lastname"
+                      label="Lastname"
+                      name="lastname"
+                      autoComplete="current-lastname"
+                      value={values.lastname}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.lastname && !!errors.lastname}
+                      helperText={touched.lastname && errors.lastname}
+                      variant="outlined"
+                      className={touched.lastname && errors.lastname}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="nation_id"
+                      label="Nation ID"
+                      name="nation_id"
+                      autoComplete="nation_id"
+                      value={values.nation_id}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.nation_id && !!errors.nation_id}
+                      helperText={touched.nation_id && errors.nation_id}
+                      variant="outlined"
+                      className={touched.nation_id && errors.nation_id}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <MuiTelInput
+                      fullWidth
+                      name="phone"
+                      label="Phone Number"
+                      type="phone"
+                      id="phone"
+                      defaultCountry="TH"
+                      autoComplete="current-phone"
+                      value={phone}
+                      onChange={handleChangeTel}
+                      onBlur={handleBlur}
+                      error={touched.phone && !!errors.phone}
+                      helperText={touched.phone && errors.phone}
+                      variant="outlined"
+                      className={touched.phone && errors.phone}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">Gender</FormLabel>
+                      <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        defaultValue="MALE"
+                        value={values.gender}
+                        onChange={handleChange}
+                      >
+                        <FormControlLabel value="MALE" control={<Radio />} label="Male" />
+                        <FormControlLabel value="FEMALE" control={<Radio />} label="Female" />
+                        <FormControlLabel value="other" control={<Radio />} label="Other" />
+                      </RadioGroup>
+
+                    </FormControl>
+                  </Grid>
+                </Grid>
                 {showAlert && (
-                  <Alert severity="error">Email address or Password Incorrect </Alert>
+                  <Alert severity="error">Email address or Username is used </Alert>
                 )}
-                {/* <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                /> */}
                 <Button
                   type="submit"
                   fullWidth
@@ -271,18 +282,6 @@ const Register = () => {
                 >
                   Sign Up
                 </Button>
-                {/* <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                  <Grid item>
-                    <Link href="#" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
-                  </Grid>
-                </Grid> */}
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                   <Alert
                     onClose={handleClose}

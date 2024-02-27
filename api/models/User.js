@@ -18,12 +18,12 @@ const UserSchema = new mongoose.Schema(
     lastname: {
       type: String,
     },
-    nation: {
+    nation_id: {
       type: Number,
       required: true,
     },
     phone: {
-      type: Number,
+      type: String,
       required: true,
     },
     password: {
