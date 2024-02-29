@@ -77,7 +77,7 @@ const Register = () => {
       .required("Phone Number is a required field"),
     password: Yup.string()
       .required("Password is a required field")
-      .min(8, "Password must be at least 8 characters"),
+      // .min(8, "Password must be at least 8 characters"),
   });
 
   return (

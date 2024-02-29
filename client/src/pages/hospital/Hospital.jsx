@@ -1,16 +1,15 @@
 import Footer from "../../components/footer/Footer";
+import HospitalFinderComponent from "../../components/hospital/Hospital";
 import Navbar from "../../components/navbar/Navbar";
-import Carousel from "../../components/carouselHome/Carousel";
-// import "./home.css";
 
-const Home = () => {
+const Hospital = () => {
   return (
     <div>
       <Navbar />
-      <Carousel/>
+      <HospitalFinderComponent />
       <Footer />
     </div>
   );
 };
 
-export default Home;
+export default Hospital;
