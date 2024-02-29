@@ -3,7 +3,7 @@
 // import Footer from "../../components/footer/Footer";
 // import Header from "../../components/header/Header";
 // import MailList from "../../components/mailList/MailList";
-import NavbarHome from "../../components/navbarHome/NavbarHome";
+import Navbar from "../../components/navbar/Navbar";
 // import PropertyList from "../../components/propertyList/PropertyList";
 import "./main.css";
 import React, { useState, useEffect } from "react";
@@ -29,7 +29,8 @@ const Main = () => {
   };
   return (
     <div>
-    <NavbarHome/>
+    <Navbar />
+    {/* <FeaturedProperties /> */}
     <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
       <Alert onClose={handleCloseSnackbar} severity="success" variant="filled">
         Login Successful
