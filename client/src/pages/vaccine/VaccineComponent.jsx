@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Modal, Button } from "react-bootstrap";
+import Navbar from "../../components/navbar/Navbar";
 
 const VaccineComponent = () => {
   const [state, setState] = useState({
@@ -200,6 +201,7 @@ const VaccineComponent = () => {
     setEditUser(user); // Set the state with the user data to populate the form in the modal
     setEditModalShow(true); // Show the edit modal
   };
+
   //xxx
   const handleForm = () => {
     setFormModalShow(true);
@@ -266,7 +268,9 @@ const VaccineComponent = () => {
 
   return (
     <div className="container p-5">
-      <h1>บันทึกวัคซีน</h1>
+      <Navbar />
+
+      <h1 className="mt-5">บันทึกวัคซีน</h1>
       <form onSubmit={submitDose}>
         <div className="form-group">
           <label>วัคซีน</label>
@@ -436,24 +440,59 @@ const VaccineComponent = () => {
                 <input type="text" className="form-control" value={editUser.hospital_name} onChange={(e) => setEditUser({ ...editUser, hospital_name: e.target.value })} />
               </div>
               <div className="form-group">
+                {/* Render dose dates */}
                 {editUser &&
                   editUser.dose_user &&
                   editUser.dose_user.map((dose, index) => (
-                    <div key={index}>
+                    <div key={index} className="dose-date">
                       <label>วันเข้ารับการฉีดวัคซีนเข็มที่ {index + 1}</label>
-                      <input
-                        type="date"
-                        className="form-control mb-2"
-                        value={dose}
-                        onChange={(e) => {
-                          const newDoseUser = [...editUser.dose_user];
-                          newDoseUser[index] = e.target.value;
-                          setEditUser({ ...editUser, dose_user: newDoseUser });
-                        }}
-                      />
+                      <div className="input-group">
+                        <input
+                          type="date"
+                          className="form-control "
+                          value={dose}
+                          onChange={(e) => {
+                            const newDoseUser = [...editUser.dose_user];
+                            newDoseUser[index] = e.target.value;
+                            setEditUser({ ...editUser, dose_user: newDoseUser });
+                          }}
+                        />
+                        {/* Button to delete dose date */}
+                        <div className="input-group-append">
+                          <button
+                            className="btn btn-danger"
+                            type="button"
+                            onClick={() => {
+                              const newDoseUser = [...editUser.dose_user];
+                              newDoseUser.splice(index, 1); // Remove the dose date at index
+                              setEditUser({ ...editUser, dose_user: newDoseUser });
+                            }}
+                          >
+                            -
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ))}
               </div>
+              {/* Button to add a new dose date */}
+              <button
+                className="btn btn-success mb-3 mt-2"
+                onClick={() => {
+                  // Determine how many empty datetime boxes you want to add
+                  const numberOfNewBoxes = 1; // For example, add 3 new empty datetime boxes
+
+                  // Create an array with the new empty datetime boxes
+                  const newEmptyBoxes = Array.from({ length: numberOfNewBoxes }, () => "");
+
+                  // Add the new empty datetime boxes to the editUser state
+                  const newDoseUser = [...editUser.dose_user, ...newEmptyBoxes];
+                  setEditUser({ ...editUser, dose_user: newDoseUser });
+                }}
+                type="button" // Add this line to prevent form submission
+              >
+                +
+              </button>
 
               <div className="form-group">
                 <label>Dose Require</label>
@@ -467,6 +506,7 @@ const VaccineComponent = () => {
           )}
         </Modal.Body>
       </Modal>
+
       <div className="table-responsive">
         {/* Table to display existing data */}
         {/* Example: */}
