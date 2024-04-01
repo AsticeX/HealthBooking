@@ -18,8 +18,8 @@ const UserSchema = new mongoose.Schema(
     lastname: {
       type: String,
     },
-    nation_id: {
-      type: Number,
+    birthday: {
+      type: String,
       required: true,
     },
     phone: {
@@ -29,6 +29,14 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    disease: {
+      type: String,
+      required:false,
     },
     gender: { 
       type: String,

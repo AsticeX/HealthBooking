@@ -1,5 +1,5 @@
 import useFetch from "../../hooks/useFetch";
-import "./propertyList.css";
+import { Spinner } from "react-bootstrap";
 
 const PropertyList = () => {
   const { data, loading, error } = useFetch("/hotels/countByType");
@@ -11,27 +11,27 @@ const PropertyList = () => {
     "https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-villas_300/dd0d7f8202676306a661aa4f0cf1ffab31286211.jpg",
     "https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-chalet_300/8ee014fcc493cb3334e25893a1dee8c6d36ed0ba.jpg",
   ];
+
   return (
-    <div className="pList">
+    <div className="container mt-5">
       {loading ? (
-        "loading"
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
       ) : (
-        <>
-          {data &&
-            images.map((img,i) => (
-              <div className="pListItem" key={i}>
-                <img
-                  src={img}
-                  alt=""
-                  className="pListImg"
-                />
-                <div className="pListTitles">
-                  <h1>{data[i]?.type}</h1>
-                  <h2>{data[i]?.count} {data[i]?.type}</h2>
+        <div className="row">
+          {images.map((img, i) => (
+            <div className="col-md-4 mb-4" key={i}>
+              <div className="card">
+                <img src={img} alt="" className="card-img-top" />
+                <div className="card-body">
+                  <h5 className="card-title">{data[i]?.type}</h5>
+                  <p className="card-text">{data[i]?.count} {data[i]?.type}</p>
                 </div>
               </div>
-            ))}
-        </>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

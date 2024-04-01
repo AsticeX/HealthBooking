@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Navbar from "../../components/navbar/Navbar";
 import { Modal, Button } from "react-bootstrap";
 
 const VaccineComponent = () => {
@@ -266,7 +267,8 @@ const VaccineComponent = () => {
 
   return (
     <div className="container p-5">
-      <h1>บันทึกวัคซีน</h1>
+      <Navbar/>
+      <h1 style={{marginTop:30}}>บันทึกวัคซีน</h1>
       <form onSubmit={submitDose}>
         <div className="form-group">
           <label>วัคซีน</label>
@@ -403,7 +405,7 @@ const VaccineComponent = () => {
         </Modal.Body>
       </Modal>
 
-      <br />
+      <br />     
       <h1>บันทึกวัคซีน</h1>
 
       {/* Modal for editing data */}

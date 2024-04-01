@@ -34,7 +34,7 @@ const drawerWidth = 240;
 const navItems = [
   { name: 'Home', href: '/' },
   { name: 'Search', href: '/hospital' },
-  { name: 'Contact', href: '/contact' }
+  { name: 'Booking', href: '/Main' }
 ];
 
 const Navbar = (props) => {
@@ -199,9 +199,11 @@ const Navbar = (props) => {
                       <PersonOutlineIcon fontSize="medium" />
                     </ListItemIcon> Profile
                   </MenuItem>
-                  <MenuItem onClick={handleCloseAvatar}>
+                  <MenuItem onClick={handleCloseAvatar} href='/vaccine'>
                     <ListItemIcon>
-                      <VaccinesIcon fontSize="medium" />
+                      <IconButton>
+                      <VaccinesIcon fontSize="medium" hr />
+                      </IconButton>
                     </ListItemIcon> My Vaccine
                   </MenuItem>
                   <Divider />

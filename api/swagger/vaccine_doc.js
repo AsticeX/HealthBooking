@@ -17,8 +17,11 @@
  *         dose_require:
  *           type: integer
  *           description: Total dose required
+ *         description:
+ *           type: string
  *       required:
- *         - vaccine_name
+ *         - vaccine_name_th
+ *         - vaccine_name_en
  *         - type
  *         - number_for_next_dose
  *         - dose_require

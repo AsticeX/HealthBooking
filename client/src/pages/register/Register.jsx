@@ -19,12 +19,19 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+
 const Register = () => {
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [open, setOpen] = useState(false);
   const [phone, setPhone] = React.useState('');
+  const [birthday, setBirthday] = React.useState(null);
+
 
   const handleChangeTel = (newPhone) => {
     setPhone(newPhone);
@@ -45,7 +52,7 @@ const Register = () => {
   const handleClick = async (values, actions) => {
     dispatch({ type: "REGISTER_START" });
     try {
-      const dataToSend = { ...values, phone };
+      const dataToSend = { ...values, phone, birthday };
       const res = await axios.post("/auth/register", dataToSend);
       dispatch({ type: "REGISTER_SUCCESS", payload: res.data.details });
       navigate("/Login", { state: { fromLogin: true } });
@@ -67,17 +74,12 @@ const Register = () => {
       .required("Name is a required field"),
     lastname: Yup.string()
       .required("Lastname is a required field"),
-    nation_id: Yup.number()
-      .min(13, "Nation ID must  13 digits")
-      .typeError("Nation ID must be a number")
-      .required("Nation ID is a required field"),
-    // .positive("Nation ID must be a positive number"),
     phone: Yup.number()
       .typeError("Phone Number must be a number")
       .required("Phone Number is a required field"),
     password: Yup.string()
       .required("Password is a required field")
-      // .min(8, "Password must be at least 8 characters"),
+    // .min(8, "Password must be at least 8 characters"),
   });
 
   return (
@@ -111,7 +113,7 @@ const Register = () => {
           </Typography>
           <Formik
             validationSchema={schema}
-            initialValues={{ username: "", email: "", name: "", lastname: "", nation_id:  "", phone: 0, password: "", gender: "MALE" }}
+            initialValues={{ username: "", email: "", name: "", lastname: "", disease: "", phone: 0, password: "", gender: "MALE" }}
             onSubmit={(values, actions) => handleClick(values, actions)}
           >
             {({
@@ -216,8 +218,25 @@ const Register = () => {
                       className={touched.lastname && errors.lastname}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} >
                     <TextField
+                      margin="normal"
+                      fullWidth
+                      id="congenitaldisease"
+                      label="Congenital disease(not required)"
+                      name="congenitaldisease"
+                      autoComplete="current-congenitaldisease"
+                      value={values.disease}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.disease && !!errors.disease}
+                      helperText={touched.disease && errors.disease}
+                      variant="outlined"
+                      className={touched.disease && errors.disease}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    {/* <TextField
                       margin="normal"
                       required
                       fullWidth
@@ -232,9 +251,22 @@ const Register = () => {
                       helperText={touched.nation_id && errors.nation_id}
                       variant="outlined"
                       className={touched.nation_id && errors.nation_id}
-                    />
+                    /> */}
+
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        sx={{width:"100%"}}
+                        disableFuture
+                        value={birthday}
+                        onChange={(newValue, context) => {
+                          if (context.validationError == null) {
+                            setBirthday(newValue);
+                          }
+                        }}
+                      />
+                    </LocalizationProvider>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={6}>
                     <MuiTelInput
                       fullWidth
                       name="phone"
