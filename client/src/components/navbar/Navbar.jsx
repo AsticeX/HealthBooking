@@ -99,7 +99,7 @@ const Navbar = (props) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{ backgroundColor: "#32b372" }}>
+      <AppBar component="nav" sx={{ backgroundColor: "#77B255" }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
@@ -141,7 +141,7 @@ const Navbar = (props) => {
                 <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                   {user ? user.username + " " + user.lastname : (
                     <div className="navItems" style={{ marginLeft: "auto" }}>
-                      <Button variant="contained" href="/login" sx={{ background: '#32b372', fontSize: 16 }}>
+                      <Button variant="contained" href="/login" sx={{ background: '#77B255', fontSize: 16 }}>
                         LOGIN
                       </Button>
                     </div>
@@ -197,14 +197,14 @@ const Navbar = (props) => {
                   <MenuItem onClick={handleCloseAvatar}>
                     <ListItemIcon>
                       <PersonOutlineIcon fontSize="medium" />
-                    </ListItemIcon> Profile
+                    </ListItemIcon> <a href='/profile' style={{color:"black",textDecoration:"none"}}>Profile</a>
                   </MenuItem>
                   <MenuItem onClick={handleCloseAvatar} href='/vaccine'>
                     <ListItemIcon>
                       <IconButton>
                       <VaccinesIcon fontSize="medium" hr />
                       </IconButton>
-                    </ListItemIcon> My Vaccine
+                    </ListItemIcon>  <a href='/vaccine' style={{color:"black",textDecoration:"none"}}>My Vaccine</a>
                   </MenuItem>
                   <Divider />
                   <MenuItem onClick={handleCloseAvatar}>
@@ -217,7 +217,7 @@ const Navbar = (props) => {
                     <ListItemIcon>
                       <ExitToAppIcon fontSize="medium" />
                     </ListItemIcon>
-                    Logout
+                   Logout
                   </MenuItem>
                 </Menu>
               </React.Fragment>

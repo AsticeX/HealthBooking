@@ -7,30 +7,40 @@ import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import { MuiTelInput } from 'mui-tel-input'
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@material-ui/core/IconButton';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import Navbar from "../../components/navbar/Navbar";
 
 
-const Register = () => {
+const UserProfile = () => {
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [open, setOpen] = useState(false);
   const [phone, setPhone] = React.useState('');
   const [birthday, setBirthday] = React.useState(null);
+
+
+  const [image, setImage] = useState(null);
+
+    const handleImageChange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setImage(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
 
 
   const handleChangeTel = (newPhone) => {
@@ -83,22 +93,10 @@ const Register = () => {
   });
 
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
+    <Grid container component="main" sx={{ height: '100vh', display: "flex", justifyContent: "center" }}>
+      <Navbar />
       <CssBaseline />
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        sx={{
-          backgroundImage: `url(${process.env.PUBLIC_URL}/logo.png)`,
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: '#77B255',
-          backgroundSize: '256px',
-          backgroundPosition: 'center',
-        }}
-      />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square >
+      <Grid item xs={12} sm={8} md={5} elevation={6} square >
         <Box
           sx={{
             my: 8,
@@ -108,12 +106,12 @@ const Register = () => {
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5">
-            Sign up
+          <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
+            Profile
           </Typography>
           <Formik
             validationSchema={schema}
-            initialValues={{ username: "", email: "", name: "", lastname: "", disease: "", phone: 0, password: "", gender: "MALE" }}
+            initialValues={{ password: "", name: "", lastname: "", disease: "" }}
             onSubmit={(values, actions) => handleClick(values, actions)}
           >
             {({
@@ -125,63 +123,16 @@ const Register = () => {
               handleSubmit,
             }) => (
               <Box component="form" onSubmit={handleSubmit} noValidate  >
+                <div style={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
+                  <input accept="image/*" id="upload-avatar-pic" type="file" hidden onChange={handleImageChange}/>
+                  <label htmlFor="upload-avatar-pic">
+                    <IconButton component="span" >
+                      <Avatar
+                        sx={{ width: 64, height: 64 }} src={image} />
+                    </IconButton>
+                  </label>
+                </div>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="username"
-                      label="Username"
-                      name="username"
-                      autoComplete="username"
-                      autoFocus
-                      value={values.username}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.username && !!errors.username}
-                      helperText={touched.username && errors.username}
-                      variant="outlined"
-                      className={touched.username && errors.username}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="password"
-                      label="Password"
-                      name="password"
-                      type="password"
-                      autoComplete="current-password"
-                      value={values.password}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.password && !!errors.password}
-                      helperText={touched.password && errors.password}
-                      variant="outlined"
-                      className={touched.password && errors.password}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email address"
-                      name="email"
-                      autoComplete="email"
-                      value={values.email}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.email && !!errors.email}
-                      helperText={touched.email && errors.email}
-                      variant="outlined"
-                      className={touched.email && errors.email}
-                    />
-                  </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       margin="normal"
@@ -235,27 +186,10 @@ const Register = () => {
                       className={touched.disease && errors.disease}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    {/* <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="nation_id"
-                      label="Nation ID"
-                      name="nation_id"
-                      autoComplete="nation_id"
-                      value={values.nation_id}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.nation_id && !!errors.nation_id}
-                      helperText={touched.nation_id && errors.nation_id}
-                      variant="outlined"
-                      className={touched.nation_id && errors.nation_id}
-                    /> */}
-
+                  <Grid item xs={12}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
-                        sx={{width:"100%"}}
+                        sx={{ width: "100%" }}
                         disableFuture
                         value={birthday}
                         onChange={(newValue, context) => {
@@ -266,53 +200,14 @@ const Register = () => {
                       />
                     </LocalizationProvider>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <MuiTelInput
-                      fullWidth
-                      name="phone"
-                      label="Phone Number"
-                      type="phone"
-                      id="phone"
-                      defaultCountry="TH"
-                      autoComplete="current-phone"
-                      value={phone}
-                      onChange={handleChangeTel}
-                      onBlur={handleBlur}
-                      error={touched.phone && !!errors.phone}
-                      helperText={touched.phone && errors.phone}
-                      variant="outlined"
-                      className={touched.phone && errors.phone}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl component="fieldset">
-                      <FormLabel component="legend">Gender</FormLabel>
-                      <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="row-radio-buttons-group"
-                        defaultValue="MALE"
-                        value={values.gender}
-                        onChange={handleChange}
-                      >
-                        <FormControlLabel value="MALE" control={<Radio />} label="Male" />
-                        <FormControlLabel value="FEMALE" control={<Radio />} label="Female" />
-                        <FormControlLabel value="other" control={<Radio />} label="Other" />
-                      </RadioGroup>
-
-                    </FormControl>
-                  </Grid>
                 </Grid>
-                {showAlert && (
-                  <Alert severity="error">Email address or Username is used </Alert>
-                )}
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2, background: '#77B255', }}
                 >
-                  Sign Up
+                  บันทึก
                 </Button>
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                   <Alert
@@ -333,4 +228,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default UserProfile;

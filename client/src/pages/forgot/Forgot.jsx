@@ -75,7 +75,7 @@ const Forgot = () => {
                 sx={{
                     backgroundImage: `url(${process.env.PUBLIC_URL}/logo.png)`,
                     backgroundRepeat: 'no-repeat',
-                    backgroundColor: '#32b372',
+                    backgroundColor: '#77B255',
                     backgroundSize: '256px',
                     backgroundPosition: 'center',
                 }}
@@ -136,7 +136,7 @@ const Forgot = () => {
                                     type="submit"
                                     fullWidth
                                     variant="contained"
-                                    sx={{ mt: 6, mb: 2, background: '#32b372', }}
+                                    sx={{ mt: 6, mb: 2, background: '#77B255', }}
                                 >
                                     Sign Up
                                 </Button>

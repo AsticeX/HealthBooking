@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 
-const VaccineSchema = new mongoose.Schema(
+const VaccineUserSchema = new mongoose.Schema(
   {
-    user_id: String,
     vaccine_name: String,
     expire: Date,
     attendance_date: Date,
@@ -15,6 +14,7 @@ const VaccineSchema = new mongoose.Schema(
     flag: Boolean,
   },
   { timestamps: true }
+  
 );
 
-export default mongoose.model("vaccine_user", VaccineSchema);
+export default mongoose.model("vaccine_user", VaccineUserSchema);

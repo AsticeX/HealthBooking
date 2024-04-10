@@ -36,16 +36,17 @@ const UserSchema = new mongoose.Schema(
     },
     disease: {
       type: String,
-      required:false,
+      required: false,
     },
-    gender: { 
+    gender: {
       type: String,
       required: true,
-     },
+    },
     isAdmin: {
       type: Boolean,
       default: false,
     },
+    
   },
   { timestamps: true }
 );

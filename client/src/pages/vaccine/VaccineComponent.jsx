@@ -4,6 +4,9 @@ import Swal from "sweetalert2";
 import Navbar from "../../components/navbar/Navbar";
 import { Modal, Button } from "react-bootstrap";
 
+
+
+
 const VaccineComponent = () => {
   const [state, setState] = useState({
     user_id: "",
@@ -16,7 +19,7 @@ const VaccineComponent = () => {
     hospital: "",
     priority: 0,
     flag: true,
-    type: "", // Adding type field to state
+    type: "", 
   });
 
   const { user_id, vaccine_name_th, expire, hospital_name, dose_user, dose_require, hospital, priority, flag, type } = state;
@@ -81,28 +84,25 @@ const VaccineComponent = () => {
     const selectedOption = vaccineOptions.find((option) => option.name === event.target.value);
     console.log("Selected vaccine:", selectedOption);
 
-    // Get today's date
     const today = new Date();
 
-    // Calculate the expiration date only if number_for_next_dose is not 0
     let expirationDate = null;
     if (selectedOption.number_for_next_dose !== 0) {
       expirationDate = new Date(today.getFullYear(), today.getMonth() + selectedOption.number_for_next_dose, today.getDate());
     }
 
-    // Update the state with the selected vaccine and its associated data
+    
     setState({
       ...state,
       vaccine_name_th: event.target.value,
       type: selectedOption.type,
       number_for_next_dose: selectedOption.number_for_next_dose,
       expire: expirationDate ? expirationDate.toISOString().split("T")[0] : null,
-      dose_require: selectedOption.dose_require, // Add this line to update dose_require
+      dose_require: selectedOption.dose_require,
     });
   };
 
   const handleDelete = (id) => {
-    // Display a confirmation dialog using SweetAlert2
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -113,27 +113,43 @@ const VaccineComponent = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        // If user confirms, send a DELETE request to the API to delete the user with the specified ID
         axios
           .delete(`${process.env.REACT_APP_API}/vaccine_user/${id}`)
           .then((response) => {
             console.log("User deleted successfully:", response.data);
-            // Remove the deleted user from the vaccineUsers state array
+            
             setVaccineUsers(vaccineUsers.filter((user) => user._id !== id));
-            // Display a success message
+          
             Swal.fire("Deleted!", "Your user has been deleted.", "success");
           })
           .catch((error) => {
             console.error("Error deleting user:", error);
-            // Display an error message
+            
             Swal.fire("Error!", "Failed to delete user.", "error");
           });
       }
     });
   };
 
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_API}/users/661525f2d6296f9cd4ccc083`);
+          console.log(response,"XXXXXX");
+          if (!response.ok) {
+            throw new Error('Failed to fetch data');
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+    fetchData();
+  }, []);
+
   const submitForm = (e) => {
     e.preventDefault();
+    console.log(vaccine_name_th);
 
     axios
       .post(`${process.env.REACT_APP_API}/vaccine_user`, {
@@ -143,16 +159,17 @@ const VaccineComponent = () => {
         type,
         hospital_name,
         dose_user,
-        dose_require: state.dose_require, // Use the value from the main form
+        dose_require: state.dose_require, 
         hospital,
         priority,
         flag,
         vaccine_name: vaccine_name_th,
+        // user_vaccinedose: userId,
       })
       .then((response) => {
-        // Update the vaccineUsers state array with the newly added user
+        
         setVaccineUsers([...vaccineUsers, response.data]);
-        // Clear the form fields
+       
         setState({
           user_id: "",
           vaccine_name_th: "",
@@ -165,7 +182,6 @@ const VaccineComponent = () => {
           flag: true,
           type: "",
         });
-        // Display a success message xxx
         handleCloseFormModal();
         handleCloseFormModal2();
         handleCloseFormModal3();
@@ -198,8 +214,8 @@ const VaccineComponent = () => {
   };
 
   const handleEdit = (user) => {
-    setEditUser(user); // Set the state with the user data to populate the form in the modal
-    setEditModalShow(true); // Show the edit modal
+    setEditUser(user); 
+    setEditModalShow(true); 
   };
   //xxx
   const handleForm = () => {
@@ -230,11 +246,11 @@ const VaccineComponent = () => {
         vaccine_name: editUser.vaccine_name_th,
       })
       .then((response) => {
-        // Update the vaccineUsers state array with the edited user
+
         setVaccineUsers(vaccineUsers.map((user) => (user._id === editUser._id ? response.data : user)));
-        // Close the edit modal
+
         setEditModalShow(false);
-        // Display a success message
+        
         Swal.fire({
           title: "Success",
           text: "บันทึกข้อมูลสำเร็จ",
@@ -250,19 +266,19 @@ const VaccineComponent = () => {
       });
   };
 
-  // Function to handle closing the edit modal
+  
   const handleCloseEditModal = () => {
-    setEditModalShow(false); // Close the edit modal
+    setEditModalShow(false); 
   };
-  //xxx
+  
   const handleCloseFormModal = () => {
-    setFormModalShow(false); // Close the edit modal
+    setFormModalShow(false); 
   };
   const handleCloseFormModal2 = () => {
-    setFormModalShow2(false); // Close the edit modal
+    setFormModalShow2(false); 
   };
   const handleCloseFormModal3 = () => {
-    setFormModalShow3(false); // Close the edit modal
+    setFormModalShow3(false); 
   };
 
   return (
@@ -470,10 +486,9 @@ const VaccineComponent = () => {
         </Modal.Body>
       </Modal>
       <div className="table-responsive">
-        {/* Table to display existing data */}
-        {/* Example: */}
+       
         <table className="table table-striped">
-          {/* Table headers */}
+          
           <thead>
             <tr>
               <th>Vaccine Name</th>
@@ -486,9 +501,9 @@ const VaccineComponent = () => {
               <th>Type</th>
             </tr>
           </thead>
-          {/* Table body */}
+          
           <tbody>
-            {/* Iterate through vaccineUsers to display each user's data */}
+           
             {vaccineUsers.map((user) => (
               <tr key={user._id}>
                 <td>{user.vaccine_name}</td>
