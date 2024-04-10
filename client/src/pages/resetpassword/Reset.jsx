@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { Formik } from "formik";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useParams} from "react-router-dom";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -19,11 +19,12 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-const Forgot = () => {
+const Reset = () => {
     const { dispatch } = useContext(AuthContext);
     const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false);
     const [open, setOpen] = useState(false);
+    const {id, token} = useParams()
 
     const handleClickSnack = () => {
         setOpen(true);
@@ -39,9 +40,10 @@ const Forgot = () => {
     const handleClick = async (values, actions) => {
         dispatch({ type: "REGISTER_START" });
         try {
-            const res = await axios.post("/users/forgot-password", values);
+            // console.log("XXXXX",token);
+            const res = await axios.post(`/users/reset-password/${id}/${token}`, values);
             dispatch({ type: "REGISTER_SUCCESS", payload: res.data.details });
-            navigate("/Login", { state: { fromLogin: true } });
+            // navigate("/Login", { state: { fromLogin: true } });
             handleClickSnack();
         } catch (err) {
             console.error("Registration failed:", err);
@@ -51,14 +53,14 @@ const Forgot = () => {
     };
 
     const schema = Yup.object().shape({
-        email: Yup.string()
-            .email('Invalid email')
-            .required("Email is a required field"),
-
+        password: Yup.string()
+            .required("password is a required field"),
+        confirmpassword: Yup.string()
+            .oneOf([Yup.ref('password')], 'Passwords must match')
     });
 
     return (
-        <Grid container component="main" sx={{ height: '100',marginTop:8, display: "flex", justifyContent: "center" }}>
+        <Grid container component="main" sx={{ height: '100', marginTop: 8, display: "flex", justifyContent: "center" }}>
             <CssBaseline />
             <Grid item xs={12} sm={6} md={6} component={Paper} elevation={6} square >
                 <Box
@@ -71,11 +73,11 @@ const Forgot = () => {
                     }}
                 >
                     <Typography component="h1" variant="h5">
-                        เปลี่ยนรหัสผ่าน 
+                        เปลี่ยนรหัสผ่าน
                     </Typography>
                     <Formik
                         validationSchema={schema}
-                        initialValues={{ email: "" }}
+                        initialValues={{ password: "" }}
                         onSubmit={(values, actions) => handleClick(values, actions)}
                     >
                         {({
@@ -86,28 +88,49 @@ const Forgot = () => {
                             handleBlur,
                             handleSubmit,
                         }) => (
-                            <Box component="form" onSubmit={handleSubmit} noValidate sx={{alignContent:"center",mt:4}}  >
+                            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ alignContent: "center", mt: 4 }}  >
                                 <Grid container>
                                     <Grid item xs={12} sm={12} md={12}>
                                         <TextField
                                             margin="normal"
                                             required
                                             fullWidth
-                                            id="email"
-                                            label="Email address"
-                                            name="email"
-                                            autoComplete="email"
-                                            value={values.email}
+                                            id="password"
+                                            label="รหัสผ่านใหม่"
+                                            type="password"
+                                            name="password"
+                                            autoComplete="password"
+                                            value={values.password}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            error={touched.email && !!errors.email}
-                                            helperText={touched.email && errors.email}
+                                            error={touched.password && !!errors.password}
+                                            helperText={touched.password && errors.password}
                                             variant="outlined"
-                                            className={touched.email && errors.email}
-                                            sx={{alignItems:"center"}}
+                                            className={touched.password && errors.password}
+                                            sx={{ alignItems: "center" }}
                                         />
                                     </Grid>
-                                    
+                                    <Grid item xs={12} sm={12} md={12}>
+                                        <TextField
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="confirmpassword"
+                                            label="ยืนยันรหัสผ่าน"
+                                            type="password"
+                                            name="confirmpassword"
+                                            autoComplete="confirmpassword"
+                                            value={values.confirmpassword}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={touched.confirmpassword && !!errors.confirmpassword}
+                                            helperText={touched.confirmpassword && errors.confirmpassword}
+                                            variant="outlined"
+                                            className={touched.confirmpassword && errors.email}
+                                            sx={{ alignItems: "center" }}
+                                        />
+                                    </Grid>
+
                                 </Grid>
 
                                 {/* {showAlert && (
@@ -140,4 +163,4 @@ const Forgot = () => {
     );
 };
 
-export default Forgot;
+export default Reset;

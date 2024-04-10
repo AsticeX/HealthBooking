@@ -13,7 +13,6 @@ const UserSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: true,
     },
     lastname: {
       type: String,
@@ -28,11 +27,6 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
     },
     disease: {
       type: String,
