@@ -4,6 +4,10 @@ import { Box, Button, IconButton, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import SearchIcon from '@mui/icons-material/Search';
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
+import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 const HospitalFinderComponent = () => {
   const [location, setLocation] = useState(null);
@@ -11,6 +15,9 @@ const HospitalFinderComponent = () => {
   const [mapInitialized, setMapInitialized] = useState(false);
 
   let map;
+  let search;
+
+
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -41,12 +48,7 @@ const HospitalFinderComponent = () => {
     }
   }, [location, mapInitialized]);
 
-  const handleKeyUp = (event) => {
-    if (event.keyCode !== 13) return;
-    doSearch();
-  };
-
-  const initMap = () => {
+  const showMap = () => {
     map = new window.longdo.Map({
       placeholder: document.getElementById('map'),
       zoom: 15,
@@ -57,17 +59,65 @@ const HospitalFinderComponent = () => {
       visibleRange: { min: 10, max: 20 },
       icon: { url: 'https://mmmap15.longdo.com/mmmap/images/icons/hospital.png' }
     });
+    map.location(window.longdo.LocationMode.Geolocation);
 
-    const searchInput = document.getElementById('search-input');
-    if (searchInput) {
-      searchInput.addEventListener('keyup', handleKeyUp);
+
+  }
+
+  const routeMap = (hospitalId) => {
+    const { latitude, longitude } = location;
+    console.log(hospitalId);
+    showMap()
+    axios.get("https://api.longdo.com/POIService/json/search?", {
+      params: {
+        key: '79e088d5668d8e7316d055233c8cf1c4',
+        lon: longitude,
+        lat: latitude,
+        tag: 'hospital',
+        limit: 10,
+      }
+    })
+      .then((response) => {
+        // console.log(hospitalId);
+        const hospitals = response.data.data.map(hospital => {
+          hospital.distance = calculateDistance(latitude, longitude, hospital.lat, hospital.lon);
+          if (hospitalId === hospital.id) {
+            var marker = new window.longdo.Marker({ lon: longitude, lat: latitude });
+            map.Route.add(marker);
+            map.Route.add({ lon: hospital.lon, lat: hospital.lat });
+            map.Route.search();
+
+          }
+          return hospital;
+        });
+        // console.log(hospitals);
+        setSearchResults(hospitals);
+      })
+      .catch((error) => {
+        console.error('Error searching nearby:', error);
+      });
+    map.Route.placeholder(document.getElementById('result'));
+  }
+
+
+
+  const initMap = () => {
+    showMap()
+    search = document.getElementById('search')
+    if (search) {
+      map.Search.placeholder(document.getElementById('result'));
+      search.onkeyup = function (event) {
+        if ((event || window.event).keyCode !== 13) return;
+        doSearch();
+      };
     } else {
-      console.error('Search input element not found.');
+      console.error('Search element not found.');
     }
   };
 
   const searchNearby = () => {
     const { latitude, longitude } = location;
+    showMap()
     axios.get("https://api.longdo.com/POIService/json/search?", {
       params: {
         key: '79e088d5668d8e7316d055233c8cf1c4',
@@ -81,8 +131,12 @@ const HospitalFinderComponent = () => {
         console.log(response.data.data);
         const hospitals = response.data.data.map(hospital => {
           hospital.distance = calculateDistance(latitude, longitude, hospital.lat, hospital.lon);
+          var marker = new window.longdo.Marker({ lon: hospital.lon, lat: hospital.lat });
+          map.Overlays.add(marker);
           return hospital;
         });
+        const suggest = document.getElementById('result');
+        suggest.style.display = 'none';
         setSearchResults(hospitals);
       })
       .catch((error) => {
@@ -91,15 +145,16 @@ const HospitalFinderComponent = () => {
   };
 
   const doSearch = () => {
-    const searchValue = document.getElementById('search-input').value;
-    if (map && searchValue) {
-      map.Search.search(searchValue, {
+    if (map) {
+      map.Search.search(search.value, {
         tag: 'hospital',
       });
+
       const suggest = document.getElementById('result');
-      suggest.style.display = 'none';
+      suggest.style.display = 'block';
     }
   };
+
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
@@ -123,36 +178,53 @@ const HospitalFinderComponent = () => {
       <Grid container spacing={2}>
         <Grid item xs={6} sx={{ mt: 10 }}>
           <div id="result"></div>
-          <h2>โรงพยาบาลใกล้ฉัน</h2>
-          <Button onClick={searchNearby} variant="contained">Search Nearby</Button>
-          {searchResults.map((hospital) => (
-            <div key={hospital.id}>
-              <p>{hospital.name} {hospital.distance ? hospital.distance.toFixed(2) : 'Distance not available'} km <SubdirectoryArrowRightIcon /></p>
-            </div>
-          ))}
+          <h2 style={{display:"flex",justifyContent:"center"}}>สถานบริการใกล้ฉัน</h2>
+          <Card sx={{ minWidth: 275,backgroundColor:'transparent' }}>
+            {searchResults.map((hospital) => (
+              <CardContent key={hospital.id} sx={{ m: 2, backgroundColor: "#EEEEE6", borderRadius: 4, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", transition: "box-shadow 0.3s", '&:hover': { boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)" },mr:8,ml:8 }}>
+                <Typography sx={{ fontSize: 18, display:"flex",alignItems:"center" ,justifyContent:'center'}} color="text.secondary" gutterBottom>
+                  <div>
+                    <p>
+                      {hospital.name} {hospital.distance ? hospital.distance.toFixed(2) : 'Distance not available'} km
+                      <IconButton sx={{ width: 32, height: 32,color:'blue' }} onClick={() => routeMap(hospital.id)}>
+                        <SubdirectoryArrowRightIcon />
+                      </IconButton>
+                    </p>
+                  </div>
+                </Typography>
+              </CardContent>
+            ))}
+          </Card>
+
         </Grid>
         <Grid item xs={6} sx={{ height: '100%', mt: 8.5, position: 'relative' }}>
-          <TextField
-            sx={{
-              color: "#000",
-              fontFamily: "Arial",
-              fontWeight: "bold",
-              backgroundColor: "#f4f4f4",
-              borderTopLeftRadius: "7px",
-              borderTopRightRadius: "7px",
-            }}
-            fullWidth
-            variant="filled"
-            id='search-input'
-            label='Search'
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={doSearch}>
-                  <SearchIcon />
-                </IconButton>
-              ),
-            }}
-          />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton sx={{ width: 32, height: 32 ,color:'blue'}} onClick={searchNearby}>
+              <PersonPinCircleIcon />
+            </IconButton>
+            <TextField
+              sx={{
+                color: "#000",
+                fontFamily: "Arial",
+                fontWeight: "bold",
+                backgroundColor: "#f4f4f4",
+                borderTopLeftRadius: "7px",
+                borderTopRightRadius: "7px",
+              }}
+              fullWidth
+              variant="filled"
+              id='search'
+              label='Search'
+              InputProps={{
+                endAdornment: (
+                  <IconButton sx={{color:'blue'}}>
+                    <SearchIcon />
+                  </IconButton>
+                ),
+              }}
+            />
+          </div>
+
           <div style={{ flex: 1 }}>
             <div id="map" style={{ height: '600px', width: '100%' }}></div>
           </div>
