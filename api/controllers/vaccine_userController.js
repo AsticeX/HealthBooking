@@ -55,7 +55,15 @@ export const deleteVaccineUser = async (req, res, next) => {
 
 export const getVaccineUserByPriority = async (req, res, next) => {
   try {
-    const vaccinesSortedByPriority = await vaccineUser.find().sort({ priority: 1 }); // Sorting by priority in ascending order
+    const { user_id } = req.query;
+
+    // Check if user_id is provided in the query
+    if (!user_id) {
+      return res.status(400).json({ error: "User ID is required in the query." });
+    }
+
+    // Find all vaccine users sorted by priority
+    const vaccinesSortedByPriority = await vaccineUser.find({ user_id }).sort({ priority: 1 });
 
     res.json(vaccinesSortedByPriority);
   } catch (err) {

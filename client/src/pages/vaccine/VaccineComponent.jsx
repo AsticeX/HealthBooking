@@ -3,6 +3,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Navbar from "../../components/navbar/Navbar";
 import { Modal, Button } from "react-bootstrap";
+import Navbar from "../../components/navbar/Navbar";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 
 
@@ -16,13 +19,13 @@ const VaccineComponent = () => {
     hospital_name: "",
     dose_user: [],
     dose_require: 1,
-    hospital: "",
+    hospital: [],
     priority: 0,
     flag: true,
     type: "", 
   });
-
-  const { user_id, vaccine_name_th, expire, hospital_name, dose_user, dose_require, hospital, priority, flag, type } = state;
+  const { user } = useContext(AuthContext);
+  const { vaccine_name_th, expire, hospital_name, dose_user, dose_require, hospital, priority, flag, type } = state;
 
   const inputValue = (name) => (event) => {
     if (name === "dose_user_1") {
@@ -44,6 +47,26 @@ const VaccineComponent = () => {
     }
   };
 
+  const inputValue2 = (name) => (event) => {
+    if (name === "hospital_user_1") {
+      const newHospital = [...state.hospital];
+      newHospital[0] = event.target.value;
+      setState({ ...state, hospital: newHospital });
+    } else if (name === "hospital_user_2") {
+      const newHospital = [...state.hospital];
+      newHospital[1] = event.target.value;
+      setState({ ...state, hospital: newHospital });
+    } else if (name === "hospital_user_3") {
+      const newHospital = [...state.hospital];
+      newHospital[3] = event.target.value;
+      setState({ ...state, hospital: newHospital });
+    } else if (name === "dose_require") {
+      setState({ ...state, [name]: event.target.value });
+    } else {
+      setState({ ...state, [name]: event.target.value });
+    }
+  };
+
   const [vaccineOptions, setVaccineOptions] = useState([]);
   const [vaccineUsers, setVaccineUsers] = useState([]);
   const [editModalShow, setEditModalShow] = useState(false);
@@ -53,15 +76,24 @@ const VaccineComponent = () => {
   const [editUser, setEditUser] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API}/vaccine_user/search-vaccine-user-by-priority`)
-      .then((response) => {
-        setVaccineUsers(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching vaccine users:", error);
-      });
-  }, []);
+    // Check if user is authenticated
+    if (user) {
+      axios
+        .get(`${process.env.REACT_APP_API}/vaccine_user/search-vaccine-user-by-priority?user_id=${user.username}`)
+        .then((response) => {
+          setVaccineUsers(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vaccine users:", error);
+          // Handle error with SweetAlert2
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to fetch vaccine users.",
+            icon: "error",
+          });
+        });
+    }
+  }, [user]); // Add user to dependency array to fetch data when user changes
 
   useEffect(() => {
     axios
@@ -81,9 +113,10 @@ const VaccineComponent = () => {
   }, []);
 
   const handleDropdownChange = (event) => {
-    const selectedOption = vaccineOptions.find((option) => option.name === event.target.value);
-    console.log("Selected vaccine:", selectedOption);
+    const selectedVaccineName = event.target.value;
+    const isVaccineAlreadySelected = vaccineUsers.some((user) => user.vaccine_name === selectedVaccineName);
 
+<<<<<<< HEAD
     const today = new Date();
 
     let expirationDate = null;
@@ -100,6 +133,38 @@ const VaccineComponent = () => {
       expire: expirationDate ? expirationDate.toISOString().split("T")[0] : null,
       dose_require: selectedOption.dose_require,
     });
+=======
+    if (!isVaccineAlreadySelected) {
+      const selectedOption = vaccineOptions.find((option) => option.name === selectedVaccineName);
+      console.log("Selected vaccine:", selectedOption);
+
+      // Get today's date
+      const today = new Date();
+
+      // Calculate the expiration date only if number_for_next_dose is not 0
+      let expirationDate = null;
+      if (selectedOption.number_for_next_dose !== 0) {
+        expirationDate = new Date(today.getFullYear(), today.getMonth() + selectedOption.number_for_next_dose, today.getDate());
+      }
+
+      // Update the state with the selected vaccine and its associated data
+      setState({
+        ...state,
+        vaccine_name_th: selectedVaccineName,
+        type: selectedOption.type,
+        number_for_next_dose: selectedOption.number_for_next_dose,
+        expire: expirationDate ? expirationDate.toISOString().split("T")[0] : null,
+        dose_require: selectedOption.dose_require,
+      });
+    } else {
+      // If the vaccine is already selected, display a message or handle it as desired
+      Swal.fire({
+        title: "Oops...",
+        text: "This vaccine has already been chosen.",
+        icon: "warning",
+      });
+    }
+>>>>>>> origin
   };
 
   const handleDelete = (id) => {
@@ -151,15 +216,30 @@ const VaccineComponent = () => {
     e.preventDefault();
     console.log(vaccine_name_th);
 
+    // Ensure user is authenticated
+    if (!user) {
+      // Handle unauthenticated user
+      Swal.fire({
+        title: "Error!",
+        text: "User is not authenticated.",
+        icon: "error",
+      });
+      return;
+    }
+
     axios
       .post(`${process.env.REACT_APP_API}/vaccine_user`, {
-        user_id,
+        user_id: user.username, // Update user_id to user.username
         vaccine_name_th,
         expire,
         type,
-        hospital_name,
+        hospital_name, // Here you're sending hospital_name directly
         dose_user,
+<<<<<<< HEAD
         dose_require: state.dose_require, 
+=======
+        dose_require: state.dose_require,
+>>>>>>> origin
         hospital,
         priority,
         flag,
@@ -177,11 +257,15 @@ const VaccineComponent = () => {
           hospital_name: "",
           dose_user: [],
           dose_require: "",
-          hospital: "",
+          hospital: [],
           priority: 0,
           flag: true,
           type: "",
         });
+<<<<<<< HEAD
+=======
+        // Display a success message
+>>>>>>> origin
         handleCloseFormModal();
         handleCloseFormModal2();
         handleCloseFormModal3();
@@ -199,6 +283,7 @@ const VaccineComponent = () => {
         });
       });
   };
+
   //xxx
   const submitDose = (e) => {
     e.preventDefault();
@@ -217,6 +302,7 @@ const VaccineComponent = () => {
     setEditUser(user); 
     setEditModalShow(true); 
   };
+
   //xxx
   const handleForm = () => {
     setFormModalShow(true);
@@ -282,6 +368,7 @@ const VaccineComponent = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="container p-5">
       <Navbar/>
       <h1 style={{marginTop:30}}>บันทึกวัคซีน</h1>
@@ -305,11 +392,99 @@ const VaccineComponent = () => {
           <label>จำนวนโดสที่ต้องฉีด</label>
           <input type="number" className="form-control" value={dose_require} onChange={inputValue("dose_require")} required min="1" />
         </div>
+=======
+    <div className="container">
+      <div className="container p-5">
+        <Navbar />
+        <h1 className="mt-5">บันทึกวัคซีน</h1>
+        <form onSubmit={submitDose}>
+          <div className="form-group">
+            <label>วัคซีน</label>
+            <select className="form-control" value={vaccine_name_th} onChange={handleDropdownChange}>
+              <option value="">โปรดเลือก</option>
+              {vaccineOptions.map((option, index) => (
+                <option key={index} value={option.name}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group">
+            <label>จำนวนโดสที่ฉีดไปแล้ว</label>
+            <input type="number" className="form-control" id="administeredDoses" required min="1" />
+          </div>
+          <div className="form-group mb-2">
+            <label>จำนวนโดสที่ต้องฉีด</label>
+            <input type="number" className="form-control" value={dose_require} onChange={inputValue("dose_require")} required min="1" />
+          </div>
+>>>>>>> origin
 
-        <input type="submit" value="ต่อไป" className="btn btn-primary mb-2" />
-      </form>
+          <input type="submit" value="ต่อไป" className="btn btn-primary mb-2" />
+        </form>
 
-      <Modal show={formModalShow} onHide={handleCloseFormModal}>
+        <br />
+        <h1>บันทึกวัคซีน</h1>
+
+        <div className="table-responsive">
+          {/* Table to display existing data */}
+          {/* Example: */}
+          <table className="table table-striped">
+            {/* Table headers */}
+            <thead>
+              <tr>
+                <th>Vaccine Name</th>
+                <th>Expire</th>
+                <th>Hospital Name</th>
+                <th>Hospital Array</th>
+                <th>Dose User</th>
+                <th>Dose Require</th>
+                {/* <th>Priority</th> */}
+                <th>Flag</th>
+                <th>Type</th>
+                <th>User ID</th>
+              </tr>
+            </thead>
+            {/* Table body */}
+            <tbody>
+              {/* Iterate through vaccineUsers to display each user's data */}
+              {vaccineUsers.map((user) => (
+                <tr key={user._id}>
+                  <td>{user.vaccine_name}</td>
+                  <td>{user.expire ? new Date(user.expire).toLocaleDateString() : "ไม่มีวันหมดอายุ"}</td>
+                  <td>{user.hospital_name}</td>
+                  <td>
+                    {user.hospital.map((doseTime, index) => (
+                      <div key={index}>{doseTime}</div>
+                    ))}
+                  </td>
+                  <td>
+                    {user.dose_user.map((doseTime, index) => (
+                      <div key={index}>{new Date(doseTime).toLocaleDateString()}</div>
+                    ))}
+                  </td>
+                  <td>{user.dose_require}</td>
+                  {/* <td>{user.priority}</td> */}
+                  <td>{user.flag ? "True" : "False"}</td>
+                  <td>{user.type}</td>
+                  <td>{user.user_id}</td>
+                  <td>
+                    <button className="btn btn-primary mr-2" onClick={() => handleEdit(user)}>
+                      Edit
+                    </button>
+                  </td>
+                  <td>
+                    <button className="btn btn-danger" onClick={() => handleDelete(user._id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <Modal show={formModalShow} onHide={handleCloseFormModal} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Vaccine User</Modal.Title>
         </Modal.Header>
@@ -328,26 +503,20 @@ const VaccineComponent = () => {
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีน</label>
-              <input type="date" className="form-control" value={dose_user} onChange={inputValue("dose_user")} />
+              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user} onChange={inputValue("dose_user")} />
             </div>
-            {/* Conditionally render the expiration date input */}
-            {/* {expire != null && (
-              <div className="form-group">
-                <label>วันหมดอายุ</label>
-                <input type="date" className="form-control" value={expire} onChange={inputValue("expire")} />
-              </div>
-            )} */}
             <div className="form-group">
-              <label>โรงพยาบาล</label>
-              <textarea type="text" className="form-control" value={hospital_name} onChange={inputValue("hospital_name")}></textarea>
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีน</label>
+              <input type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
             </div>
+
             <br />
             <input type="submit" value="บันทึก" className="btn btn-primary" />
           </form>
         </Modal.Body>
       </Modal>
 
-      <Modal show={formModalShow2} onHide={handleCloseFormModal2}>
+      <Modal show={formModalShow2} onHide={handleCloseFormModal3} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Vaccine User</Modal.Title>
         </Modal.Header>
@@ -366,23 +535,31 @@ const VaccineComponent = () => {
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 1</label>
-              <input type="date" className="form-control" value={dose_user[0]} onChange={inputValue("dose_user_1")} />
+              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[0]} onChange={inputValue("dose_user_1")} />
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 2</label>
-              <input type="date" className="form-control" value={dose_user[1]} onChange={inputValue("dose_user_2")} />
+              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[1]} onChange={inputValue("dose_user_2")} />
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>โรงพยาบาล</label>
               <textarea type="text" className="form-control" value={hospital_name} onChange={inputValue("hospital_name")}></textarea>
             </div>
-            <br />
+            <br /> */}
+            <div className="form-group">
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 1</label>
+              <input type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
+            </div>
+            <div className="form-group">
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 2</label>
+              <input type="text" className="form-control" value={hospital[1]} onChange={inputValue2("hospital_user_2")} />
+            </div>
             <input type="submit" value="บันทึก" className="btn btn-primary" />
           </form>{" "}
         </Modal.Body>
       </Modal>
 
-      <Modal show={formModalShow3} onHide={handleCloseFormModal3}>
+      <Modal show={formModalShow3} onHide={handleCloseFormModal2} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Vaccine User</Modal.Title>
         </Modal.Header>
@@ -401,33 +578,48 @@ const VaccineComponent = () => {
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 1</label>
-              <input type="date" className="form-control" value={dose_user[0]} onChange={inputValue("dose_user_1")} />
+              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[0]} onChange={inputValue("dose_user_1")} />
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 2</label>
-              <input type="date" className="form-control" value={dose_user[1]} onChange={inputValue("dose_user_2")} />
+              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[1]} onChange={inputValue("dose_user_2")} />
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 3</label>
-              <input type="date" className="form-control" value={dose_user[2]} onChange={inputValue("dose_user_3")} />
+              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[2]} onChange={inputValue("dose_user_3")} />
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>โรงพยาบาล</label>
               <textarea type="text" className="form-control" value={hospital_name} onChange={inputValue("hospital_name")}></textarea>
             </div>
-            <br />
+            <br /> */}
+            <div className="form-group">
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 1</label>
+              <input type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
+            </div>
+            <div className="form-group">
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 2</label>
+              <input type="text" className="form-control" value={hospital[1]} onChange={inputValue2("hospital_user_2")} />
+            </div>
+            <div className="form-group">
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 3</label>
+              <input type="text" className="form-control" value={hospital[2]} onChange={inputValue2("hospital_user_3")} />
+            </div>
             <input type="submit" value="บันทึก" className="btn btn-primary" />
           </form>{" "}
         </Modal.Body>
       </Modal>
 
+<<<<<<< HEAD
       <br />     
       <h1>บันทึกวัคซีน</h1>
 
+=======
+>>>>>>> origin
       {/* Modal for editing data */}
-      <Modal show={editModalShow} onHide={handleCloseEditModal}>
+      <Modal show={editModalShow} onHide={handleCloseEditModal} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Vaccine User</Modal.Title>
+          <Modal.Title>Edit Vaccine</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* Conditional rendering based on editUser */}
@@ -436,46 +628,137 @@ const VaccineComponent = () => {
               {/* Input fields for editing data */}
               <div className="form-group">
                 <label>Vaccine Name</label>
-                <select className="form-control" value={editUser.vaccine_name_th} onChange={(e) => setEditUser({ ...editUser, vaccine_name_th: e.target.value })}>
-                  <option value={editUser.vaccine_name_th}>โปรดเลือก</option>
-                  {vaccineOptions.map((option, index) => (
-                    <option key={index} value={option.name}>
-                      {option.name}
-                    </option>
-                  ))}
-                </select>
+                <input type="text" className="form-control" value={editUser.vaccine_name} readOnly />
               </div>
               <div className="form-group">
                 <label>Expire</label>
-                <input type="date" className="form-control" value={editUser?.expire?.split("T")[0]} onChange={(e) => setEditUser({ ...editUser, expire: e.target.value })} />
+                {editUser.expire ? (
+                  <input
+                    type="date"
+                    max={new Date().toISOString().split("T")[0]}
+                    className="form-control"
+                    value={editUser.expire?.split("T")[0]}
+                    onChange={(e) => setEditUser({ ...editUser, expire: e.target.value })}
+                  />
+                ) : (
+                  <input type="text" className="form-control" value="Not specified" readOnly />
+                )}
               </div>
-              <div className="form-group">
-                <label>Hospital Name</label>
-                <input type="text" className="form-control" value={editUser.hospital_name} onChange={(e) => setEditUser({ ...editUser, hospital_name: e.target.value })} />
-              </div>
+
               <div className="form-group">
                 {editUser &&
                   editUser.dose_user &&
                   editUser.dose_user.map((dose, index) => (
-                    <div key={index}>
+                    <div key={index} className="dose-date">
                       <label>วันเข้ารับการฉีดวัคซีนเข็มที่ {index + 1}</label>
-                      <input
-                        type="date"
-                        className="form-control mb-2"
-                        value={dose}
-                        onChange={(e) => {
-                          const newDoseUser = [...editUser.dose_user];
-                          newDoseUser[index] = e.target.value;
-                          setEditUser({ ...editUser, dose_user: newDoseUser });
-                        }}
-                      />
+                      <div className="input-group">
+                        <input
+                          type="date"
+                          className="form-control"
+                          value={dose}
+                          {...(dose ? {} : { max: new Date().toISOString().split("T")[0] })} // Conditionally apply max attribute
+                          onChange={(e) => {
+                            const newDoseUser = [...editUser.dose_user];
+                            newDoseUser[index] = e.target.value;
+                            setEditUser({ ...editUser, dose_user: newDoseUser });
+                          }}
+                        />
+
+                        {/* Button to delete dose date */}
+                        <div className="input-group-append">
+                          <button
+                            className="btn btn-danger"
+                            type="button"
+                            onClick={() => {
+                              const newDoseUser = [...editUser.dose_user];
+                              newDoseUser.splice(index, 1); // Remove the dose date at index
+                              setEditUser({ ...editUser, dose_user: newDoseUser });
+                            }}
+                          >
+                            -
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ))}
               </div>
+              {/* Button to add a new dose date */}
+              <button
+                className="btn btn-success mb-3 mt-2"
+                onClick={() => {
+                  // Determine how many empty datetime boxes you want to add
+                  const numberOfNewBoxes = 1; // For example, add 3 new empty datetime boxes
+
+                  // Create an array with the new empty datetime boxes
+                  const newEmptyBoxes = Array.from({ length: numberOfNewBoxes }, () => "");
+
+                  // Add the new empty datetime boxes to the editUser state
+                  const newDoseUser = [...editUser.dose_user, ...newEmptyBoxes];
+                  setEditUser({ ...editUser, dose_user: newDoseUser });
+                }}
+                type="button" // Add this line to prevent form submission
+              >
+                +
+              </button>
+              {/* xxxxxxxxxxxxxx */}
+              <div className="form-group">
+                {editUser &&
+                  editUser.hospital &&
+                  editUser.hospital.map((dose, index) => (
+                    <div key={index} className="dose-date">
+                      <label>Vaccine Dose Date {index + 1}</label>
+                      <div className="input-group">
+                        <input
+                          type="string"
+                          className="form-control"
+                          value={dose}
+                          onChange={(e) => {
+                            const newHospital = [...editUser.hospital];
+                            newHospital[index] = e.target.value;
+                            setEditUser({ ...editUser, hospital: newHospital });
+                          }}
+                        />
+
+                        {/* Button to delete dose date */}
+                        <div className="input-group-append">
+                          <button
+                            className="btn btn-danger"
+                            type="button"
+                            onClick={() => {
+                              const newHospital = [...editUser.hospital];
+                              newHospital.splice(index, 1); // Remove the dose date at index
+                              setEditUser({ ...editUser, hospital: newHospital });
+                            }}
+                          >
+                            -
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+              {/* Button to add a new dose date */}
+              <button
+                className="btn btn-success mb-3 mt-2"
+                onClick={() => {
+                  // Determine how many empty datetime boxes you want to add
+                  const numberOfNewBoxes = 1; // For example, add 3 new empty datetime boxes
+
+                  // Create an array with the new empty datetime boxes
+                  const newEmptyBoxes = Array.from({ length: numberOfNewBoxes }, () => "");
+
+                  // Add the new empty datetime boxes to the editUser state
+                  const newHospital = [...editUser.hospital, ...newEmptyBoxes];
+                  setEditUser({ ...editUser, hospital: newHospital });
+                }}
+                type="button" // Add this line to prevent form submission
+              >
+                +
+              </button>
 
               <div className="form-group">
                 <label>Dose Require</label>
-                <input type="number" className="form-control" value={editUser.dose_require} onChange={(e) => setEditUser({ ...editUser, dose_require: e.target.value })} />
+                <input type="text" className="form-control" value={editUser.dose_require} readOnly />
               </div>
               <br />
               <Button variant="primary" type="submit">
@@ -485,6 +768,7 @@ const VaccineComponent = () => {
           )}
         </Modal.Body>
       </Modal>
+<<<<<<< HEAD
       <div className="table-responsive">
        
         <table className="table table-striped">
@@ -533,6 +817,8 @@ const VaccineComponent = () => {
           </tbody>
         </table>
       </div>
+=======
+>>>>>>> origin
     </div>
   );
 };

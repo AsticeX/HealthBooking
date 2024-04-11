@@ -9,9 +9,10 @@ const VaccineUserSchema = new mongoose.Schema(
     dose_user: Array,
     dose_require: Number,
     type: String,
-    hospital: String,
+    hospital: Array,
     priority: Number,
     flag: Boolean,
+    expire_small: Array,
   },
   { timestamps: true }
   
