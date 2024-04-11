@@ -3,6 +3,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Modal, Button } from "react-bootstrap";
 import Navbar from "../../components/navbar/Navbar";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const VaccineComponent = () => {
   const [state, setState] = useState({
@@ -13,18 +15,26 @@ const VaccineComponent = () => {
     hospital_name: "",
     dose_user: [],
     dose_require: 1,
-    hospital: "",
+    hospital: [],
     priority: 0,
     flag: true,
     type: "", // Adding type field to state
   });
+  const { user } = useContext(AuthContext);
+  const { vaccine_name_th, expire, hospital_name, dose_user, dose_require, hospital, priority, flag, type } = state;
 
-  const { user_id, vaccine_name_th, expire, hospital_name, dose_user, dose_require, hospital, priority, flag, type } = state;
-
-  const inputValue = (name, index) => (event) => {
+  const inputValue = (name) => (event) => {
     if (name === "dose_user_1") {
       const newDoseUser = [...state.dose_user];
-      newDoseUser[index] = event.target.value;
+      newDoseUser[0] = event.target.value;
+      setState({ ...state, dose_user: newDoseUser });
+    } else if (name === "dose_user_2") {
+      const newDoseUser = [...state.dose_user];
+      newDoseUser[1] = event.target.value;
+      setState({ ...state, dose_user: newDoseUser });
+    } else if (name === "dose_user_3") {
+      const newDoseUser = [...state.dose_user];
+      newDoseUser[2] = event.target.value;
       setState({ ...state, dose_user: newDoseUser });
     } else if (name === "dose_require") {
       setState({ ...state, [name]: event.target.value });
@@ -33,25 +43,25 @@ const VaccineComponent = () => {
     }
   };
 
-  // const inputValue = (name) => (event) => {
-  //   if (name === "dose_user_1") {
-  //     const newDoseUser = [...state.dose_user];
-  //     newDoseUser[0] = event.target.value;
-  //     setState({ ...state, dose_user: newDoseUser });
-  //   } else if (name === "dose_user_2") {
-  //     const newDoseUser = [...state.dose_user];
-  //     newDoseUser[1] = event.target.value;
-  //     setState({ ...state, dose_user: newDoseUser });
-  //   } else if (name === "dose_user_3") {
-  //     const newDoseUser = [...state.dose_user];
-  //     newDoseUser[2] = event.target.value;
-  //     setState({ ...state, dose_user: newDoseUser });
-  //   } else if (name === "dose_require") {
-  //     setState({ ...state, [name]: event.target.value });
-  //   } else {
-  //     setState({ ...state, [name]: event.target.value });
-  //   }
-  // };
+  const inputValue2 = (name) => (event) => {
+    if (name === "hospital_user_1") {
+      const newHospital = [...state.hospital];
+      newHospital[0] = event.target.value;
+      setState({ ...state, hospital: newHospital });
+    } else if (name === "hospital_user_2") {
+      const newHospital = [...state.hospital];
+      newHospital[1] = event.target.value;
+      setState({ ...state, hospital: newHospital });
+    } else if (name === "hospital_user_3") {
+      const newHospital = [...state.hospital];
+      newHospital[3] = event.target.value;
+      setState({ ...state, hospital: newHospital });
+    } else if (name === "dose_require") {
+      setState({ ...state, [name]: event.target.value });
+    } else {
+      setState({ ...state, [name]: event.target.value });
+    }
+  };
 
   const [vaccineOptions, setVaccineOptions] = useState([]);
   const [vaccineUsers, setVaccineUsers] = useState([]);
@@ -60,18 +70,26 @@ const VaccineComponent = () => {
   const [formModalShow2, setFormModalShow2] = useState(false);
   const [formModalShow3, setFormModalShow3] = useState(false);
   const [editUser, setEditUser] = useState(null);
-  const [hospitals, setHospitals] = useState([""]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API}/vaccine_user/search-vaccine-user-by-priority`)
-      .then((response) => {
-        setVaccineUsers(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching vaccine users:", error);
-      });
-  }, []);
+    // Check if user is authenticated
+    if (user) {
+      axios
+        .get(`${process.env.REACT_APP_API}/vaccine_user/search-vaccine-user-by-priority?user_id=${user.username}`)
+        .then((response) => {
+          setVaccineUsers(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vaccine users:", error);
+          // Handle error with SweetAlert2
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to fetch vaccine users.",
+            icon: "error",
+          });
+        });
+    }
+  }, [user]); // Add user to dependency array to fetch data when user changes
 
   useEffect(() => {
     axios
@@ -160,15 +178,26 @@ const VaccineComponent = () => {
   const submitForm = (e) => {
     e.preventDefault();
 
+    // Ensure user is authenticated
+    if (!user) {
+      // Handle unauthenticated user
+      Swal.fire({
+        title: "Error!",
+        text: "User is not authenticated.",
+        icon: "error",
+      });
+      return;
+    }
+
     axios
       .post(`${process.env.REACT_APP_API}/vaccine_user`, {
-        user_id,
+        user_id: user.username, // Update user_id to user.username
         vaccine_name_th,
         expire,
         type,
-        hospital_name,
+        hospital_name, // Here you're sending hospital_name directly
         dose_user,
-        dose_require: state.dose_require, // Use the value from the main form
+        dose_require: state.dose_require,
         hospital,
         priority,
         flag,
@@ -185,12 +214,12 @@ const VaccineComponent = () => {
           hospital_name: "",
           dose_user: [],
           dose_require: "",
-          hospital: "",
+          hospital: [],
           priority: 0,
           flag: true,
           type: "",
         });
-        // Display a success message xxx
+        // Display a success message
         handleCloseFormModal();
         handleCloseFormModal2();
         handleCloseFormModal3();
@@ -208,6 +237,7 @@ const VaccineComponent = () => {
         });
       });
   };
+
   //xxx
   const submitDose = (e) => {
     e.preventDefault();
@@ -291,22 +321,6 @@ const VaccineComponent = () => {
     setFormModalShow3(false); // Close the edit modal
   };
 
-  const handleHospitalChange = (e, index) => {
-    const newHospitals = [...hospitals];
-    newHospitals[index] = e.target.value;
-    setHospitals(newHospitals);
-  };
-
-  const addHospital = () => {
-    setHospitals([...hospitals, ""]);
-  };
-
-  const removeHospital = (index) => {
-    const newHospitals = [...hospitals];
-    newHospitals.splice(index, 1);
-    setHospitals(newHospitals);
-  };
-
   return (
     <div className="container">
       <div className="container p-5">
@@ -349,11 +363,13 @@ const VaccineComponent = () => {
                 <th>Vaccine Name</th>
                 <th>Expire</th>
                 <th>Hospital Name</th>
+                <th>Hospital Array</th>
                 <th>Dose User</th>
                 <th>Dose Require</th>
                 {/* <th>Priority</th> */}
                 <th>Flag</th>
                 <th>Type</th>
+                <th>User ID</th>
               </tr>
             </thead>
             {/* Table body */}
@@ -365,6 +381,11 @@ const VaccineComponent = () => {
                   <td>{user.expire ? new Date(user.expire).toLocaleDateString() : "ไม่มีวันหมดอายุ"}</td>
                   <td>{user.hospital_name}</td>
                   <td>
+                    {user.hospital.map((doseTime, index) => (
+                      <div key={index}>{doseTime}</div>
+                    ))}
+                  </td>
+                  <td>
                     {user.dose_user.map((doseTime, index) => (
                       <div key={index}>{new Date(doseTime).toLocaleDateString()}</div>
                     ))}
@@ -373,6 +394,7 @@ const VaccineComponent = () => {
                   {/* <td>{user.priority}</td> */}
                   <td>{user.flag ? "True" : "False"}</td>
                   <td>{user.type}</td>
+                  <td>{user.user_id}</td>
                   <td>
                     <button className="btn btn-primary mr-2" onClick={() => handleEdit(user)}>
                       Edit
@@ -412,20 +434,8 @@ const VaccineComponent = () => {
               <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user} onChange={inputValue("dose_user")} />
             </div>
             <div className="form-group">
-              <label>โรงพยาบาล</label>
-              {hospitals.map((hospital, index) => (
-                <div key={index}>
-                  <input type="text" className="form-control" value={hospital} onChange={(e) => handleHospitalChange(e, index)} />
-                  {index !== 0 && (
-                    <button type="button" className="btn btn-danger" onClick={() => removeHospital(index)}>
-                      -
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button className="btn btn-success" type="button" onClick={addHospital}>
-                Add Hospital
-              </button>
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีน</label>
+              <input type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
             </div>
 
             <br />
@@ -434,7 +444,7 @@ const VaccineComponent = () => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={formModalShow2} onHide={handleCloseFormModal2} style={{ marginTop: "100px", zIndex: "1050" }}>
+      <Modal show={formModalShow2} onHide={handleCloseFormModal3} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Vaccine User</Modal.Title>
         </Modal.Header>
@@ -459,17 +469,25 @@ const VaccineComponent = () => {
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 2</label>
               <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[1]} onChange={inputValue("dose_user_2")} />
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>โรงพยาบาล</label>
               <textarea type="text" className="form-control" value={hospital_name} onChange={inputValue("hospital_name")}></textarea>
             </div>
-            <br />
+            <br /> */}
+            <div className="form-group">
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 1</label>
+              <input type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
+            </div>
+            <div className="form-group">
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 2</label>
+              <input type="text" className="form-control" value={hospital[1]} onChange={inputValue2("hospital_user_2")} />
+            </div>
             <input type="submit" value="บันทึก" className="btn btn-primary" />
           </form>{" "}
         </Modal.Body>
       </Modal>
 
-      <Modal show={formModalShow3} onHide={handleCloseFormModal3} style={{ marginTop: "100px", zIndex: "1050" }}>
+      <Modal show={formModalShow3} onHide={handleCloseFormModal2} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Vaccine User</Modal.Title>
         </Modal.Header>
@@ -498,15 +516,28 @@ const VaccineComponent = () => {
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 3</label>
               <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[2]} onChange={inputValue("dose_user_3")} />
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>โรงพยาบาล</label>
               <textarea type="text" className="form-control" value={hospital_name} onChange={inputValue("hospital_name")}></textarea>
             </div>
-            <br />
+            <br /> */}
+            <div className="form-group">
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 1</label>
+              <input type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
+            </div>
+            <div className="form-group">
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 2</label>
+              <input type="text" className="form-control" value={hospital[1]} onChange={inputValue2("hospital_user_2")} />
+            </div>
+            <div className="form-group">
+              <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 3</label>
+              <input type="text" className="form-control" value={hospital[2]} onChange={inputValue2("hospital_user_3")} />
+            </div>
             <input type="submit" value="บันทึก" className="btn btn-primary" />
           </form>{" "}
         </Modal.Body>
       </Modal>
+
       {/* Modal for editing data */}
       <Modal show={editModalShow} onHide={handleCloseEditModal} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
@@ -537,11 +568,6 @@ const VaccineComponent = () => {
               </div>
 
               <div className="form-group">
-                <label>Hospital Name</label>
-                <input type="text" className="form-control" value={editUser.hospital_name} onChange={(e) => setEditUser({ ...editUser, hospital_name: e.target.value })} />
-              </div>
-              <div className="form-group">
-                {/* Render dose dates */}
                 {editUser &&
                   editUser.dose_user &&
                   editUser.dose_user.map((dose, index) => (
@@ -591,6 +617,61 @@ const VaccineComponent = () => {
                   // Add the new empty datetime boxes to the editUser state
                   const newDoseUser = [...editUser.dose_user, ...newEmptyBoxes];
                   setEditUser({ ...editUser, dose_user: newDoseUser });
+                }}
+                type="button" // Add this line to prevent form submission
+              >
+                +
+              </button>
+              {/* xxxxxxxxxxxxxx */}
+              <div className="form-group">
+                {editUser &&
+                  editUser.hospital &&
+                  editUser.hospital.map((dose, index) => (
+                    <div key={index} className="dose-date">
+                      <label>Vaccine Dose Date {index + 1}</label>
+                      <div className="input-group">
+                        <input
+                          type="string"
+                          className="form-control"
+                          value={dose}
+                          onChange={(e) => {
+                            const newHospital = [...editUser.hospital];
+                            newHospital[index] = e.target.value;
+                            setEditUser({ ...editUser, hospital: newHospital });
+                          }}
+                        />
+
+                        {/* Button to delete dose date */}
+                        <div className="input-group-append">
+                          <button
+                            className="btn btn-danger"
+                            type="button"
+                            onClick={() => {
+                              const newHospital = [...editUser.hospital];
+                              newHospital.splice(index, 1); // Remove the dose date at index
+                              setEditUser({ ...editUser, hospital: newHospital });
+                            }}
+                          >
+                            -
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+              {/* Button to add a new dose date */}
+              <button
+                className="btn btn-success mb-3 mt-2"
+                onClick={() => {
+                  // Determine how many empty datetime boxes you want to add
+                  const numberOfNewBoxes = 1; // For example, add 3 new empty datetime boxes
+
+                  // Create an array with the new empty datetime boxes
+                  const newEmptyBoxes = Array.from({ length: numberOfNewBoxes }, () => "");
+
+                  // Add the new empty datetime boxes to the editUser state
+                  const newHospital = [...editUser.hospital, ...newEmptyBoxes];
+                  setEditUser({ ...editUser, hospital: newHospital });
                 }}
                 type="button" // Add this line to prevent form submission
               >
