@@ -1,14 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import Navbar from "../../components/navbar/Navbar";
 import { Modal, Button } from "react-bootstrap";
 import Navbar from "../../components/navbar/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-
-
-
 
 const VaccineComponent = () => {
   const [state, setState] = useState({
@@ -22,7 +18,7 @@ const VaccineComponent = () => {
     hospital: [],
     priority: 0,
     flag: true,
-    type: "", 
+    type: "", // Adding type field to state
   });
   const { user } = useContext(AuthContext);
   const { vaccine_name_th, expire, hospital_name, dose_user, dose_require, hospital, priority, flag, type } = state;
@@ -116,24 +112,6 @@ const VaccineComponent = () => {
     const selectedVaccineName = event.target.value;
     const isVaccineAlreadySelected = vaccineUsers.some((user) => user.vaccine_name === selectedVaccineName);
 
-<<<<<<< HEAD
-    const today = new Date();
-
-    let expirationDate = null;
-    if (selectedOption.number_for_next_dose !== 0) {
-      expirationDate = new Date(today.getFullYear(), today.getMonth() + selectedOption.number_for_next_dose, today.getDate());
-    }
-
-    
-    setState({
-      ...state,
-      vaccine_name_th: event.target.value,
-      type: selectedOption.type,
-      number_for_next_dose: selectedOption.number_for_next_dose,
-      expire: expirationDate ? expirationDate.toISOString().split("T")[0] : null,
-      dose_require: selectedOption.dose_require,
-    });
-=======
     if (!isVaccineAlreadySelected) {
       const selectedOption = vaccineOptions.find((option) => option.name === selectedVaccineName);
       console.log("Selected vaccine:", selectedOption);
@@ -164,10 +142,10 @@ const VaccineComponent = () => {
         icon: "warning",
       });
     }
->>>>>>> origin
   };
 
   const handleDelete = (id) => {
+    // Display a confirmation dialog using SweetAlert2
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -178,43 +156,27 @@ const VaccineComponent = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
+        // If user confirms, send a DELETE request to the API to delete the user with the specified ID
         axios
           .delete(`${process.env.REACT_APP_API}/vaccine_user/${id}`)
           .then((response) => {
             console.log("User deleted successfully:", response.data);
-            
+            // Remove the deleted user from the vaccineUsers state array
             setVaccineUsers(vaccineUsers.filter((user) => user._id !== id));
-          
+            // Display a success message
             Swal.fire("Deleted!", "Your user has been deleted.", "success");
           })
           .catch((error) => {
             console.error("Error deleting user:", error);
-            
+            // Display an error message
             Swal.fire("Error!", "Failed to delete user.", "error");
           });
       }
     });
   };
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(`${process.env.REACT_APP_API}/users/661525f2d6296f9cd4ccc083`);
-          console.log(response,"XXXXXX");
-          if (!response.ok) {
-            throw new Error('Failed to fetch data');
-          }
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-
-    fetchData();
-  }, []);
-
   const submitForm = (e) => {
     e.preventDefault();
-    console.log(vaccine_name_th);
 
     // Ensure user is authenticated
     if (!user) {
@@ -235,21 +197,16 @@ const VaccineComponent = () => {
         type,
         hospital_name, // Here you're sending hospital_name directly
         dose_user,
-<<<<<<< HEAD
-        dose_require: state.dose_require, 
-=======
         dose_require: state.dose_require,
->>>>>>> origin
         hospital,
         priority,
         flag,
         vaccine_name: vaccine_name_th,
-        // user_vaccinedose: userId,
       })
       .then((response) => {
-        
+        // Update the vaccineUsers state array with the newly added user
         setVaccineUsers([...vaccineUsers, response.data]);
-       
+        // Clear the form fields
         setState({
           user_id: "",
           vaccine_name_th: "",
@@ -262,10 +219,7 @@ const VaccineComponent = () => {
           flag: true,
           type: "",
         });
-<<<<<<< HEAD
-=======
         // Display a success message
->>>>>>> origin
         handleCloseFormModal();
         handleCloseFormModal2();
         handleCloseFormModal3();
@@ -299,8 +253,8 @@ const VaccineComponent = () => {
   };
 
   const handleEdit = (user) => {
-    setEditUser(user); 
-    setEditModalShow(true); 
+    setEditUser(user); // Set the state with the user data to populate the form in the modal
+    setEditModalShow(true); // Show the edit modal
   };
 
   //xxx
@@ -332,11 +286,11 @@ const VaccineComponent = () => {
         vaccine_name: editUser.vaccine_name_th,
       })
       .then((response) => {
-
+        // Update the vaccineUsers state array with the edited user
         setVaccineUsers(vaccineUsers.map((user) => (user._id === editUser._id ? response.data : user)));
-
+        // Close the edit modal
         setEditModalShow(false);
-        
+        // Display a success message
         Swal.fire({
           title: "Success",
           text: "บันทึกข้อมูลสำเร็จ",
@@ -352,47 +306,22 @@ const VaccineComponent = () => {
       });
   };
 
-  
+  // Function to handle closing the edit modal
   const handleCloseEditModal = () => {
-    setEditModalShow(false); 
+    setEditModalShow(false); // Close the edit modal
   };
-  
+  //xxx
   const handleCloseFormModal = () => {
-    setFormModalShow(false); 
+    setFormModalShow(false); // Close the edit modal
   };
   const handleCloseFormModal2 = () => {
-    setFormModalShow2(false); 
+    setFormModalShow2(false); // Close the edit modal
   };
   const handleCloseFormModal3 = () => {
-    setFormModalShow3(false); 
+    setFormModalShow3(false); // Close the edit modal
   };
 
   return (
-<<<<<<< HEAD
-    <div className="container p-5">
-      <Navbar/>
-      <h1 style={{marginTop:30}}>บันทึกวัคซีน</h1>
-      <form onSubmit={submitDose}>
-        <div className="form-group">
-          <label>วัคซีน</label>
-          <select className="form-control" value={vaccine_name_th} onChange={handleDropdownChange}>
-            <option value="">โปรดเลือก</option>
-            {vaccineOptions.map((option, index) => (
-              <option key={index} value={option.name}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label>จำนวนโดสที่ฉีดไปแล้ว</label>
-          <input type="number" className="form-control" id="administeredDoses" required min="1" />
-        </div>
-        <div className="form-group mb-2">
-          <label>จำนวนโดสที่ต้องฉีด</label>
-          <input type="number" className="form-control" value={dose_require} onChange={inputValue("dose_require")} required min="1" />
-        </div>
-=======
     <div className="container">
       <div className="container p-5">
         <Navbar />
@@ -417,7 +346,6 @@ const VaccineComponent = () => {
             <label>จำนวนโดสที่ต้องฉีด</label>
             <input type="number" className="form-control" value={dose_require} onChange={inputValue("dose_require")} required min="1" />
           </div>
->>>>>>> origin
 
           <input type="submit" value="ต่อไป" className="btn btn-primary mb-2" />
         </form>
@@ -610,12 +538,6 @@ const VaccineComponent = () => {
         </Modal.Body>
       </Modal>
 
-<<<<<<< HEAD
-      <br />     
-      <h1>บันทึกวัคซีน</h1>
-
-=======
->>>>>>> origin
       {/* Modal for editing data */}
       <Modal show={editModalShow} onHide={handleCloseEditModal} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
@@ -768,57 +690,6 @@ const VaccineComponent = () => {
           )}
         </Modal.Body>
       </Modal>
-<<<<<<< HEAD
-      <div className="table-responsive">
-       
-        <table className="table table-striped">
-          
-          <thead>
-            <tr>
-              <th>Vaccine Name</th>
-              <th>Expire</th>
-              <th>Hospital Name</th>
-              <th>Dose User</th>
-              <th>Dose Require</th>
-              <th>Priority</th>
-              <th>Flag</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-           
-            {vaccineUsers.map((user) => (
-              <tr key={user._id}>
-                <td>{user.vaccine_name}</td>
-                <td>{user.expire ? new Date(user.expire).toLocaleDateString() : "ไม่มีวันหมดอายุ"}</td>
-                <td>{user.hospital_name}</td>
-                <td>
-                  {user.dose_user.map((doseTime, index) => (
-                    <div key={index}>{new Date(doseTime).toLocaleDateString()}</div>
-                  ))}
-                </td>
-                <td>{user.dose_require}</td>
-                <td>{user.priority}</td>
-                <td>{user.flag ? "True" : "False"}</td>
-                <td>{user.type}</td>
-                <td>
-                  <button className="btn btn-primary mr-2" onClick={() => handleEdit(user)}>
-                    Edit
-                  </button>
-                </td>
-                <td>
-                  <button className="btn btn-danger" onClick={() => handleDelete(user._id)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-=======
->>>>>>> origin
     </div>
   );
 };
