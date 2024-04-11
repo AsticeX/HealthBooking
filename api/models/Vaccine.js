@@ -7,6 +7,8 @@ const VaccineSchema = new mongoose.Schema(
     type: String,
     number_for_next_dose: Number,
     dose_require: Number,
+    detail: String,
+    number_for_next_dose_small: Date,
   },
   { timestamps: true }
 );
