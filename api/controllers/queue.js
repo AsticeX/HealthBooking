@@ -11,18 +11,18 @@ export const getAllQueues = async (req, res, next) => {
 
 export const createQueue = async (req, res, next) => {
   try {
-    const { start_date, stop_date, max_queue, count, is_active } = req.body;
+    const { hospital_id, department, start_time, stop_time, max_queue, count, is_active } = req.body;
 
-    // Create a new queue instance
     const newQueue = new Queue({
-      start_date,
-      stop_date,
+      hospital_id,
+      department,
+      start_time,
+      stop_time,
       max_queue,
       count,
       is_active,
     });
 
-    // Save the new queue to the database
     const createdQueue = await newQueue.save();
 
     res.status(201).json(createdQueue);
@@ -61,6 +61,22 @@ export const deleteQueue = async (req, res, next) => {
     }
 
     res.json({ message: "Queue deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getQueuesByHospitalId = async (req, res, next) => {
+  try {
+    const { hospital_id } = req.params;
+
+    if (!hospital_id) {
+      return res.status(400).json({ error: "Hospital ID is required in the query." });
+    }
+
+    const queues = await Queue.find({ hospital_id });
+
+    res.json(queues);
   } catch (err) {
     next(err);
   }

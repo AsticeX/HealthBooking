@@ -13,6 +13,7 @@ import swaggerSpec from "./config/swaggerConfig.js";
 import vaccine from "./routes/vaccine.js";
 import vaccine_userRoute from "./routes/vaccine_user.js";
 import queueRoute from "./routes/queue.js";
+import appointmentRoute from "./routes/appointment.js";
 
 const app = express();
 dotenv.config();
@@ -42,7 +43,8 @@ app.use("/api/hotels", hotelsRoute);
 app.use("/api/rooms", roomsRoute);
 app.use("/api", vaccine);
 app.use("/api", vaccine_userRoute);
-app.use("/api", queueRoute); // Corrected route setup
+app.use("/api", queueRoute);
+app.use("/api", appointmentRoute);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
