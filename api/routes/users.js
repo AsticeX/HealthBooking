@@ -4,6 +4,8 @@ import {
   deleteUser,
   getUser,
   getUsers,
+  forgetPassword,
+  resetPassword
 } from "../controllers/user.js";
 import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
 
@@ -32,5 +34,10 @@ router.get("/:id", verifyUser, getUser);
 
 //GET ALL
 router.get("/", verifyAdmin, getUsers);
+
+router.post('/forgot-password',forgetPassword)
+
+router.post('/reset-password/:id/:token',resetPassword)
+
 
 export default router;

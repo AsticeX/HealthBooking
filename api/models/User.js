@@ -13,13 +13,12 @@ const UserSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: true,
     },
     lastname: {
       type: String,
     },
-    nation_id: {
-      type: Number,
+    birthday: {
+      type: String,
       required: true,
     },
     phone: {
@@ -28,16 +27,20 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
     },
-    gender: { 
+    disease: {
+      type: String,
+      required: false,
+    },
+    gender: {
       type: String,
       required: true,
-     },
+    },
     isAdmin: {
       type: Boolean,
       default: false,
     },
+    
   },
   { timestamps: true }
 );

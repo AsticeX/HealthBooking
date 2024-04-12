@@ -1,24 +1,26 @@
 .listContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  /* display: flex;
+  justify-content: center; */
+  margin-top: 44px;
+  background-color: #EEEEE6;
 }
 
 .listWrapper {
   width: 100%;
-  max-width: 1024px;
+  max-width: 1366px;
   display: flex;
   gap: 20px;
 }
 
 .listSearch {
   flex: 1;
-  background-color: #febb02;
+  background-color: #77B255;
   padding: 10px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   position: sticky;
   top: 10px;
-  height: max-content;
+  height: auto;
+
 }
 
 .lsTitle{
@@ -70,7 +72,7 @@
 
 .listSearch>button{
   padding: 10px;
-  background-color: #0071c2;
+  background-color: #F8BE6C;
   color: white;
   border: none;
   width: 100%;

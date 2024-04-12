@@ -1,10 +1,11 @@
-// import Featured from "../../components/featured/Featured";
-// import FeaturedProperties from "../../components/featuredProperties/FeaturedProperties";
-// import Footer from "../../components/footer/Footer";
-// import Header from "../../components/header/Header";
-// import MailList from "../../components/mailList/MailList";
-import NavbarHome from "../../components/navbarHome/NavbarHome";
-// import PropertyList from "../../components/propertyList/PropertyList";
+import Featured from "../../components/featured/Featured";
+import FeaturedProperties from "../../components/featuredProperties/FeaturedProperties";
+import Footer from "../../components/footer/Footer";
+import Header from "../../components/header/Header";
+import MailList from "../../components/mailList/MailList";
+// import SearchItem from "../../components/searchItem/SearchItem";
+import Navbar from "../../components/navbar/Navbar";
+import PropertyList from "../../components/propertyList/PropertyList";
 import "./main.css";
 import React, { useState, useEffect } from "react";
 import Snackbar from '@mui/material/Snackbar';
@@ -29,13 +30,23 @@ const Main = () => {
   };
   return (
     <div>
-    <NavbarHome/>
-    <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-      <Alert onClose={handleCloseSnackbar} severity="success" variant="filled">
-        Login Successful
-      </Alert>
-    </Snackbar>
-  </div>
+      <Navbar />
+      {/* <SearchItem /> */}
+      <Header/>
+      <div className="homeContainer">
+        {/* <Featured /> */}
+        {/* <h1 className="homeTitle">Browse by property type</h1> */}
+        {/* <PropertyList /> */}
+        {/* <h1 className="homeTitle">Homes guests love</h1> */}
+        <FeaturedProperties />
+        <Footer />
+      </div>
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+        <Alert onClose={handleCloseSnackbar} severity="success" variant="filled">
+          Login Successful
+        </Alert>
+      </Snackbar>
+    </div>
   );
 };
 

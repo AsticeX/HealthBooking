@@ -66,7 +66,7 @@ const Login = () => {
         sx={{
           backgroundImage: `url(${process.env.PUBLIC_URL}/logo.png)`,
           backgroundRepeat: 'no-repeat',
-          backgroundColor: '#32b372',
+          backgroundColor: '#77B255',
           backgroundSize: '256px',
           backgroundPosition: 'center',
         }}
@@ -143,13 +143,13 @@ const Login = () => {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2, background: '#32b372', }}
+                  sx={{ mt: 3, mb: 2, background: '#77B255', }}
                 >
-                  Sign In
+                  Login
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link href="#" variant="body2">
+                    <Link href="/forgot" variant="body2">
                       Forgot password?
                     </Link>
                   </Grid>

@@ -10,17 +10,25 @@ import axios from "axios";
 const NewRoom = () => {
   const [info, setInfo] = useState({});
   const [hotelId, setHotelId] = useState(undefined);
-  const [rooms, setRooms] = useState([]);
+  const [rooms, setRooms] = useState(""); // Initialize rooms as an empty string
 
   const { data, loading, error } = useFetch("/hotels");
 
   const handleChange = (e) => {
-    setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    const { id, value } = e.target;
+    if (id === "rooms") {
+      // If the input is for rooms, directly update the state with the value
+      setRooms(value);
+    } else {
+      // For other inputs, update the info state
+      setInfo((prevInfo) => ({ ...prevInfo, [id]: value }));
+    }
   };
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const roomNumbers = rooms.split(",").map((room) => ({ number: room }));
+    // Split the rooms string into an array of room numbers
+    const roomNumbers = rooms.split(",").map((room) => ({ number: room.trim() }));
     try {
       await axios.post(`/rooms/${hotelId}`, { ...info, roomNumbers });
     } catch (err) {
@@ -28,7 +36,6 @@ const NewRoom = () => {
     }
   };
 
-  console.log(info)
   return (
     <div className="new">
       <Sidebar />
@@ -54,16 +61,20 @@ const NewRoom = () => {
               <div className="formInput">
                 <label>Rooms</label>
                 <textarea
-                  onChange={(e) => setRooms(e.target.value)}
-                  placeholder="give comma between room numbers."
+                  id="rooms"
+                  value={rooms}
+                  onChange={handleChange}
+                  placeholder="Separate room numbers with commas"
                 />
               </div>
               <div className="formInput">
                 <label>Choose a hotel</label>
                 <select
                   id="hotelId"
-                  onChange={(e) => setHotelId(e.target.value)}
+                  onChange={handleChange}
+                  value={hotelId || ""}
                 >
+                  <option value="" disabled>Select a hotel</option>
                   {loading
                     ? "loading"
                     : data &&
