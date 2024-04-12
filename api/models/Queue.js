@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 
 const QueueSchema = new mongoose.Schema(
   {
-    user_id: String,
-    start_date: String,
-    stop_date: String,
+    hospital_id: String,
+    department: String,
+    start_time: String,
+    stop_time: String,
     max_queue: Number,
     count: Number,
     is_active: String,
