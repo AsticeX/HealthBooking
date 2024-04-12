@@ -11,10 +11,11 @@ export const getAllQueues = async (req, res, next) => {
 
 export const createQueue = async (req, res, next) => {
   try {
-    const { start_date, stop_date, max_queue, count, is_active } = req.body;
+    const { user_id, start_date, stop_date, max_queue, count, is_active } = req.body;
 
     // Create a new queue instance
     const newQueue = new Queue({
+      user_id,
       start_date,
       stop_date,
       max_queue,
@@ -62,6 +63,27 @@ export const deleteQueue = async (req, res, next) => {
 
     res.json({ message: "Queue deleted successfully" });
   } catch (err) {
+    next(err);
+  }
+};
+
+export const getQueuesByUserId = async (req, res, next) => {
+  try {
+    // Extract user ID from request parameters
+    const { user_id } = req.params;
+
+    // Check if user ID is provided
+    if (!user_id) {
+      return res.status(400).json({ error: "User ID is required in the query." });
+    }
+
+    // Query the database to find queues for the specified user ID
+    const queues = await Queue.find({ user_id });
+
+    // Send the queues as JSON response
+    res.json(queues);
+  } catch (err) {
+    // Forward any errors to the error handling middleware
     next(err);
   }
 };
