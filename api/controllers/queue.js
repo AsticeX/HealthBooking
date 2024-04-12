@@ -13,7 +13,6 @@ export const createQueue = async (req, res, next) => {
   try {
     const { hospital_id, department, start_time, stop_time, max_queue, count, is_active } = req.body;
 
-    // Create a new queue instance
     const newQueue = new Queue({
       hospital_id,
       department,
@@ -24,7 +23,6 @@ export const createQueue = async (req, res, next) => {
       is_active,
     });
 
-    // Save the new queue to the database
     const createdQueue = await newQueue.save();
 
     res.status(201).json(createdQueue);
@@ -72,18 +70,14 @@ export const getQueuesByHospitalId = async (req, res, next) => {
   try {
     const { hospital_id } = req.params;
 
-    // Check if user ID is provided
     if (!hospital_id) {
       return res.status(400).json({ error: "Hospital ID is required in the query." });
     }
 
-    // Query the database to find queues for the specified user ID
     const queues = await Queue.find({ hospital_id });
 
-    // Send the queues as JSON response
     res.json(queues);
   } catch (err) {
-    // Forward any errors to the error handling middleware
     next(err);
   }
 };

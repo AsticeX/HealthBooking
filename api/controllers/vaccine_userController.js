@@ -57,12 +57,10 @@ export const getVaccineUserByPriority = async (req, res, next) => {
   try {
     const { user_id } = req.query;
 
-    // Check if user_id is provided in the query
     if (!user_id) {
       return res.status(400).json({ error: "User ID is required in the query." });
     }
 
-    // Find all vaccine users sorted by priority
     const vaccinesSortedByPriority = await vaccineUser.find({ user_id }).sort({ priority: 1 });
 
     res.json(vaccinesSortedByPriority);
@@ -72,7 +70,7 @@ export const getVaccineUserByPriority = async (req, res, next) => {
 };
 
 export const getSingleVaccineUser = async (req, res, next) => {
-  const vaccine_userId = req.params.id; // Assuming 'id' is the parameter for the Vaccine User record
+  const vaccine_userId = req.params.id;
 
   try {
     const vaccineUserRecord = await vaccineUser.findById(vaccine_userId);
