@@ -20,6 +20,7 @@ const VaccineComponent = () => {
     flag: true,
     type: "", // Adding type field to state
   });
+
   const { user } = useContext(AuthContext);
   const { vaccine_name_th, expire, hospital_name, dose_user, dose_require, hospital, priority, flag, type } = state;
 
@@ -326,6 +327,7 @@ const VaccineComponent = () => {
       <div className="container p-5">
         <Navbar />
         <h1 className="mt-5">บันทึกวัคซีน</h1>
+
         <form onSubmit={submitDose}>
           <div className="form-group">
             <label>วัคซีน</label>
