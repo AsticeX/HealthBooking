@@ -82,4 +82,48 @@ export const roomColumns = [
     headerName: "Max People",
     width: 100,
   },
+  {
+    field: "roomNumbers",
+    headerName: "Test",
+    width: 100,
+  },
+];
+
+export const queueColumns = [
+  { field: "_id", headerName: "ID", width: 70 },
+  {
+    field: "hospital_id",
+    headerName: "Hospital ID",
+    width: 150,
+  },
+  {
+    field: "department",
+    headerName: "Department",
+    width: 150,
+  },
+  {
+    field: "start_time",
+    headerName: "Start Time",
+    width: 150,
+  },
+  {
+    field: "stop_time",
+    headerName: "Stop Time",
+    width: 150,
+  },
+  {
+    field: "max_queue",
+    headerName: "Max Queue",
+    width: 120,
+  },
+  {
+    field: "count",
+    headerName: "Count",
+    width: 100,
+  },
+  {
+    field: "is_active",
+    headerName: "Active",
+    width: 100,
+  },
 ];

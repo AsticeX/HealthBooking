@@ -14,6 +14,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
+import ApartmentIcon from "@mui/icons-material/Apartment"; // Import the ApartmentIcon for the "Department" option
 
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
@@ -49,6 +50,12 @@ const Sidebar = () => {
             <li>
               <CreditCardIcon className="icon" />
               <span>Rooms</span>
+            </li>
+          </Link>
+          <Link to="/queue" style={{ textDecoration: "none" }}>
+            <li>
+              <ApartmentIcon className="icon" />
+              <span>Department</span>
             </li>
           </Link>
           {/* <li>

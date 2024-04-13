@@ -1,7 +1,6 @@
 import "./newRoom.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { useState } from "react";
 import { roomInputs } from "../../formSource";
 import useFetch from "../../hooks/useFetch";
@@ -50,40 +49,29 @@ const NewRoom = () => {
               {roomInputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>
-                  <input
-                    id={input.id}
-                    type={input.type}
-                    placeholder={input.placeholder}
-                    onChange={handleChange}
-                  />
+                  <input id={input.id} type={input.type} placeholder={input.placeholder} onChange={handleChange} />
                 </div>
               ))}
               <div className="formInput">
-                <label>Rooms</label>
-                <textarea
-                  id="rooms"
-                  value={rooms}
-                  onChange={handleChange}
-                  placeholder="Separate room numbers with commas"
-                />
-              </div>
-              <div className="formInput">
                 <label>Choose a hotel</label>
-                <select
-                  id="hotelId"
-                  onChange={handleChange}
-                  value={hotelId || ""}
-                >
-                  <option value="" disabled>Select a hotel</option>
+                <select id="hotelId" onChange={handleChange} value={hotelId || ""}>
+                  <option value="" disabled>
+                    Select a hotel
+                  </option>
                   {loading
                     ? "loading"
                     : data &&
                       data.map((hotel) => (
-                        <option key={hotel._id} value={hotel._id}>{hotel.name}</option>
+                        <option key={hotel._id} value={hotel._id}>
+                          {hotel.name}
+                        </option>
                       ))}
                 </select>
               </div>
-              <button onClick={handleClick}>Send</button>
+              {/* Wrap the button in a div */}
+              <div className="buttonContainer">
+                <button onClick={handleClick}>Send</button>
+              </div>
             </form>
           </div>
         </div>

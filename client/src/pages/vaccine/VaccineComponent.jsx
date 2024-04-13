@@ -19,7 +19,7 @@ const VaccineComponent = () => {
     hospital: [],
     priority: 0,
     flag: true,
-    type: "", // Adding type field to state
+    type: "",
   });
 
   const { user } = useContext(AuthContext);
@@ -74,7 +74,6 @@ const VaccineComponent = () => {
   const [editUser, setEditUser] = useState(null);
 
   useEffect(() => {
-    // Check if user is authenticated
     if (user) {
       axios
         .get(`${process.env.REACT_APP_API}/vaccine_user/search-vaccine-user-by-priority?user_id=${user.username}`)
@@ -83,7 +82,7 @@ const VaccineComponent = () => {
         })
         .catch((error) => {
           console.error("Error fetching vaccine users:", error);
-          // Handle error with SweetAlert2
+
           Swal.fire({
             title: "Error!",
             text: "Failed to fetch vaccine users.",
@@ -91,7 +90,7 @@ const VaccineComponent = () => {
           });
         });
     }
-  }, [user]); // Add user to dependency array to fetch data when user changes
+  }, [user]);
 
   useEffect(() => {
     axios
@@ -101,7 +100,7 @@ const VaccineComponent = () => {
           name: vaccine.vaccine_name_th,
           type: vaccine.type,
           number_for_next_dose: vaccine.number_for_next_dose,
-          dose_require: vaccine.dose_require, // Add this line to include dose_require in options
+          dose_require: vaccine.dose_require,
         }));
         setVaccineOptions(options);
       })
@@ -111,7 +110,6 @@ const VaccineComponent = () => {
   }, []);
 
   const handleDelete = (id) => {
-    // Display a confirmation dialog using SweetAlert2
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -122,19 +120,18 @@ const VaccineComponent = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        // If user confirms, send a DELETE request to the API to delete the user with the specified ID
         axios
           .delete(`${process.env.REACT_APP_API}/vaccine_user/${id}`)
           .then((response) => {
             console.log("User deleted successfully:", response.data);
-            // Remove the deleted user from the vaccineUsers state array
+
             setVaccineUsers(vaccineUsers.filter((user) => user._id !== id));
-            // Display a success message
+
             Swal.fire("Deleted!", "Your user has been deleted.", "success");
           })
           .catch((error) => {
             console.error("Error deleting user:", error);
-            // Display an error message
+
             Swal.fire("Error!", "Failed to delete user.", "error");
           });
       }
@@ -144,9 +141,7 @@ const VaccineComponent = () => {
   const submitForm = (e) => {
     e.preventDefault();
 
-    // Ensure user is authenticated
     if (!user) {
-      // Handle unauthenticated user
       Swal.fire({
         title: "Error!",
         text: "User is not authenticated.",
@@ -157,11 +152,11 @@ const VaccineComponent = () => {
 
     axios
       .post(`${process.env.REACT_APP_API}/vaccine_user`, {
-        user_id: user.username, // Update user_id to user.username
+        user_id: user.username,
         vaccine_name_th,
         expire,
         type,
-        hospital_name, // Here you're sending hospital_name directly
+        hospital_name,
         dose_user,
         dose_require: state.dose_require,
         hospital,
@@ -170,9 +165,8 @@ const VaccineComponent = () => {
         vaccine_name: vaccine_name_th,
       })
       .then((response) => {
-        // Update the vaccineUsers state array with the newly added user
         setVaccineUsers([...vaccineUsers, response.data]);
-        // Clear the form fields
+
         setState({
           user_id: "",
           vaccine_name_th: "",
@@ -185,7 +179,7 @@ const VaccineComponent = () => {
           flag: true,
           type: "",
         });
-        // Display a success message
+
         handleCloseFormModal();
         handleCloseFormModal2();
         handleCloseFormModal3();
@@ -204,7 +198,6 @@ const VaccineComponent = () => {
       });
   };
 
-  //xxx
   const submitDose = (e) => {
     e.preventDefault();
     const administeredDoses = parseInt(document.getElementById("administeredDoses").value);
@@ -219,11 +212,10 @@ const VaccineComponent = () => {
   };
 
   const handleEdit = (user) => {
-    setEditUser(user); // Set the state with the user data to populate the form in the modal
-    setEditModalShow(true); // Show the edit modal
+    setEditUser(user);
+    setEditModalShow(true);
   };
 
-  //xxx
   const handleForm = () => {
     setFormModalShow(true);
   };
@@ -252,11 +244,10 @@ const VaccineComponent = () => {
         vaccine_name: editUser.vaccine_name_th,
       })
       .then((response) => {
-        // Update the vaccineUsers state array with the edited user
         setVaccineUsers(vaccineUsers.map((user) => (user._id === editUser._id ? response.data : user)));
-        // Close the edit modal
+
         setEditModalShow(false);
-        // Display a success message
+
         Swal.fire({
           title: "Success",
           text: "บันทึกข้อมูลสำเร็จ",
@@ -279,17 +270,14 @@ const VaccineComponent = () => {
     if (!isVaccineAlreadySelected) {
       console.log("Selected vaccine:", selectedOption);
 
-      // Get today's date
       const today = new Date();
 
-      // Calculate the expiration date only if number_for_next_dose is not 0
       let expirationDate = null;
       const selectedVaccine = vaccineOptions.find((option) => option.name === selectedVaccineName);
       if (selectedVaccine.number_for_next_dose !== 0) {
         expirationDate = new Date(today.getFullYear(), today.getMonth() + selectedVaccine.number_for_next_dose, today.getDate());
       }
 
-      // Update the state with the selected vaccine and its associated data
       setState({
         ...state,
         vaccine_name_th: selectedVaccineName,
@@ -299,7 +287,6 @@ const VaccineComponent = () => {
         dose_require: selectedVaccine.dose_require,
       });
     } else {
-      // If the vaccine is already selected, display a message or handle it as desired
       Swal.fire({
         title: "Oops...",
         text: "This vaccine has already been chosen.",
@@ -308,19 +295,18 @@ const VaccineComponent = () => {
     }
   };
 
-  // Function to handle closing the edit modal
   const handleCloseEditModal = () => {
-    setEditModalShow(false); // Close the edit modal
+    setEditModalShow(false);
   };
-  //xxx
+
   const handleCloseFormModal = () => {
-    setFormModalShow(false); // Close the edit modal
+    setFormModalShow(false);
   };
   const handleCloseFormModal2 = () => {
-    setFormModalShow2(false); // Close the edit modal
+    setFormModalShow2(false);
   };
   const handleCloseFormModal3 = () => {
-    setFormModalShow3(false); // Close the edit modal
+    setFormModalShow3(false);
   };
 
   return (
@@ -356,10 +342,7 @@ const VaccineComponent = () => {
         <h1>บันทึกวัคซีน</h1>
 
         <div className="table-responsive">
-          {/* Table to display existing data */}
-          {/* Example: */}
           <table className="table table-striped">
-            {/* Table headers */}
             <thead>
               <tr>
                 <th>Vaccine Name</th>
@@ -374,9 +357,8 @@ const VaccineComponent = () => {
                 <th>User ID</th>
               </tr>
             </thead>
-            {/* Table body */}
+
             <tbody>
-              {/* Iterate through vaccineUsers to display each user's data */}
               {vaccineUsers.map((user) => (
                 <tr key={user._id}>
                   <td>{user.vaccine_name}</td>
@@ -519,16 +501,13 @@ const VaccineComponent = () => {
         </Modal.Body>
       </Modal>
 
-      {/* Modal for editing data */}
       <Modal show={editModalShow} onHide={handleCloseEditModal} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Vaccine</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Conditional rendering based on editUser */}
           {editUser && (
             <form onSubmit={submitEditForm}>
-              {/* Input fields for editing data */}
               <div className="form-group">
                 <label>Vaccine Name</label>
                 <input type="text" className="form-control" value={editUser.vaccine_name} readOnly />
@@ -567,7 +546,6 @@ const VaccineComponent = () => {
                           }}
                         />
 
-                        {/* Button to delete dose date */}
                         <div className="input-group-append">
                           <button
                             className="btn btn-danger"
@@ -585,21 +563,17 @@ const VaccineComponent = () => {
                     </div>
                   ))}
               </div>
-              {/* Button to add a new dose date */}
               <button
                 className="btn btn-success mb-3 mt-2"
                 onClick={() => {
-                  // Determine how many empty datetime boxes you want to add
-                  const numberOfNewBoxes = 1; // For example, add 3 new empty datetime boxes
+                  const numberOfNewBoxes = 1;
 
-                  // Create an array with the new empty datetime boxes
                   const newEmptyBoxes = Array.from({ length: numberOfNewBoxes }, () => "");
 
-                  // Add the new empty datetime boxes to the editUser state
                   const newDoseUser = [...editUser.dose_user, ...newEmptyBoxes];
                   setEditUser({ ...editUser, dose_user: newDoseUser });
                 }}
-                type="button" // Add this line to prevent form submission
+                type="button"
               >
                 +
               </button>
@@ -622,14 +596,13 @@ const VaccineComponent = () => {
                           }}
                         />
 
-                        {/* Button to delete dose date */}
                         <div className="input-group-append">
                           <button
                             className="btn btn-danger"
                             type="button"
                             onClick={() => {
                               const newHospital = [...editUser.hospital];
-                              newHospital.splice(index, 1); // Remove the dose date at index
+                              newHospital.splice(index, 1);
                               setEditUser({ ...editUser, hospital: newHospital });
                             }}
                           >
@@ -640,21 +613,17 @@ const VaccineComponent = () => {
                     </div>
                   ))}
               </div>
-              {/* Button to add a new dose date */}
               <button
                 className="btn btn-success mb-3 mt-2"
                 onClick={() => {
-                  // Determine how many empty datetime boxes you want to add
-                  const numberOfNewBoxes = 1; // For example, add 3 new empty datetime boxes
+                  const numberOfNewBoxes = 1;
 
-                  // Create an array with the new empty datetime boxes
                   const newEmptyBoxes = Array.from({ length: numberOfNewBoxes }, () => "");
 
-                  // Add the new empty datetime boxes to the editUser state
                   const newHospital = [...editUser.hospital, ...newEmptyBoxes];
                   setEditUser({ ...editUser, hospital: newHospital });
                 }}
-                type="button" // Add this line to prevent form submission
+                type="button"
               >
                 +
               </button>

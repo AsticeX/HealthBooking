@@ -134,3 +134,41 @@ export const roomInputs = [
     placeholder: "2",
   },
 ];
+export const queueInputs = [
+  // {
+  //   id: "department",
+  //   label: "Department",
+  //   type: "text",
+  //   placeholder: "Department Name",
+  // },
+  {
+    id: "start_time",
+    label: "Start Time",
+    type: "text",
+    placeholder: "08:00 AM",
+  },
+  {
+    id: "stop_time",
+    label: "Stop Time",
+    type: "text",
+    placeholder: "05:00 PM",
+  },
+  {
+    id: "max_queue",
+    label: "Max Queue",
+    type: "number",
+    placeholder: "100",
+  },
+  // {
+  //   id: "count",
+  //   label: "Count",
+  //   type: "number",
+  //   placeholder: "0",
+  // },
+  // {
+  //   id: "is_active",
+  //   label: "Is Active",
+  //   type: "text",
+  //   placeholder: "Yes/No",
+  // },
+];

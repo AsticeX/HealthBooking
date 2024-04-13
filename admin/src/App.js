@@ -9,9 +9,10 @@ import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
-import { hotelColumns, roomColumns, userColumns } from "./datatablesource";
+import { hotelColumns, roomColumns, userColumns, queueColumns } from "./datatablesource";
 import NewHotel from "./pages/newHotel/NewHotel";
 import NewRoom from "./pages/newRoom/NewRoom";
+import NewQueue from "./pages/newQueue/NewQueue";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -87,7 +88,7 @@ function App() {
                 path="new"
                 element={
                   <ProtectedRoute>
-                    <NewHotel  />
+                    <NewHotel />
                   </ProtectedRoute>
                 }
               />
@@ -113,11 +114,47 @@ function App() {
                 path="new"
                 element={
                   <ProtectedRoute>
-                    <NewRoom  />
+                    <NewRoom />
                   </ProtectedRoute>
                 }
               />
             </Route>
+            <Route path="queue">
+              <Route
+                index
+                element={
+                  <ProtectedRoute>
+                    <List columns={queueColumns} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path=":productId"
+                element={
+                  <ProtectedRoute>
+                    <Single />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="new"
+                element={
+                  <ProtectedRoute>
+                    <NewQueue />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+            {/* <Route path="queue">
+              <Route
+                index
+                element={
+                  <ProtectedRoute>
+                    <List columns={queueColumns} />
+                  </ProtectedRoute>
+                }
+              /> */}
+            {/* </Route> */}
           </Route>
         </Routes>
       </BrowserRouter>
