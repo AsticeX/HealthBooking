@@ -309,6 +309,40 @@ const VaccineComponent = () => {
     setFormModalShow3(false);
   };
 
+  const handleExpire = (user) => {
+    let expireMessage;
+    let expireHeader;
+    if (user.priority === 0) {
+      // Calculate how long it has been expired
+      const today = new Date();
+      const expireDate = new Date(user.expire);
+      const differenceInDays = Math.floor((today - expireDate) / (1000 * 60 * 60 * 24));
+      expireMessage = `หมดอายุมาแล้ว ${differenceInDays} วัน`;
+      expireHeader = "วัคซีนหมดอายุแล้ว";
+    } else if (user.priority === 1) {
+      // Calculate how long until it expires
+      const today = new Date();
+      const expireDate = new Date(user.expire);
+      const differenceInDays = Math.floor((expireDate - today) / (1000 * 60 * 60 * 24));
+      expireMessage = `หมดอายุใน ${differenceInDays} วัน`;
+      expireHeader = "วัคซีนยังไม่หมดอายุ";
+    }
+
+    if (user.priority === 0) {
+      Swal.fire({
+        title: expireHeader,
+        text: expireMessage,
+        icon: "warning",
+      });
+    } else if (user.priority === 1) {
+      Swal.fire({
+        title: expireHeader,
+        text: expireMessage,
+        icon: "info",
+      });
+    }
+  };
+
   return (
     <div className="container">
       <div className="container p-5">
@@ -342,28 +376,28 @@ const VaccineComponent = () => {
         <h1>บันทึกวัคซีน</h1>
 
         <div className="table-responsive">
-          <table className="table table-striped">
-            <thead>
+          <table className="table table-striped table-bordered">
+            <thead className="thead-dark">
               <tr>
                 <th>Vaccine Name</th>
                 <th>Expire</th>
-                <th>Hospital Name</th>
                 <th>Hospital Array</th>
                 <th>Dose User</th>
                 <th>Dose Require</th>
-                {/* <th>Priority</th> */}
-                <th>Flag</th>
+                <th>Priority</th>
+                {/* <th>Flag</th> */}
                 <th>Type</th>
-                <th>User ID</th>
+                {/* <th>User ID</th> */}
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
 
             <tbody>
               {vaccineUsers.map((user) => (
-                <tr key={user._id}>
+                <tr>
                   <td>{user.vaccine_name}</td>
                   <td>{user.expire ? new Date(user.expire).toLocaleDateString() : "ไม่มีวันหมดอายุ"}</td>
-                  <td>{user.hospital_name}</td>
                   <td>
                     {user.hospital.map((doseTime, index) => (
                       <div key={index}>{doseTime}</div>
@@ -375,10 +409,22 @@ const VaccineComponent = () => {
                     ))}
                   </td>
                   <td>{user.dose_require}</td>
-                  {/* <td>{user.priority}</td> */}
-                  <td>{user.flag ? "True" : "False"}</td>
+                  <td>
+                    {user.priority === 0 ? (
+                      <span className="btn btn-danger" onClick={() => handleExpire(user)}>
+                        หมดอายุ
+                      </span>
+                    ) : user.priority === 1 ? (
+                      <span className="btn btn-success" onClick={() => handleExpire(user)}>
+                        ยังไม่หมดอายุ
+                      </span>
+                    ) : (
+                      <span className="badge badge-success">Low</span>
+                    )}
+                  </td>
+                  {/* <td>{user.flag ? "True" : "False"}</td> */}
                   <td>{user.type}</td>
-                  <td>{user.user_id}</td>
+                  {/* <td>{user.user_id}</td> */}
                   <td>
                     <button className="btn btn-primary mr-2" onClick={() => handleEdit(user)}>
                       Edit
@@ -583,7 +629,7 @@ const VaccineComponent = () => {
                   editUser.hospital &&
                   editUser.hospital.map((dose, index) => (
                     <div key={index} className="dose-date">
-                      <label>Vaccine Dose Date {index + 1}</label>
+                      <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ {index + 1}</label>
                       <div className="input-group">
                         <input
                           type="string"
