@@ -5,6 +5,7 @@ import { Modal, Button } from "react-bootstrap";
 import Navbar from "../../components/navbar/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import Select from "react-select";
 
 const VaccineComponent = () => {
   const [state, setState] = useState({
@@ -20,6 +21,7 @@ const VaccineComponent = () => {
     flag: true,
     type: "", // Adding type field to state
   });
+
   const { user } = useContext(AuthContext);
   const { vaccine_name_th, expire, hospital_name, dose_user, dose_require, hospital, priority, flag, type } = state;
 
@@ -107,42 +109,6 @@ const VaccineComponent = () => {
         console.error("Error fetching vaccine options:", error);
       });
   }, []);
-
-  const handleDropdownChange = (event) => {
-    const selectedVaccineName = event.target.value;
-    const isVaccineAlreadySelected = vaccineUsers.some((user) => user.vaccine_name === selectedVaccineName);
-
-    if (!isVaccineAlreadySelected) {
-      const selectedOption = vaccineOptions.find((option) => option.name === selectedVaccineName);
-      console.log("Selected vaccine:", selectedOption);
-
-      // Get today's date
-      const today = new Date();
-
-      // Calculate the expiration date only if number_for_next_dose is not 0
-      let expirationDate = null;
-      if (selectedOption.number_for_next_dose !== 0) {
-        expirationDate = new Date(today.getFullYear(), today.getMonth() + selectedOption.number_for_next_dose, today.getDate());
-      }
-
-      // Update the state with the selected vaccine and its associated data
-      setState({
-        ...state,
-        vaccine_name_th: selectedVaccineName,
-        type: selectedOption.type,
-        number_for_next_dose: selectedOption.number_for_next_dose,
-        expire: expirationDate ? expirationDate.toISOString().split("T")[0] : null,
-        dose_require: selectedOption.dose_require,
-      });
-    } else {
-      // If the vaccine is already selected, display a message or handle it as desired
-      Swal.fire({
-        title: "Oops...",
-        text: "This vaccine has already been chosen.",
-        icon: "warning",
-      });
-    }
-  };
 
   const handleDelete = (id) => {
     // Display a confirmation dialog using SweetAlert2
@@ -306,6 +272,42 @@ const VaccineComponent = () => {
       });
   };
 
+  const handleSelectChange = (selectedOption) => {
+    const selectedVaccineName = selectedOption.value;
+    const isVaccineAlreadySelected = vaccineUsers.some((user) => user.vaccine_name === selectedVaccineName);
+
+    if (!isVaccineAlreadySelected) {
+      console.log("Selected vaccine:", selectedOption);
+
+      // Get today's date
+      const today = new Date();
+
+      // Calculate the expiration date only if number_for_next_dose is not 0
+      let expirationDate = null;
+      const selectedVaccine = vaccineOptions.find((option) => option.name === selectedVaccineName);
+      if (selectedVaccine.number_for_next_dose !== 0) {
+        expirationDate = new Date(today.getFullYear(), today.getMonth() + selectedVaccine.number_for_next_dose, today.getDate());
+      }
+
+      // Update the state with the selected vaccine and its associated data
+      setState({
+        ...state,
+        vaccine_name_th: selectedVaccineName,
+        type: selectedVaccine.type,
+        number_for_next_dose: selectedVaccine.number_for_next_dose,
+        expire: expirationDate ? expirationDate.toISOString().split("T")[0] : null,
+        dose_require: selectedVaccine.dose_require,
+      });
+    } else {
+      // If the vaccine is already selected, display a message or handle it as desired
+      Swal.fire({
+        title: "Oops...",
+        text: "This vaccine has already been chosen.",
+        icon: "warning",
+      });
+    }
+  };
+
   // Function to handle closing the edit modal
   const handleCloseEditModal = () => {
     setEditModalShow(false); // Close the edit modal
@@ -326,17 +328,17 @@ const VaccineComponent = () => {
       <div className="container p-5">
         <Navbar />
         <h1 className="mt-5">บันทึกวัคซีน</h1>
+
         <form onSubmit={submitDose}>
           <div className="form-group">
             <label>วัคซีน</label>
-            <select className="form-control" value={vaccine_name_th} onChange={handleDropdownChange}>
-              <option value="">โปรดเลือก</option>
-              {vaccineOptions.map((option, index) => (
-                <option key={index} value={option.name}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
+            <div className="form-group">
+              <Select
+                options={vaccineOptions.map((option) => ({ value: option.name, label: option.name }))}
+                value={{ value: vaccine_name_th, label: vaccine_name_th }}
+                onChange={(selectedOption) => handleSelectChange(selectedOption)}
+              />
+            </div>
           </div>
           <div className="form-group">
             <label>จำนวนโดสที่ฉีดไปแล้ว</label>
@@ -414,20 +416,13 @@ const VaccineComponent = () => {
 
       <Modal show={formModalShow} onHide={handleCloseFormModal} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Vaccine User</Modal.Title>
+          <Modal.Title>Vaccine User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={submitForm}>
             <div className="form-group">
               <label>วัคซีน</label>
-              <select className="form-control" value={vaccine_name_th} onChange={handleDropdownChange}>
-                <option value="">โปรดเลือก</option>
-                {vaccineOptions.map((option, index) => (
-                  <option key={index} value={option.name}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
+              <input type="text" className="form-control" value={vaccine_name_th} readOnly />
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีน</label>
@@ -444,22 +439,15 @@ const VaccineComponent = () => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={formModalShow2} onHide={handleCloseFormModal3} style={{ marginTop: "100px", zIndex: "1050" }}>
+      <Modal show={formModalShow2} onHide={handleCloseFormModal2} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Vaccine User</Modal.Title>
+          <Modal.Title>Vaccine User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={submitForm}>
             <div className="form-group">
               <label>วัคซีน</label>
-              <select className="form-control" value={vaccine_name_th} onChange={handleDropdownChange}>
-                <option value="">โปรดเลือก</option>
-                {vaccineOptions.map((option, index) => (
-                  <option key={index} value={option.name}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
+              <input type="text" className="form-control" value={vaccine_name_th} readOnly />
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 1</label>
@@ -470,10 +458,10 @@ const VaccineComponent = () => {
               <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[1]} onChange={inputValue("dose_user_2")} />
             </div>
             {/* <div className="form-group">
-              <label>โรงพยาบาล</label>
-              <textarea type="text" className="form-control" value={hospital_name} onChange={inputValue("hospital_name")}></textarea>
-            </div>
-            <br /> */}
+                <label>โรงพยาบาล</label>
+                <textarea type="text" className="form-control" value={hospital_name} onChange={inputValue("hospital_name")}></textarea>
+              </div>
+              <br /> */}
             <div className="form-group">
               <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 1</label>
               <input type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
@@ -487,22 +475,15 @@ const VaccineComponent = () => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={formModalShow3} onHide={handleCloseFormModal2} style={{ marginTop: "100px", zIndex: "1050" }}>
+      <Modal show={formModalShow3} onHide={handleCloseFormModal3} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Vaccine User</Modal.Title>
+          <Modal.Title>Vaccine User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={submitForm}>
             <div className="form-group">
               <label>วัคซีน</label>
-              <select className="form-control" value={vaccine_name_th} onChange={handleDropdownChange}>
-                <option value="">โปรดเลือก</option>
-                {vaccineOptions.map((option, index) => (
-                  <option key={index} value={option.name}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
+              <input type="text" className="form-control" value={vaccine_name_th} readOnly />
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 1</label>

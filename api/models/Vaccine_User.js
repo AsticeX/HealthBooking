@@ -16,7 +16,6 @@ const VaccineUserSchema = new mongoose.Schema(
     expire_small: Array,
   },
   { timestamps: true }
-  
 );
 
 export default mongoose.model("vaccine_user", VaccineUserSchema);

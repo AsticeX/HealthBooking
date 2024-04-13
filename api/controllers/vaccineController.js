@@ -70,7 +70,7 @@ export const searchVaccineByName = async (req, res, next) => {
   const { name } = req.params;
 
   try {
-    const regex = new RegExp(`^${name}`, "i"); // 'i' for case-insensitive search
+    const regex = new RegExp(`^${name}`, "i");
     const vaccines = await vaccine.find({ vaccine_name: { $regex: regex } });
     res.json(vaccines);
   } catch (err) {
