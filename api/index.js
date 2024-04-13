@@ -8,6 +8,7 @@ import roomsRoute from "./routes/rooms.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express"; // Import swagger-ui-express
+import swaggerSpec from "./config/swaggerConfig.js";
 // import hotelsRoute from "./routes/hotels.js"
 import vaccine from "./routes/vaccine.js";
 import vaccine_userRoute from "./routes/vaccine_user.js";
