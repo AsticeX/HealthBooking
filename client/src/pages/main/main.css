@@ -1,8 +1,8 @@
 .homeContainer{
   margin-top: 100px;
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   gap: 30px;
 }
 

@@ -11,7 +11,7 @@ import React, { useState, useEffect } from "react";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useLocation } from "react-router-dom";
-
+import ClinicList from "../list/List";
 const Main = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const location = useLocation();
@@ -38,7 +38,8 @@ const Main = () => {
         {/* <h1 className="homeTitle">Browse by property type</h1> */}
         {/* <PropertyList /> */}
         {/* <h1 className="homeTitle">Homes guests love</h1> */}
-        <FeaturedProperties />
+        {/* <FeaturedProperties /> */}
+        <ClinicList />
         <Footer />
       </div>
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>

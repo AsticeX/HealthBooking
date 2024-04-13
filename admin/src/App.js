@@ -66,7 +66,7 @@ function App() {
                 }
               />
             </Route>
-            <Route path="hotels">
+            <Route path="clinics">
               <Route
                 index
                 element={

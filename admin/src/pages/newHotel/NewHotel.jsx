@@ -3,7 +3,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { useState } from "react";
-import { hotelInputs } from "../../formSource";
+import { clinicInputs } from "../../formSource";
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
 
@@ -35,9 +35,9 @@ const NewHotel = () => {
         Object.values(files).map(async (file) => {
           const data = new FormData();
           data.append("file", file);
-          data.append("upload_preset", "upload");
+          data.append("upload_preset", "gijwryvm");
           const uploadRes = await axios.post(
-            "https://api.cloudinary.com/v1_1/lamadev/image/upload",
+            "https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload",
             data
           );
 
@@ -46,13 +46,13 @@ const NewHotel = () => {
         })
       );
 
-      const newhotel = {
+      const newclinic = {
         ...info,
         rooms,
         photos: list,
       };
-
-      await axios.post("/hotels", newhotel);
+      const res= await axios.post("/clinics", newclinic);
+      // console.log(res,"xxxxxx");
     } catch (err) {console.log(err)}
   };
   return (
@@ -61,7 +61,7 @@ const NewHotel = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Add New Product</h1>
+          <h1>Add New Clinic</h1>
         </div>
         <div className="bottom">
           <div className="left">
@@ -89,7 +89,7 @@ const NewHotel = () => {
                 />
               </div>
 
-              {hotelInputs.map((input) => (
+              {clinicInputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>
                   <input
@@ -100,13 +100,13 @@ const NewHotel = () => {
                   />
                 </div>
               ))}
-              <div className="formInput">
+              {/* <div className="formInput">
                 <label>Featured</label>
                 <select id="featured" onChange={handleChange}>
                   <option value={false}>No</option>
                   <option value={true}>Yes</option>
                 </select>
-              </div>
+              </div> */}
               <div className="selectRooms">
                 <label>Rooms</label>
                 <select id="rooms" multiple onChange={handleSelect}>
@@ -120,7 +120,7 @@ const NewHotel = () => {
                       ))}
                 </select>
               </div>
-              <button onClick={handleClick}>Send</button>
+              <button onClick={handleClick}>Add</button>
             </form>
           </div>
         </div>

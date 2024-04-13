@@ -1,6 +1,6 @@
 .listContainer {
-  /* display: flex;
-  justify-content: center; */
+  display: flex;
+  justify-content: center;
   margin-top: 44px;
   background-color: #EEEEE6;
 }

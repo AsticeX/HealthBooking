@@ -2,7 +2,7 @@ import useFetch from "../../hooks/useFetch";
 import { Spinner } from "react-bootstrap";
 
 const FeaturedProperties = () => {
-  const { data, loading, error } = useFetch("/hotels?featured=true&limit=4");
+  const { data, loading, error } = useFetch("/clinics");
 
   return (
     <div className="container mt-5">
