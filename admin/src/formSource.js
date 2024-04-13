@@ -69,24 +69,18 @@ export const productInputs = [
   },
 ];
 
-export const hotelInputs = [
+export const clinicInputs = [
   {
     id: "name",
     label: "Name",
     type: "text",
-    placeholder: "My Hotel",
+    placeholder: "My Clinic",
   },
   {
-    id: "type",
-    label: "Type",
+    id: "title",
+    label: "Title",
     type: "text",
-    placeholder: "hotel",
-  },
-  {
-    id: "city",
-    label: "City",
-    type: "text",
-    placeholder: "New York",
+    placeholder: "The best Clinic ",
   },
   {
     id: "address",
@@ -95,29 +89,23 @@ export const hotelInputs = [
     placeholder: "elton st, 216",
   },
   {
-    id: "distance",
-    label: "Distance from City Center",
-    type: "text",
-    placeholder: "500",
-  },
-  {
-    id: "title",
-    label: "Title",
-    type: "text",
-    placeholder: "The best Hotel",
-  },
-  {
-    id: "desc",
+    id: "description",
     label: "Description",
-    type: "text",
+    type: "textarea",
     placeholder: "description",
   },
   {
-    id: "cheapestPrice",
-    label: "Price",
+    id: "contract",
+    label: "Contract",
     type: "text",
-    placeholder: "100",
+    placeholder: "0953215652",
   },
+  // {
+  //   id: "cheapestPrice",
+  //   label: "Price",
+  //   type: "text",
+  //   placeholder: "100",
+  // },
 ];
 
 export const roomInputs = [

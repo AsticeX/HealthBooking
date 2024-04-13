@@ -37,20 +37,20 @@ const Reset = () => {
     setOpen(false);
   };
 
-  const handleClick = async (values, actions) => {
-    dispatch({ type: "REGISTER_START" });
-    try {
-      // console.log("XXXXX",token);
-      const res = await axios.post(`/users/reset-password/${id}/${token}`, values);
-      dispatch({ type: "REGISTER_SUCCESS", payload: res.data.details });
-      navigate("/Login", { state: { fromLogin: true } });
-      handleClickSnack();
-    } catch (err) {
-      console.error("Registration failed:", err);
-      setShowAlert(true);
-      dispatch({ type: "REGISTER_FAILURE", payload: err.response.data });
-    }
-  };
+    const handleClick = async (values, actions) => {
+        dispatch({ type: "REGISTER_START" });
+        try {
+            // console.log("XXXXX",token);
+            const res = await axios.post(`/users/reset-password/${id}/${token}`, values);
+            dispatch({ type: "REGISTER_SUCCESS", payload: res.data.details });
+            navigate("/Login", { state: { fromLogin: true } });
+            handleClickSnack();
+        } catch (err) {
+            console.error("Registration failed:", err);
+            setShowAlert(true);
+            dispatch({ type: "REGISTER_FAILURE", payload: err.response.data });
+        }
+    };
 
   const schema = Yup.object().shape({
     password: Yup.string().required("password is a required field"),

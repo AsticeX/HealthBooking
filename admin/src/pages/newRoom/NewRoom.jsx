@@ -12,7 +12,7 @@ const NewRoom = () => {
   const [hotelId, setHotelId] = useState(undefined);
   const [rooms, setRooms] = useState(""); // Initialize rooms as an empty string
 
-  const { data, loading, error } = useFetch("/hotels");
+  const { data, loading, error } = useFetch("/clinics");
 
   const handleChange = (e) => {
     const { id, value } = e.target;

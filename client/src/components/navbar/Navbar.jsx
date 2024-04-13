@@ -171,18 +171,18 @@ const Navbar = (props) => {
                   </MenuItem>
                   <MenuItem onClick={handleCloseAvatar} href='/vaccine'>
                     <ListItemIcon>
-                      <IconButton>
+                      <IconButton href="/vaccine">
                       <VaccinesIcon fontSize="medium" hr />
                       </IconButton>
                     </ListItemIcon>  <a href='/vaccine' style={{color:"black",textDecoration:"none"}}>My Vaccine</a>
                   </MenuItem>
                   <Divider />
-                  <MenuItem onClick={handleCloseAvatar}>
+                  {/* <MenuItem onClick={handleCloseAvatar}>
                     <ListItemIcon>
                       <SettingsIcon fontSize="medium" />
                     </ListItemIcon>
                     Settings
-                  </MenuItem>
+                  </MenuItem> */}
                   <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
                       <ExitToAppIcon fontSize="medium" />

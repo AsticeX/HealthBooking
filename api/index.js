@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
-import hotelsRoute from "./routes/hotels.js";
+import clinicsRoute from "./routes/clinics.js"
 import roomsRoute from "./routes/rooms.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import swaggerUi from "swagger-ui-express";
+import swaggerUi from "swagger-ui-express"; // Import swagger-ui-express
 import swaggerSpec from "./config/swaggerConfig.js";
-
+// import hotelsRoute from "./routes/hotels.js"
 import vaccine from "./routes/vaccine.js";
 import vaccine_userRoute from "./routes/vaccine_user.js";
 import queueRoute from "./routes/queue.js";
@@ -39,7 +39,8 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
-app.use("/api/hotels", hotelsRoute);
+// app.use("/api/hotels", hotelsRoute);
+app.use("/api/clinics", clinicsRoute)
 app.use("/api/rooms", roomsRoute);
 app.use("/api", vaccine);
 app.use("/api", vaccine_userRoute);
