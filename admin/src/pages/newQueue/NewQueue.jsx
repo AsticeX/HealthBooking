@@ -1,36 +1,27 @@
-// Import necessary dependencies and styles
 import "./newQueue.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useState } from "react";
-import { queueInputs } from "../../formSource"; // Assuming you have a file for queue inputs
+import { queueInputs } from "../../formSource";
 import axios from "axios";
 import useFetch from "../../hooks/useFetch";
 
-
-
-
 const NewQueue = () => {
-
   const [info, setInfo] = useState({});
   const [clinicId, setClinicId] = useState(undefined);
-  const [department, setDepartment] = useState(""); // Define department state
+  const [department, setDepartment] = useState("");
   const { data, loading, error } = useFetch("/clinics");
 
-
-  // Handle change function for input fields
   const handleChange = (e) => {
     const { id, value } = e.target;
     setInfo((prevInfo) => ({ ...prevInfo, [id]: value }));
   };
 
-  // Handle click function for form submission
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      // Send POST request to create new queue
       console.log(clinicId);
-      await axios.post("/queue", { ...info, clinic_id: clinicId, department }); // Include department in the data to be submitted
+      await axios.post("/queue", { ...info, hospital_id: clinicId, department });
     } catch (err) {
       console.log(err);
     }
@@ -51,13 +42,12 @@ const NewQueue = () => {
                 <label>Choose a clinic</label>
                 <select id="clinicId" onChange={(e) => setClinicId(e.target.value)} value={clinicId || ""}>
                   <option value="" disabled>
-                    Select a hotel
+                    Select a clinic
                   </option>
-                  {
-                    data &&
-                    data.map((clinics) => (
-                      <option key={clinics._id} value={clinics.name}>
-                        {clinics.name}
+                  {data &&
+                    data.map((clinic) => (
+                      <option key={clinic._id} value={clinic._id}>
+                        {clinic.name}
                       </option>
                     ))}
                 </select>
@@ -73,20 +63,23 @@ const NewQueue = () => {
                     Select a department
                   </option>
                   {data &&
-                    data.map((clinics) => (
-                      <option key={clinics._id} value={clinics.department}>
-                        {clinics.department}
-                      </option>
-                    ))}
+                    clinicId &&
+                    data
+                      .find((clinic) => clinic._id === clinicId)
+                      ?.department.map((dept) => (
+                        <option key={dept} value={dept}>
+                          {dept}
+                        </option>
+                      ))}
                 </select>
               </div>
+
               {queueInputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>
                   <input id={input.id} type={input.type} placeholder={input.placeholder} onChange={handleChange} />
                 </div>
               ))}
-              {/* Move the button below the form inputs */}
               <div className="submitBtn">
                 <button onClick={handleClick}>Submit</button>
               </div>

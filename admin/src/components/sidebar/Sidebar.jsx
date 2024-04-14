@@ -46,12 +46,12 @@ const Sidebar = () => {
               <span>Clinics</span>
             </li>
           </Link>
-          <Link to="/rooms" style={{ textDecoration: "none" }}>
+          {/* <Link to="/rooms" style={{ textDecoration: "none" }}>
             <li>
               <CreditCardIcon className="icon" />
               <span>Rooms</span>
             </li>
-          </Link>
+          </Link> */}
           <Link to="/queue" style={{ textDecoration: "none" }}>
             <li>
               <ApartmentIcon className="icon" />

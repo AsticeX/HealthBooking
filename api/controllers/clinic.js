@@ -13,11 +13,7 @@ export const createClinic = async (req, res, next) => {
 };
 export const updateClinic = async (req, res, next) => {
   try {
-    const updatedClinic = await Clinic.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
+    const updatedClinic = await Clinic.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
     res.status(200).json(updatedClinic);
   } catch (err) {
     next(err);
@@ -40,7 +36,7 @@ export const getClinic = async (req, res, next) => {
   }
 };
 export const getClinics = async (req, res, next) => {
-  const {...others } = req.query;
+  const { ...others } = req.query;
   try {
     const ClinicId = await Clinic.find({
       ...others,
@@ -92,7 +88,7 @@ export const getClinicRooms = async (req, res, next) => {
         return Room.findById(room);
       })
     );
-    res.status(200).json(list)
+    res.status(200).json(list);
   } catch (err) {
     next(err);
   }
