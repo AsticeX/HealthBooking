@@ -17,6 +17,14 @@ const ClinicSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  latitude: {
+    type: String,
+    required: true,
+  },
+  longtitude: {
+    type: String,
+    required: true,
+  },
   photos: {
     type: [String],
   },

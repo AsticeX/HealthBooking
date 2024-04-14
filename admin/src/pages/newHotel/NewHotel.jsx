@@ -17,6 +17,10 @@ const NewHotel = () => {
   const [departmentInputs, setDepartmentInputs] = useState([""]);
   const [inputValue, setInputValue] = useState('');
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longtidue, setLongtitude] = useState(null);
+
+
 
   
 
@@ -30,6 +34,8 @@ const NewHotel = () => {
 
   const handleHospitalNameClick = (hospitalName) => {
     // console.log(hospitalName);
+    setLatitude(hospitalName.lat)
+    setLongtitude(hospitalName.lon)
     setInputValue(hospitalName.name);
     setSelectedAddress(hospitalName.address)
 
@@ -112,6 +118,8 @@ const NewHotel = () => {
         ...info,
         name: inputValue,
         address:selectedAddress,
+        latitude:latitude,
+        longtitude:longtidue,
         department: departmentInputs, // Use departmentInputs instead of departments
         queue,
         photos: list,
