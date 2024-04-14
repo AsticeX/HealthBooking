@@ -70,24 +70,24 @@ export const productInputs = [
 ];
 
 export const clinicInputs = [
-  {
-    id: "name",
-    label: "Name",
-    type: "text",
-    placeholder: "My Clinic",
-  },
+  // {
+  //   id: "name",
+  //   label: "Name",
+  //   type: "text",
+  //   placeholder: "My Clinic",
+  // },
   {
     id: "title",
     label: "Title",
     type: "text",
     placeholder: "The best Clinic ",
   },
-  {
-    id: "address",
-    label: "Address",
-    type: "text",
-    placeholder: "elton st, 216",
-  },
+  // {
+  //   id: "address",
+  //   label: "Address",
+  //   type: "text",
+  //   placeholder: "elton st, 216",
+  // },
   {
     id: "description",
     label: "Description",
@@ -100,12 +100,12 @@ export const clinicInputs = [
     type: "text",
     placeholder: "0953215652",
   },
-  {
-    id: "department",
-    label: "Department",
-    type: "text",
-    placeholder: "ทันตกรรม",
-  },
+  // {
+  //   id: "department",
+  //   label: "Department",
+  //   type: "text",
+  //   placeholder: "ทันตกรรม",
+  // },
   // {
   //   id: "cheapestPrice",
   //   label: "Price",

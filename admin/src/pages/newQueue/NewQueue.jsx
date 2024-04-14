@@ -11,7 +11,7 @@ import useFetch from "../../hooks/useFetch";
 
 
 const NewQueue = () => {
-  
+
   const [info, setInfo] = useState({});
   const [clinicId, setClinicId] = useState(undefined);
   const [department, setDepartment] = useState(""); // Define department state
@@ -64,12 +64,15 @@ const NewQueue = () => {
               </div>
               <div className="formInput">
                 <label>Select a department</label>
-                <select id="department" onChange={(e) => setDepartment(e.target.value)} value={department || ""}>
+                <select
+                  id="department"
+                  onChange={(e) => setDepartment(e.target.value)}
+                  value={department || ""}
+                >
                   <option value="" disabled>
                     Select a department
                   </option>
-                  {
-                    data &&
+                  {data &&
                     data.map((clinics) => (
                       <option key={clinics._id} value={clinics.department}>
                         {clinics.department}
