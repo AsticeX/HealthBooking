@@ -16,6 +16,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../../components/reserve/Reserve";
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+
+
 
 const Hotel = () => {
   const location = useLocation();
@@ -112,17 +116,23 @@ const Hotel = () => {
               free airport taxi
             </span>
             <div className="hotelImages">
-            
-              {data.photos?.map((photo, i) => (
-                <div className="hotelImgWrapper" key={i}>
-                  <img
-                    onClick={() => handleOpen(i)}
-                    src={photo}
-                    alt=""
-                    className="hotelImg"
-                  />
-                </div>
-              ))}
+              <Carousel 
+              showThumbs={false} 
+              showStatus={false} 
+              className="custom-carousel"
+              automatic={true}
+              dots={true}>
+                {data.photos?.map((photo, i) => (
+                  <div className="hotelImgWrapper" key={i}>
+                    <img
+                      onClick={() => handleOpen(i)}
+                      src={photo}
+                      alt=""
+                      className="hotelImg"
+                    />
+                  </div>
+                ))}
+              </Carousel>
             </div>
             <div className="hotelDetails">
               <div className="hotelDetailsTexts">
@@ -138,7 +148,7 @@ const Hotel = () => {
           <Footer />
         </div>
       )}
-      {openModal && <Reserve setOpen={setOpenModal} hotelId={id}/>}
+      {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
     </div>
   );
 };

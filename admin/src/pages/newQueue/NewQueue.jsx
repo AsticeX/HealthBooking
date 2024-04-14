@@ -5,13 +5,18 @@ import Navbar from "../../components/navbar/Navbar";
 import { useState } from "react";
 import { queueInputs } from "../../formSource"; // Assuming you have a file for queue inputs
 import axios from "axios";
+import useFetch from "../../hooks/useFetch";
 
-// Define the NewQueue component
+
+
+
 const NewQueue = () => {
-  // State variables for form inputs, clinic and department selection
+  
   const [info, setInfo] = useState({});
   const [clinicId, setClinicId] = useState(undefined);
   const [department, setDepartment] = useState(""); // Define department state
+  const { data, loading, error } = useFetch("/clinics");
+
 
   // Handle change function for input fields
   const handleChange = (e) => {
@@ -24,6 +29,7 @@ const NewQueue = () => {
     e.preventDefault();
     try {
       // Send POST request to create new queue
+      console.log(clinicId);
       await axios.post("/queue", { ...info, clinic_id: clinicId, department }); // Include department in the data to be submitted
     } catch (err) {
       console.log(err);
@@ -45,8 +51,15 @@ const NewQueue = () => {
                 <label>Choose a clinic</label>
                 <select id="clinicId" onChange={(e) => setClinicId(e.target.value)} value={clinicId || ""}>
                   <option value="" disabled>
-                    Select a clinic
+                    Select a hotel
                   </option>
+                  {
+                    data &&
+                    data.map((clinics) => (
+                      <option key={clinics._id} value={clinics.name}>
+                        {clinics.name}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="formInput">
@@ -55,9 +68,13 @@ const NewQueue = () => {
                   <option value="" disabled>
                     Select a department
                   </option>
-                  <option value="Department 1">Department 1</option>
-                  <option value="Department 2">Department 2</option>
-                  <option value="Department 3">Department 3</option>
+                  {
+                    data &&
+                    data.map((clinics) => (
+                      <option key={clinics._id} value={clinics.department}>
+                        {clinics.department}
+                      </option>
+                    ))}
                 </select>
               </div>
               {queueInputs.map((input) => (

@@ -11,7 +11,7 @@
 .siImg {
   width: 100px;
   height: auto;
-  object-fit: contain;
+  object-fit: cover;
 
 }
 
