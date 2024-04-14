@@ -10,12 +10,23 @@ import axios from "axios";
 const NewHotel = () => {
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
-  const [rooms, setRooms] = useState([]);
+  const [queue, setQueue] = useState([]);
+  const [departments, setDepartments] = useState([]);
 
-  const { data, loading, error } = useFetch("/rooms");
+  const { data, loading, error } = useFetch("/queue");
+
 
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setQueue((prevQueue) => [...prevQueue, value]);
+    } else {
+      setQueue((prevQueue) => prevQueue.filter((item) => item !== value));
+    }
   };
 
   const handleSelect = (e) => {
@@ -23,9 +34,9 @@ const NewHotel = () => {
       e.target.selectedOptions,
       (option) => option.value
     );
-    setRooms(value);
+    setQueue(value);
   };
-  
+
   console.log(files)
 
   const handleClick = async (e) => {
@@ -48,12 +59,12 @@ const NewHotel = () => {
 
       const newclinic = {
         ...info,
-        rooms,
+        queue,
         photos: list,
       };
-      const res= await axios.post("/clinics", newclinic);
+      const res = await axios.post("/clinics", newclinic);
       // console.log(res,"xxxxxx");
-    } catch (err) {console.log(err)}
+    } catch (err) { console.log(err) }
   };
   return (
     <div className="new">
@@ -108,17 +119,24 @@ const NewHotel = () => {
                 </select>
               </div> */}
               <div className="selectRooms">
-                <label>Rooms</label>
-                <select id="rooms" multiple onChange={handleSelect}>
-                  {loading
-                    ? "loading"
-                    : data &&
-                      data.map((room) => (
-                        <option key={room._id} value={room._id}>
-                          {room.title}
-                        </option>
-                      ))}
-                </select>
+                <label>Schedule</label>
+                {loading ? (
+                  "Loading..."
+                ) : (
+                  data &&
+                  data.map((queueItem) => (
+                    <div key={queueItem._id}>
+                      <input
+                        type="checkbox"
+                        id={queueItem._id}
+                        value={queueItem._id}
+                        checked={queue.includes(queueItem._id)}
+                        onChange={handleCheckboxChange}
+                      />
+                      <label htmlFor={queueItem._id}>ชื่อ:{queueItem.hospital_id} แผนก:{queueItem.department} เวลาทำกร:{queueItem.start_time} - {queueItem.stop_time}</label>
+                    </div>
+                  ))
+                )}
               </div>
               <button onClick={handleClick}>Add</button>
             </form>

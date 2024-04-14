@@ -100,6 +100,12 @@ export const clinicInputs = [
     type: "text",
     placeholder: "0953215652",
   },
+  {
+    id: "department",
+    label: "Department",
+    type: "text",
+    placeholder: "ทันตกรรม",
+  },
   // {
   //   id: "cheapestPrice",
   //   label: "Price",

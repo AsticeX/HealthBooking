@@ -27,7 +27,10 @@ const ClinicSchema = new mongoose.Schema({
     type: String,
     required:true
   },
-  rooms: {
+  queue: {
+    type: [String],
+  },
+  department: {
     type: [String],
   },
   // cheapestPrice: {
