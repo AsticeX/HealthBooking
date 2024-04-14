@@ -10,9 +10,18 @@ const ClinicSchema = new mongoose.Schema({
   },
   type: {
     type: String,
+    default: "hospital"
     // required: true,
   },
   address: {
+    type: String,
+    required: true,
+  },
+  latitude: {
+    type: String,
+    required: true,
+  },
+  longtitude: {
     type: String,
     required: true,
   },
