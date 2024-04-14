@@ -1,16 +1,15 @@
-// Import necessary dependencies and styles
 import "./newQueue.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useState } from "react";
-import { queueInputs } from "../../formSource"; // Assuming you have a file for queue inputs
+import { queueInputs } from "../../formSource";
 import axios from "axios";
 import useFetch from "../../hooks/useFetch";
 
 const NewQueue = () => {
   const [info, setInfo] = useState({});
   const [clinicId, setClinicId] = useState(undefined);
-  const [department, setDepartment] = useState(""); // Define department state
+  const [department, setDepartment] = useState("");
   const { data, loading, error } = useFetch("/clinics");
 
   const handleChange = (e) => {
@@ -77,7 +76,6 @@ const NewQueue = () => {
                   <input id={input.id} type={input.type} placeholder={input.placeholder} onChange={handleChange} />
                 </div>
               ))}
-              {/* Move the button below the form inputs */}
               <div className="submitBtn">
                 <button onClick={handleClick}>Submit</button>
               </div>
