@@ -1,15 +1,17 @@
+import React, { useState } from "react";
+import axios from "axios";
+import useFetch from "../../hooks/useFetch";
+import { queueInputs } from "../../formSource";
 import "./newQueue.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import { useState } from "react";
-import { queueInputs } from "../../formSource";
-import axios from "axios";
-import useFetch from "../../hooks/useFetch";
 
 const NewQueue = () => {
   const [info, setInfo] = useState({});
   const [clinicId, setClinicId] = useState(undefined);
   const [department, setDepartment] = useState("");
+  const [startTime, setStartTime] = useState(""); // State for start time
+  const [stopTime, setStopTime] = useState(""); // State for stop time
   const { data, loading, error } = useFetch("/clinics");
 
   const handleChange = (e) => {
@@ -20,8 +22,13 @@ const NewQueue = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      console.log(clinicId);
-      await axios.post("/queue", { ...info, hospital_id: clinicId, department });
+      await axios.post("/queue", {
+        ...info,
+        hospital_id: clinicId,
+        department,
+        start_time: startTime, // Include start time
+        stop_time: stopTime, // Include stop time
+      });
     } catch (err) {
       console.log(err);
     }
@@ -69,7 +76,17 @@ const NewQueue = () => {
                       ))}
                 </select>
               </div>
-
+              {/* Time input for Start Time */}
+              <div className="formInput">
+                <label>Start Time</label>
+                <input type="time" id="startTime" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+              </div>
+              {/* Time input for Stop Time */}
+              <div className="formInput">
+                <label>Stop Time</label>
+                <input type="time" id="stopTime" value={stopTime} onChange={(e) => setStopTime(e.target.value)} />
+              </div>
+              {/* Render other form inputs */}
               {queueInputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>

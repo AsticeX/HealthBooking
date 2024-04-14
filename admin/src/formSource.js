@@ -147,18 +147,18 @@ export const queueInputs = [
   //   type: "text",
   //   placeholder: "Department Name",
   // },
-  {
-    id: "start_time",
-    label: "Start Time",
-    type: "text",
-    placeholder: "08:00 AM",
-  },
-  {
-    id: "stop_time",
-    label: "Stop Time",
-    type: "text",
-    placeholder: "05:00 PM",
-  },
+  // {
+  //   id: "start_time",
+  //   label: "Start Time",
+  //   type: "text",
+  //   placeholder: "08:00 AM",
+  // },
+  // {
+  //   id: "stop_time",
+  //   label: "Stop Time",
+  //   type: "text",
+  //   placeholder: "05:00 PM",
+  // },
   {
     id: "max_queue",
     label: "Max Queue",
