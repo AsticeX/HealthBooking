@@ -1,16 +1,22 @@
+import React, { useState } from "react";
+import axios from "axios";
+import useFetch from "../../hooks/useFetch";
+import { queueInputs } from "../../formSource";
 import "./newQueue.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import { useState } from "react";
-import { queueInputs } from "../../formSource";
-import axios from "axios";
-import useFetch from "../../hooks/useFetch";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const NewQueue = () => {
   const [info, setInfo] = useState({});
   const [clinicId, setClinicId] = useState(undefined);
   const [department, setDepartment] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [stopTime, setStopTime] = useState("");
   const { data, loading, error } = useFetch("/clinics");
+
+  const { user } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -20,10 +26,29 @@ const NewQueue = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      console.log(clinicId);
-      await axios.post("/queue", { ...info, hospital_id: clinicId, department });
+      console.log(user.username);
+      // Create the new queue item
+      const response = await axios.post("/queue", {
+        ...info,
+        user_id: user.username,
+        hospital_id: clinicId,
+        department,
+        start_time: startTime,
+        stop_time: stopTime,
+      });
+
+      const {
+        data: { _id: queueId },
+      } = response;
+      const clinicResponse = await axios.get(`/clinics/${clinicId}`);
+      const {
+        data: { queue: currentQueue },
+      } = clinicResponse;
+      const updatedQueue = [...currentQueue, queueId];
+      await axios.put(`/clinics/${clinicId}`, { queue: updatedQueue });
+      console.log("Service added successfully!");
     } catch (err) {
-      console.log(err);
+      console.error("Error adding service:", err);
     }
   };
 
@@ -54,11 +79,7 @@ const NewQueue = () => {
               </div>
               <div className="formInput">
                 <label>Select a department</label>
-                <select
-                  id="department"
-                  onChange={(e) => setDepartment(e.target.value)}
-                  value={department || ""}
-                >
+                <select id="department" onChange={(e) => setDepartment(e.target.value)} value={department || ""}>
                   <option value="" disabled>
                     Select a department
                   </option>
@@ -73,7 +94,14 @@ const NewQueue = () => {
                       ))}
                 </select>
               </div>
-
+              <div className="formInput">
+                <label>Start Time</label>
+                <input type="time" id="startTime" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+              </div>
+              <div className="formInput">
+                <label>Stop Time</label>
+                <input type="time" id="stopTime" value={stopTime} onChange={(e) => setStopTime(e.target.value)} />
+              </div>
               {queueInputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>

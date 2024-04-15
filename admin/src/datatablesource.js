@@ -60,35 +60,6 @@ export const hotelColumns = [
   },
 ];
 
-export const roomColumns = [
-  { field: "_id", headerName: "ID", width: 70 },
-  {
-    field: "title",
-    headerName: "Title",
-    width: 230,
-  },
-  {
-    field: "desc",
-    headerName: "Description",
-    width: 200,
-  },
-  {
-    field: "price",
-    headerName: "Price",
-    width: 100,
-  },
-  {
-    field: "maxPeople",
-    headerName: "Max People",
-    width: 100,
-  },
-  {
-    field: "roomNumbers",
-    headerName: "Test",
-    width: 100,
-  },
-];
-
 export const queueColumns = [
   { field: "_id", headerName: "ID", width: 70 },
   {
@@ -116,14 +87,14 @@ export const queueColumns = [
     headerName: "Max Queue",
     width: 120,
   },
-  {
-    field: "count",
-    headerName: "Count",
-    width: 100,
-  },
-  {
-    field: "is_active",
-    headerName: "Active",
-    width: 100,
-  },
+  // {
+  //   field: "count",
+  //   headerName: "Count",
+  //   width: 100,
+  // },
+  // {
+  //   field: "is_active",
+  //   headerName: "Active",
+  //   width: 100,
+  // },
 ];

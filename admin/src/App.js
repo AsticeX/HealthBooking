@@ -11,8 +11,10 @@ import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
 import { hotelColumns, roomColumns, userColumns, queueColumns } from "./datatablesource";
 import NewHotel from "./pages/newHotel/NewHotel";
-import NewRoom from "./pages/newRoom/NewRoom";
+// import NewRoom from "./pages/newRoom/NewRoom";
 import NewQueue from "./pages/newQueue/NewQueue";
+import EditQueue from "./pages/editQueue/EditQueue";
+import EditClinic from "./pages/editClinic/EditClinic";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -77,10 +79,10 @@ function App() {
                 }
               />
               <Route
-                path=":productId"
+                path="/clinics/:id"
                 element={
                   <ProtectedRoute>
-                    <Single />
+                    <EditClinic />
                   </ProtectedRoute>
                 }
               />
@@ -93,32 +95,7 @@ function App() {
                 }
               />
             </Route>
-            <Route path="rooms">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <List columns={roomColumns} />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path=":productId"
-                element={
-                  <ProtectedRoute>
-                    <Single />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="new"
-                element={
-                  <ProtectedRoute>
-                    <NewRoom />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
+
             <Route path="queue">
               <Route
                 index
@@ -128,14 +105,16 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
               <Route
-                path=":productId"
+                path="/queue/:id"
                 element={
                   <ProtectedRoute>
-                    <Single />
+                    <EditQueue />
                   </ProtectedRoute>
                 }
               />
+
               <Route
                 path="new"
                 element={
@@ -146,14 +125,14 @@ function App() {
               />
             </Route>
             {/* <Route path="queue">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <List columns={queueColumns} />
-                  </ProtectedRoute>
-                }
-              /> */}
+                <Route
+                  index
+                  element={
+                    <ProtectedRoute>
+                      <List columns={queueColumns} />
+                    </ProtectedRoute>
+                  }
+                /> */}
             {/* </Route> */}
           </Route>
         </Routes>

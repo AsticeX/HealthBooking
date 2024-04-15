@@ -93,3 +93,67 @@ export const getClinicRooms = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getDepartmentsByClinicId = async (req, res, next) => {
+  try {
+    const { clinicId } = req.params;
+    const clinic = await Clinic.findById(clinicId);
+    if (!clinic) {
+      return res.status(404).json({ error: "Clinic not found" });
+    }
+    const departments = clinic.department;
+    res.status(200).json(departments);
+  } catch (err) {
+    console.error("Error fetching departments:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getClinicById = async (req, res, next) => {
+  try {
+    const clinic = await Clinic.findById(req.params.id);
+    if (!clinic) {
+      return res.status(404).json({ error: "Clinic not found" });
+    }
+    res.status(200).json(clinic);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const addToQueue = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { data } = req.body;
+
+    const clinic = await Clinic.findById(id);
+    if (!clinic) {
+      return res.status(404).json({ error: "Clinic not found" });
+    }
+
+    clinic.queue.push(data);
+
+    await clinic.save();
+
+    res.status(200).json({ message: "Data added to the queue successfully", clinic });
+  } catch (err) {
+    console.error("Error adding data to queue:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getClinicsByUserId = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const clinics = await Clinic.find({ user_id: userId });
+
+    if (!clinics || clinics.length === 0) {
+      return res.status(404).json({ message: "No clinics found for this user" });
+    }
+
+    res.status(200).json(clinics);
+  } catch (err) {
+    console.error("Error fetching clinics:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

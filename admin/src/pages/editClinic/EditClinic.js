@@ -1,68 +1,53 @@
-import "./newHotel.scss";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import "./editClinic.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
-import { useEffect, useState } from "react";
 import { clinicInputs } from "../../formSource";
 import useFetch from "../../hooks/useFetch";
-import axios from "axios";
 import Select from "react-select";
-import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
-const NewHotel = () => {
-  const [files, setFiles] = useState("");
-  const [info, setInfo] = useState({});
+const EditClinic = () => {
+  const { id } = useParams();
+  const [clinicData, setClinicData] = useState({});
+  const [files, setFiles] = useState([]);
   const [queue, setQueue] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
-  const [departmentInputs, setDepartmentInputs] = useState([""]);
+  const [departmentInputs, setDepartmentInputs] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState("");
   const [latitude, setLatitude] = useState(null);
-  const [longtidue, setLongtitude] = useState(null);
-
-  const { data, loading, error } = useFetch("/queue");
-  const { user } = useContext(AuthContext);
-
-  const handleChange = (e) => {
-    setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
-  };
-
-  const handleHospitalNameClick = (hospitalName) => {
-    // console.log(hospitalName);
-    setLatitude(hospitalName.lat);
-    setLongtitude(hospitalName.lon);
-    setInputValue(hospitalName.name);
-    setSelectedAddress(hospitalName.address);
-  };
+  const [longitude, setLongitude] = useState(null);
+  const { data: queueData, loading: queueLoading } = useFetch(`/queue_by_hospital_id/${id}`);
 
   useEffect(() => {
-    searchPlace();
-  }, []);
+    const fetchClinic = async () => {
+      try {
+        const response = await axios.get(`/clinics/${id}`);
+        const clinic = response.data;
+        setClinicData(clinic);
+        setFiles(clinic.photos); // Set uploaded photos
+        setInputValue(clinic.name);
+        setSelectedAddress(clinic.address);
+        setLatitude(clinic.latitude);
+        setLongitude(clinic.longitude);
+        setQueue(clinic.queue); // Set selected rooms
+        setDepartmentInputs(clinic.department || []);
+      } catch (error) {
+        console.error("Error fetching clinic:", error);
+      }
+    };
 
-  const searchPlace = (value) => {
-    axios
-      .get("https://api.longdo.com/POIService/json/search?", {
-        params: {
-          key: "79e088d5668d8e7316d055233c8cf1c4",
-          keyword: value,
-          tag: "hospital",
-          limit: 5,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        const hospitals = response.data.data.map((hospital) => {
-          return hospital;
-        });
-        // const suggest = document.getElementById('result');
-        // suggest.style.display = 'none';
-        setSearchResults(hospitals);
-      })
-      .catch((error) => {
-        console.error("Error searching nearby:", error);
-      });
+    fetchClinic();
+  }, [id]);
+
+  const handleChange = (e) => {
+    setClinicData((prevData) => ({ ...prevData, [e.target.id]: e.target.value }));
   };
+
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -85,43 +70,47 @@ const NewHotel = () => {
   const handleInputChange = (e) => {
     const { value } = e.target;
     setInputValue(value);
-    setInfo((prevInfo) => ({ ...prevInfo, search: value }));
+    setClinicData((prevData) => ({ ...prevData, search: value }));
     searchPlace(value);
   };
-
-  console.log(files);
 
   const handleClick = async (e) => {
     e.preventDefault();
     try {
       const list = await Promise.all(
-        Object.values(files).map(async (file) => {
+        files.map(async (file) => {
+          if (file.url) {
+            return file.url; // If file already uploaded, use URL directly
+          }
           const data = new FormData();
           data.append("file", file);
           data.append("upload_preset", "gijwryvm");
           const uploadRes = await axios.post("https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload", data);
-          console.log();
-          const { url } = uploadRes.data;
-          return url;
+          return uploadRes.data.url;
         })
       );
-      console.log(selectedAddress);
-      const newclinic = {
-        ...info,
-        user_id: user.username,
+
+      const updatedClinic = {
+        ...clinicData,
         name: inputValue,
         address: selectedAddress,
         latitude: latitude,
-        longtitude: longtidue,
-        department: departmentInputs, // Use departmentInputs instead of departments
-        queue,
+        longitude: longitude,
+        department: departmentInputs,
+        queue: queue,
         photos: list,
       };
-      const res = await axios.post("/clinics", newclinic);
-      // console.log(res,"xxxxxx");
-    } catch (err) {
-      console.log(err);
+
+      const res = await axios.put(`/clinics/${id}`, updatedClinic);
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error updating clinic:", error);
     }
+  };
+
+  const searchPlace = (value) => {
+    // Implement your search function here
+    // Use the value to search for clinics/places
   };
 
   return (
@@ -130,14 +119,16 @@ const NewHotel = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Add New Clinic</h1>
+          <h1>Edit Clinic</h1>
         </div>
         <div className="bottom">
           <div className="left">
-            <img src={files ? URL.createObjectURL(files[0]) : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"} alt="" />
+            {files.map((file, index) => (
+              <img key={index} src={file.url ? file.url : file instanceof File && URL.createObjectURL(file)} alt={`Image ${index}`} />
+            ))}
           </div>
           <div className="right">
-            <form>
+            <form onSubmit={handleClick}>
               <div className="formInput">
                 <label htmlFor="file">
                   Image: <DriveFolderUploadOutlinedIcon className="icon" />
@@ -146,29 +137,18 @@ const NewHotel = () => {
               </div>
               <div className="formInput">
                 <label>Name</label>
-                <input id="search" value={inputValue} onChange={handleInputChange} />
-                {searchResults.length > 0 && info.search && (
-                  <div>
-                    {searchResults.map((hospital) => (
-                      <div key={hospital.id} onClick={() => handleHospitalNameClick(hospital)}>
-                        {hospital.name}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <input id="name" value={inputValue} onChange={handleInputChange} />
               </div>
               <div className="formInput">
                 <label>Address</label>
-                <input id="search" value={selectedAddress} onChange={handleInputChange} />
+                <input id="address" value={selectedAddress} onChange={(e) => setSelectedAddress(e.target.value)} />
               </div>
-
               {clinicInputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>
-                  <input id={input.id} onChange={handleChange} type={input.type} placeholder={input.placeholder} />
+                  <input id={input.id} value={clinicData[input.id]} onChange={handleChange} type={input.type} placeholder={input.placeholder} />
                 </div>
               ))}
-
               {/* Department Inputs */}
               {departmentInputs.map((input, index) => (
                 <div className="formInput" key={index}>
@@ -179,8 +159,22 @@ const NewHotel = () => {
               <button type="button" onClick={addDepartmentInput}>
                 Add Department
               </button>
+              <div className="selectRooms">
+                <label>Rooms</label>
+                {queueLoading
+                  ? "Loading..."
+                  : queueData &&
+                    queueData.map((queueItem) => (
+                      <div key={queueItem._id}>
+                        <input type="checkbox" id={queueItem._id} value={queueItem._id} checked={queue.includes(queueItem._id)} onChange={handleCheckboxChange} />
+                        <label htmlFor={queueItem._id}>
+                          {queueItem.start_time} - {queueItem.stop_time}
+                        </label>
+                      </div>
+                    ))}
+              </div>
 
-              <button onClick={handleClick}>Add</button>
+              <button type="submit">Update</button>
             </form>
           </div>
         </div>
@@ -188,4 +182,5 @@ const NewHotel = () => {
     </div>
   );
 };
-export default NewHotel;
+
+export default EditClinic;
