@@ -81,3 +81,18 @@ export const getQueuesByHospitalId = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getQueueById = async (req, res, next) => {
+  try {
+    const queueId = req.params.id;
+    const queue = await Queue.findById(queueId);
+
+    if (!queue) {
+      return res.status(404).json({ message: "Queue not found" });
+    }
+
+    res.json(queue);
+  } catch (err) {
+    next(err);
+  }
+};

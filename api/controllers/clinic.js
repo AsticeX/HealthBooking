@@ -93,3 +93,37 @@ export const getClinicRooms = async (req, res, next) => {
     next(err);
   }
 };
+
+// Controller function to fetch departments by clinic ID
+export const getDepartmentsByClinicId = async (req, res, next) => {
+  try {
+    const { clinicId } = req.params; // Extract clinic ID from the request parameters
+    // Query the Clinic model to find the clinic by ID
+    const clinic = await Clinic.findById(clinicId);
+    if (!clinic) {
+      // If clinic not found, return an error response
+      return res.status(404).json({ error: "Clinic not found" });
+    }
+    // Extract the departments from the clinic document
+    const departments = clinic.department;
+    // Send the list of departments as a JSON response
+    res.status(200).json(departments);
+  } catch (err) {
+    // Handle errors
+    console.error("Error fetching departments:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Controller function to get clinic by ID
+export const getClinicById = async (req, res, next) => {
+  try {
+    const clinic = await Clinic.findById(req.params.id);
+    if (!clinic) {
+      return res.status(404).json({ error: "Clinic not found" });
+    }
+    res.status(200).json(clinic);
+  } catch (err) {
+    next(err);
+  }
+};

@@ -61,11 +61,7 @@ const NewQueue = () => {
               </div>
               <div className="formInput">
                 <label>Select a department</label>
-                <select
-                  id="department"
-                  onChange={(e) => setDepartment(e.target.value)}
-                  value={department || ""}
-                >
+                <select id="department" onChange={(e) => setDepartment(e.target.value)} value={department || ""}>
                   <option value="" disabled>
                     Select a department
                   </option>

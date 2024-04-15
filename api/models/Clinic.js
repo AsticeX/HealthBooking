@@ -10,7 +10,7 @@ const ClinicSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    default: "hospital"
+    default: "hospital",
     // required: true,
   },
   address: {
@@ -34,7 +34,7 @@ const ClinicSchema = new mongoose.Schema({
   },
   contract: {
     type: String,
-    required:true
+    required: true,
   },
   queue: {
     type: [String],
@@ -52,4 +52,4 @@ const ClinicSchema = new mongoose.Schema({
   // },
 });
 
-export default mongoose.model("Clinic", ClinicSchema)
+export default mongoose.model("Clinic", ClinicSchema);
