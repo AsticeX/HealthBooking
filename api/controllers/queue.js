@@ -11,9 +11,10 @@ export const getAllQueues = async (req, res, next) => {
 
 export const createQueue = async (req, res, next) => {
   try {
-    const { hospital_id, department, start_time, stop_time, max_queue, count, is_active } = req.body;
+    const { user_id, hospital_id, department, start_time, stop_time, max_queue, count, is_active } = req.body;
 
     const newQueue = new Queue({
+      user_id,
       hospital_id,
       department,
       start_time,
@@ -92,6 +93,21 @@ export const getQueueById = async (req, res, next) => {
     }
 
     res.json(queue);
+  } catch (err) {
+    next(err);
+  }
+};
+export const getQueuesByUserId = async (req, res, next) => {
+  try {
+    const { user_id } = req.params;
+
+    if (!user_id) {
+      return res.status(400).json({ error: "User ID is required in the query." });
+    }
+
+    const queues = await Queue.find({ user_id });
+
+    res.json(queues);
   } catch (err) {
     next(err);
   }

@@ -1,5 +1,18 @@
 import express from "express";
-import { countByCity, countByType, createClinic, deleteClinic, getClinic, getClinicRooms, getClinics, updateClinic, getDepartmentsByClinicId, getClinicById } from "../controllers/clinic.js";
+import {
+  countByCity,
+  countByType,
+  createClinic,
+  deleteClinic,
+  getClinic,
+  getClinicRooms,
+  getClinics,
+  updateClinic,
+  getDepartmentsByClinicId,
+  getClinicById,
+  addToQueue,
+  getClinicsByUserId,
+} from "../controllers/clinic.js";
 import { verifyAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();
@@ -24,7 +37,9 @@ router.get("/room/:id", getClinicRooms);
 
 // GET Departments by Clinic ID
 router.get("/:clinicId/departments", getDepartmentsByClinicId);
+router.get("/auth/:userId", getClinicsByUserId);
 
 router.get("/:id", getClinicById);
+router.put("/:id/add-to-queue", addToQueue);
 
 export default router;

@@ -68,10 +68,8 @@ const EditQueue = () => {
         department,
         start_time: startTime,
         stop_time: stopTime,
-        max_queue: maxQueue, // Include MaxQueue in the request
+        max_queue: maxQueue,
       });
-      // Optionally, you can redirect the user to another page after successful update
-      // history.push("/queues");
     } catch (err) {
       console.error("Error updating queue:", err);
     }

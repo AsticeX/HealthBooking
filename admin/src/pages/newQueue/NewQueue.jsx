@@ -5,14 +5,18 @@ import { queueInputs } from "../../formSource";
 import "./newQueue.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const NewQueue = () => {
   const [info, setInfo] = useState({});
   const [clinicId, setClinicId] = useState(undefined);
   const [department, setDepartment] = useState("");
-  const [startTime, setStartTime] = useState(""); // State for start time
-  const [stopTime, setStopTime] = useState(""); // State for stop time
+  const [startTime, setStartTime] = useState("");
+  const [stopTime, setStopTime] = useState("");
   const { data, loading, error } = useFetch("/clinics");
+
+  const { user } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -22,15 +26,29 @@ const NewQueue = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/queue", {
+      console.log(user.username);
+      // Create the new queue item
+      const response = await axios.post("/queue", {
         ...info,
+        user_id: user.username,
         hospital_id: clinicId,
         department,
-        start_time: startTime, // Include start time
-        stop_time: stopTime, // Include stop time
+        start_time: startTime,
+        stop_time: stopTime,
       });
+
+      const {
+        data: { _id: queueId },
+      } = response;
+      const clinicResponse = await axios.get(`/clinics/${clinicId}`);
+      const {
+        data: { queue: currentQueue },
+      } = clinicResponse;
+      const updatedQueue = [...currentQueue, queueId];
+      await axios.put(`/clinics/${clinicId}`, { queue: updatedQueue });
+      console.log("Service added successfully!");
     } catch (err) {
-      console.log(err);
+      console.error("Error adding service:", err);
     }
   };
 
@@ -76,17 +94,14 @@ const NewQueue = () => {
                       ))}
                 </select>
               </div>
-              {/* Time input for Start Time */}
               <div className="formInput">
                 <label>Start Time</label>
                 <input type="time" id="startTime" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
               </div>
-              {/* Time input for Stop Time */}
               <div className="formInput">
                 <label>Stop Time</label>
                 <input type="time" id="stopTime" value={stopTime} onChange={(e) => setStopTime(e.target.value)} />
               </div>
-              {/* Render other form inputs */}
               {queueInputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>

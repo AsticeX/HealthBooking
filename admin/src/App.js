@@ -43,32 +43,32 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            {/* <Route path="users">
-                <Route
-                  index
-                  element={
-                    <ProtectedRoute>
-                      <List columns={userColumns} />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path=":userId"
-                  element={
-                    <ProtectedRoute>
-                      <Single />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="new"
-                  element={
-                    <ProtectedRoute>
-                      <New inputs={userInputs} title="Add New User" />
-                    </ProtectedRoute>
-                  }
-                />
-              </Route> */}
+            <Route path="users">
+              <Route
+                index
+                element={
+                  <ProtectedRoute>
+                    <List columns={userColumns} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path=":userId"
+                element={
+                  <ProtectedRoute>
+                    <Single />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="new"
+                element={
+                  <ProtectedRoute>
+                    <New inputs={userInputs} title="Add New User" />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
             <Route path="clinics">
               <Route
                 index
@@ -95,32 +95,7 @@ function App() {
                 }
               />
             </Route>
-            {/* <Route path="rooms">
-                <Route
-                  index
-                  element={
-                    <ProtectedRoute>
-                      <List columns={roomColumns} />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path=":productId"
-                  element={
-                    <ProtectedRoute>
-                      <Single />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="new"
-                  element={
-                    <ProtectedRoute>
-                      <NewRoom />
-                    </ProtectedRoute>
-                  }
-                />
-              </Route> */}
+
             <Route path="queue">
               <Route
                 index

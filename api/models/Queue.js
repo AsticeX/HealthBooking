@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const QueueSchema = new mongoose.Schema(
   {
+    user_id: {
+      type: String,
+      required: true,
+    },
     hospital_id: String,
     department: String,
     start_time: String,

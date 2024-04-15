@@ -7,6 +7,8 @@ import { clinicInputs } from "../../formSource";
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
 import Select from "react-select";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const NewHotel = () => {
   const [files, setFiles] = useState("");
@@ -20,6 +22,7 @@ const NewHotel = () => {
   const [longtidue, setLongtitude] = useState(null);
 
   const { data, loading, error } = useFetch("/queue");
+  const { user } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -105,6 +108,7 @@ const NewHotel = () => {
       console.log(selectedAddress);
       const newclinic = {
         ...info,
+        user_id: user.username,
         name: inputValue,
         address: selectedAddress,
         latitude: latitude,
@@ -176,18 +180,6 @@ const NewHotel = () => {
                 Add Department
               </button>
 
-              <div className="selectRooms">
-                <label>Rooms</label>
-                {loading
-                  ? "Loading..."
-                  : data &&
-                    data.map((queueItem) => (
-                      <div key={queueItem._id}>
-                        <input type="checkbox" id={queueItem._id} value={queueItem._id} checked={queue.includes(queueItem._id)} onChange={handleCheckboxChange} />
-                        <label htmlFor={queueItem._id}>{queueItem.department}</label>
-                      </div>
-                    ))}
-              </div>
               <button onClick={handleClick}>Add</button>
             </form>
           </div>

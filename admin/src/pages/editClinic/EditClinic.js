@@ -8,6 +8,7 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { clinicInputs } from "../../formSource";
 import useFetch from "../../hooks/useFetch";
 import Select from "react-select";
+import { AuthContext } from "../../context/AuthContext";
 
 const EditClinic = () => {
   const { id } = useParams();
@@ -20,7 +21,7 @@ const EditClinic = () => {
   const [selectedAddress, setSelectedAddress] = useState("");
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const { data: queueData, loading: queueLoading } = useFetch("/queue");
+  const { data: queueData, loading: queueLoading } = useFetch(`/queue_by_hospital_id/${id}`);
 
   useEffect(() => {
     const fetchClinic = async () => {
@@ -166,10 +167,13 @@ const EditClinic = () => {
                     queueData.map((queueItem) => (
                       <div key={queueItem._id}>
                         <input type="checkbox" id={queueItem._id} value={queueItem._id} checked={queue.includes(queueItem._id)} onChange={handleCheckboxChange} />
-                        <label htmlFor={queueItem._id}>{queueItem.department}</label>
+                        <label htmlFor={queueItem._id}>
+                          {queueItem.start_time} - {queueItem.stop_time}
+                        </label>
                       </div>
                     ))}
               </div>
+
               <button type="submit">Update</button>
             </form>
           </div>

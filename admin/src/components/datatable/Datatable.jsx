@@ -5,12 +5,15 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Datatable = ({ columns }) => {
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const path = location.pathname.split("/")[1];
   const [list, setList] = useState([]);
-  const { data, loading, error } = useFetch(`/${path}`);
+  const { data, loading, error } = useFetch(`/${path}/auth/${user.username}`);
 
   useEffect(() => {
     setList(data);
