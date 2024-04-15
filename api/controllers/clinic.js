@@ -1,5 +1,5 @@
 import Clinic from "../models/Clinic.js";
-import Room from "../models/Room.js";
+import Queue from "../models/Queue.js";
 
 export const createClinic = async (req, res, next) => {
   const newClinic = new Clinic(req.body);
@@ -84,8 +84,8 @@ export const getClinicRooms = async (req, res, next) => {
   try {
     const Clinic = await Clinic.findById(req.params.id);
     const list = await Promise.all(
-      Clinic.rooms.map((room) => {
-        return Room.findById(room);
+      Clinic.queue.map((Queue) => {
+        return Queue.findById(Queue);
       })
     );
     res.status(200).json(list);

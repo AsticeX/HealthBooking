@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const AppointmentSchema = new mongoose.Schema(
   {
     name: String,
-    last_name: String,
+    lastname: String,
     hospital: String,
     department: Array,
     vaccine_name: Number,

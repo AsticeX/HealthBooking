@@ -32,9 +32,10 @@ import VaccinesIcon from "@mui/icons-material/Vaccines";
 import SettingsIcon from "@mui/icons-material/Settings";
 const drawerWidth = 240;
 const navItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Search', href: '/hospital' },
-  { name: 'Booking', href: '/Main' }
+  { name: 'หน้าหลัก', href: '/' },
+  { name: 'คำนวณราคาวัคซีน', href: '/' },
+  { name: 'ค้นหาสถานบริการ', href: '/hospital' },
+  { name: 'จองคลินิค', href: '/Main' }
 ];
 
 const Navbar = (props) => {
@@ -167,14 +168,14 @@ const Navbar = (props) => {
                   <MenuItem onClick={handleCloseAvatar}>
                     <ListItemIcon>
                       <PersonOutlineIcon fontSize="medium" />
-                    </ListItemIcon> <a href='/profile' style={{color:"black",textDecoration:"none"}}>Profile</a>
+                    </ListItemIcon> <a href='/profile' style={{color:"black",textDecoration:"none"}}>โปรไฟล์</a>
                   </MenuItem>
                   <MenuItem onClick={handleCloseAvatar} href='/vaccine'>
                     <ListItemIcon>
                       <IconButton href="/vaccine">
                       <VaccinesIcon fontSize="medium" hr />
                       </IconButton>
-                    </ListItemIcon>  <a href='/vaccine' style={{color:"black",textDecoration:"none"}}>My Vaccine</a>
+                    </ListItemIcon>  <a href='/vaccine' style={{color:"black",textDecoration:"none"}}>บันทึกวัคซีน</a>
                   </MenuItem>
                   <Divider />
                   {/* <MenuItem onClick={handleCloseAvatar}>
@@ -187,7 +188,7 @@ const Navbar = (props) => {
                     <ListItemIcon>
                       <ExitToAppIcon fontSize="medium" />
                     </ListItemIcon>
-                   Logout
+                   ออกจากระบบ
                   </MenuItem>
                 </Menu>
               </React.Fragment>
