@@ -26,13 +26,13 @@ const Main = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setOpenSnackbar(false);
+  
   };
   return (
     <div>
       <Navbar />
       {/* <SearchItem /> */}
-      <Header/>
+      {/* <Header/> */}
       <div className="homeContainer">
         {/* <Featured /> */}
         {/* <h1 className="homeTitle">Browse by property type</h1> */}
