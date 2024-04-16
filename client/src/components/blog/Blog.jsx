@@ -12,13 +12,12 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const BlogHome = () => {
-  const [age, setAge] = useState('');
+  const [age, setAge] = useState(''); // Set the default value here
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [description, setDescription] = useState('');
   const [description2, setDescription2] = useState('');
   const [description3, setDescription3] = useState('');
-
 
   const handleChange = (event) => {
     const selectedValue = event.target.value;
@@ -36,12 +35,18 @@ const BlogHome = () => {
       .then((response) => {
         const options = response.data;
         setData(options);
+        setLoading(false); // Set loading to false after data is fetched
+        if (options.length > 0) {
+          // Set default value to the first option if data is available
+          setAge(options[0]._id);
+          setDescription(options[0].description);
+          setDescription2(options[0].description2);
+          setDescription3(options[0].description3);
+        }
       })
       .catch((error) => {
         console.error("Error fetching vaccine options:", error);
-      })
-      .finally(() => {
-        setLoading(false);
+        setLoading(false); // Ensure loading is set to false even on error
       });
   }, []);
 
@@ -82,27 +87,21 @@ const BlogHome = () => {
             <Typography variant="body1" mt={2} sx={{ fontSize: 18, color: "#EEEEE6" }}>
               ป้องกันโรค
             </Typography>
-            {description && (
-              <Typography variant="body1" mt={2} ml={2} sx={{ fontSize: { xs: 14, sm: 16 } }}>
-                {description}
-              </Typography>
-            )}
+            <Typography variant="body1" mt={2} ml={2} sx={{ fontSize: { xs: 14, sm: 16 } }}>
+              {description}
+            </Typography>
             <Typography variant="body1" mt={2} sx={{ fontSize: 18, color: "#EEEEE6" }}>
               ความต่อเนื่อง
             </Typography>
-            {description2 && (
-              <Typography variant="body1" mt={2} ml={2} sx={{ fontSize: { xs: 14, sm: 16 } }}>
-                {description2}
-              </Typography>
-            )}
+            <Typography variant="body1" mt={2} ml={2} sx={{ fontSize: { xs: 14, sm: 16 } }}>
+              {description2}
+            </Typography>
             <Typography variant="body1" mt={2} sx={{ fontSize: 18, color: "#EEEEE6" }}>
               ผลข้างเคียง
             </Typography>
-            {description3 && (
-              <Typography variant="body1" mt={2} ml={2} sx={{ fontSize: { xs: 14, sm: 16 } }}>
-                {description3}
-              </Typography>
-            )}
+            <Typography variant="body1" mt={2} ml={2} sx={{ fontSize: { xs: 14, sm: 16 } }}>
+              {description3}
+            </Typography>
           </CardContent>
         </Card>
       </Card>

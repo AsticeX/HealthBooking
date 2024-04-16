@@ -26,7 +26,7 @@ const Main = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setOpenSnackbar(false);
+  
   };
   return (
     <div>

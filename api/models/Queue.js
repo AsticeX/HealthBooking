@@ -7,7 +7,10 @@ const QueueSchema = new mongoose.Schema(
     start_time: String,
     stop_time: String,
     max_queue: Number,
-    count: Number,
+    count: {
+      type: Number,
+      default: 0,
+    },
     is_active: String,
   },
   { timestamps: true }

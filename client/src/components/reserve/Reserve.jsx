@@ -21,15 +21,15 @@ import MenuItem from '@mui/material/MenuItem';
 
 
 const Reserve = ({ setOpen, clinicId }) => {
-  const { dispatch } = useContext(AuthContext);
+  const { dispatch, user } = useContext(AuthContext);
   // const [selectedRooms, setSelectedRooms] = useState([]);
   const { data, loading, error } = useFetch(`/clinics/find/${clinicId}`);
-  const [age, setAge] = useState('');
-
+  const [departmentData, setDepartmentData] = useState('');
   // const { dates } = useContext(SearchContext);
   const navigate = useNavigate();
 
   const department = data.department
+
 
 
   const schema = Yup.object().shape({
@@ -41,17 +41,21 @@ const Reserve = ({ setOpen, clinicId }) => {
 
   const handleChangeClick = (event) => {
     const selectedValue = event.target.value;
-    setAge(selectedValue || '');
+    setDepartmentData(selectedValue || '');
   };
 
 
   const handleClick = async (values, actions) => {
     dispatch({ type: "APPOINTMENT_START" });
+
     try {
-      const dataToSend = { ...values };
-      const res = await axios.post("/api/appointment", dataToSend);
-      dispatch({ type: "APPOINTMENT_SUCCESS", payload: res.data.details });
-      navigate("/main", { state: { fromLogin: true } });
+      if (user) {
+        const dataToSend = { ...values, department: departmentData, hospital: clinicId, user_Id: `${user._id}` };
+        const res = await axios.post(`${process.env.REACT_APP_API}/appointment`, dataToSend);
+        dispatch({ type: "APPOINTMENT_SUCCESS", payload: res.data.details });
+        navigate("/main", { state: { fromLogin: true } });
+      }
+
     } catch (err) {
       console.error("Appointment failed:", err);
       dispatch({ type: "APPOINTMENT_FAILURE", payload: err.response.data });
@@ -71,7 +75,7 @@ const Reserve = ({ setOpen, clinicId }) => {
         <span>กรอกข้อมูลการจอง</span>
         <Formik
           validationSchema={schema}
-          initialValues={{ name: "", lastname: "", }}
+          initialValues={{ name: `${user.name}`, lastname: `${user.lastname}` }}
           onSubmit={(values, actions) => handleClick(values, actions)}
         >
           {({
@@ -128,7 +132,7 @@ const Reserve = ({ setOpen, clinicId }) => {
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={age}
+                        value={departmentData}
                         label="Age"
                         onChange={handleChangeClick}
                         sx={{ backgroundColor: 'white' }}

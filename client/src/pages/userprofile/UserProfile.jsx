@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import "./UserProfile.css";
 import * as Yup from "yup";
 import axios from "axios";
 import { Formik } from "formik";
@@ -18,29 +19,18 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Navbar from "../../components/navbar/Navbar";
-
-
+import useFetch from "../../hooks/useFetch";
+import UploadIcon from '@mui/icons-material/Upload';
 const UserProfile = () => {
-  const { dispatch } = useContext(AuthContext);
+  const { dispatch, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [open, setOpen] = useState(false);
   const [phone, setPhone] = React.useState('');
   const [birthday, setBirthday] = React.useState(null);
+  const [profile, setProfile] = React.useState('');
+  const [files, setFiles] = useState("");
 
-
-  const [image, setImage] = useState(null);
-
-    const handleImageChange = (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          setImage(reader.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    };
 
 
   const handleChangeTel = (newPhone) => {
@@ -60,37 +50,46 @@ const UserProfile = () => {
   };
 
   const handleClick = async (values, actions) => {
-    dispatch({ type: "REGISTER_START" });
+
+    console.log("XXXXXXXXXX");
     try {
-      const dataToSend = { ...values, phone, birthday };
-      const res = await axios.post("/auth/register", dataToSend);
-      dispatch({ type: "REGISTER_SUCCESS", payload: res.data.details });
-      navigate("/Login", { state: { fromLogin: true } });
-      handleClickSnack();
+      if (user) {
+        const photo = await Promise.all(
+          Object.values(files).map(async (file) => {
+            const data = new FormData();
+            data.append("file", file);
+            data.append("upload_preset", "gijwryvm");
+            const uploadRes = await axios.post(
+              "https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload",
+              data
+            );
+            console.log();
+            const { url } = uploadRes.data;
+            return url;
+          })
+        );
+        const dataToSend = { ...values, birthday,photo:photo[0] };
+        const res = await axios.put(`/users/${user._id}`, dataToSend);
+        navigate("/main", { state: { fromLogin: true } });
+        handleClickSnack();
+      }
     } catch (err) {
       console.error("Registration failed:", err);
       setShowAlert(true);
-      dispatch({ type: "REGISTER_FAILURE", payload: err.response.data });
     }
   };
 
   const schema = Yup.object().shape({
-    username: Yup.string()
-      .required("Username is a required field"),
-    email: Yup.string()
-      .email('Invalid email')
-      .required("Email is a required field"),
     name: Yup.string()
       .required("Name is a required field"),
     lastname: Yup.string()
       .required("Lastname is a required field"),
-    phone: Yup.number()
-      .typeError("Phone Number must be a number")
-      .required("Phone Number is a required field"),
-    password: Yup.string()
-      .required("Password is a required field")
-    // .min(8, "Password must be at least 8 characters"),
+
   });
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <Grid container component="main" sx={{ height: '100vh', display: "flex", justifyContent: "center" }}>
@@ -111,7 +110,7 @@ const UserProfile = () => {
           </Typography>
           <Formik
             validationSchema={schema}
-            initialValues={{ password: "", name: "", lastname: "", disease: "" }}
+            initialValues={{ name: `${user.name}`, lastname: `${user.lastname}`, disease: `${user.disease}` }}
             onSubmit={(values, actions) => handleClick(values, actions)}
           >
             {({
@@ -123,15 +122,41 @@ const UserProfile = () => {
               handleSubmit,
             }) => (
               <Box component="form" onSubmit={handleSubmit} noValidate  >
-                <div style={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
-                  <input accept="image/*" id="upload-avatar-pic" type="file" hidden onChange={handleImageChange}/>
-                  <label htmlFor="upload-avatar-pic">
-                    <IconButton component="span" >
-                      <Avatar
-                        sx={{ width: 64, height: 64 }} src={image} />
-                    </IconButton>
-                  </label>
+                <div className="new">
+                  <div className="newContainer">
+                    <div className="bottom">
+                      <div className="left">
+                        <img
+                          src={
+                            files
+                              ? URL.createObjectURL(files[0])
+                              : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                          }
+                          alt=""
+                        />
+                      </div>
+                      
+                    </div>
+                    <div className="bottom">
+                        <form style={{ display: "flex", justifyContent: "center" }}>
+                          <div >
+                            <label htmlFor="file">
+                              Upload: <UploadIcon className="icon" />
+                            </label>
+                            <input
+                              type="file"
+                              id="file"
+                              // multiple
+                              onChange={(e) => setFiles(e.target.files)}
+                              style={{ display: "none" }}
+                            />
+                          </div>
+                        </form>
+                      </div>
+                  </div>
                 </div>
+
+
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -139,7 +164,7 @@ const UserProfile = () => {
                       required
                       fullWidth
                       id="name"
-                      label="Name"
+                      label="ชื่อ"
                       name="name"
                       autoComplete="name"
                       value={values.name}
@@ -157,7 +182,7 @@ const UserProfile = () => {
                       required
                       fullWidth
                       id="lastname"
-                      label="Lastname"
+                      label="นามสกุล"
                       name="lastname"
                       autoComplete="current-lastname"
                       value={values.lastname}
@@ -173,9 +198,9 @@ const UserProfile = () => {
                     <TextField
                       margin="normal"
                       fullWidth
-                      id="congenitaldisease"
-                      label="Congenital disease(not required)"
-                      name="congenitaldisease"
+                      id="disease"
+                      label="โรคประจำตัว(ถ้าไม่มีไม่จำเป็นต้องกรอก)"
+                      name="disease"
                       autoComplete="current-congenitaldisease"
                       value={values.disease}
                       onChange={handleChange}

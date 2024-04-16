@@ -159,7 +159,7 @@ const NewHotel = () => {
                 <input
                   type="file"
                   id="file"
-                  multiple
+                  // multiple
                   onChange={(e) => setFiles(e.target.files)}
                   style={{ display: "none" }}
                 />
