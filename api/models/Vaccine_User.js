@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const VaccineUserSchema = new mongoose.Schema(
   {
+    email: String,
     user_id: String,
     vaccine_name: String,
     expire: Date,
@@ -12,7 +13,7 @@ const VaccineUserSchema = new mongoose.Schema(
     type: String,
     hospital: Array,
     priority: Number,
-    flag: Boolean,
+    flag: Number,
     expire_small: Array,
   },
   { timestamps: true }

@@ -23,7 +23,7 @@ const VaccineComponent = () => {
   });
 
   const { user } = useContext(AuthContext);
-  const { vaccine_name_th, expire, hospital_name, dose_user, dose_require, hospital, priority, flag, type } = state;
+  const { vaccine_name_th, expire, email, dose_user, dose_require, hospital, priority, flag, type } = state;
 
   const inputValue = (name) => (event) => {
     if (name === "dose_user_1") {
@@ -152,6 +152,7 @@ const VaccineComponent = () => {
 
     axios
       .post(`${process.env.REACT_APP_API}/vaccine_user`, {
+        email: user.email,
         user_id: user.username,
         vaccine_name_th,
         expire,
@@ -167,6 +168,7 @@ const VaccineComponent = () => {
         setVaccineUsers([...vaccineUsers, response.data]);
 
         setState({
+          email: "",
           user_id: "",
           vaccine_name_th: "",
           expire: "",
@@ -174,7 +176,7 @@ const VaccineComponent = () => {
           dose_require: "",
           hospital: [],
           priority: 0,
-          flag: true,
+          flag: 0,
           type: "",
         });
 
