@@ -63,15 +63,6 @@ const NewHotel = () => {
         console.error("Error searching nearby:", error);
       });
   };
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    if (checked) {
-      setQueue((prevQueue) => [...prevQueue, value]);
-    } else {
-      setQueue((prevQueue) => prevQueue.filter((item) => item !== value));
-    }
-  };
-
   const handleDepartmentInputChange = (index, value) => {
     const newInputs = [...departmentInputs];
     newInputs[index] = value;
