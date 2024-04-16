@@ -8,11 +8,13 @@ import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import useFetch from '../../hooks/useFetch';
 
 const HospitalFinderComponent = () => {
   const [location, setLocation] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [mapInitialized, setMapInitialized] = useState(false);
+  const { data, loading, error } = useFetch(`/clinics}`);
 
   let map;
   let search;
@@ -66,7 +68,7 @@ const HospitalFinderComponent = () => {
 
   const routeMap = (hospitalId) => {
     const { latitude, longitude } = location;
-    console.log(hospitalId);
+    // console.log(hospitalId);
     showMap()
     axios.get("https://api.longdo.com/POIService/json/search?", {
       params: {
@@ -86,7 +88,6 @@ const HospitalFinderComponent = () => {
             map.Route.add(marker);
             map.Route.add({ lon: hospital.lon, lat: hospital.lat });
             map.Route.search();
-
           }
           return hospital;
         });

@@ -30,11 +30,15 @@ const UserSchema = new mongoose.Schema(
     },
     disease: {
       type: String,
+      default:null,
       required: false,
     },
     gender: {
       type: String,
       required: true,
+    },
+    photo: {
+      type: [String],    
     },
     isAdmin: {
       type: Boolean,

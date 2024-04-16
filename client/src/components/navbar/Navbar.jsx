@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
@@ -29,18 +29,27 @@ import Tooltip from "@mui/material/Tooltip";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import VaccinesIcon from "@mui/icons-material/Vaccines";
-import SettingsIcon from "@mui/icons-material/Settings";
+import { Link } from 'react-router-dom';
 const drawerWidth = 240;
 const navItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Search', href: '/hospital' },
-  { name: 'Booking', href: '/Main' }
+  { name: 'หน้าหลัก', href: '/' },
+  { name: 'คำนวณราคาวัคซีน', href: '/' },
+  { name: 'ค้นหาสถานบริการ', href: '/hospital' },
+  { name: 'จองคลินิค', href: '/Main' }
 ];
 
 const Navbar = (props) => {
   const { user, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [profile, setProfile] = React.useState(null);
+
+  useEffect(() => {
+    handleProflile()
+    
+  }, [profile])
+
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -48,6 +57,22 @@ const Navbar = (props) => {
   const handleCloseAvatar = () => {
     setAnchorEl(null);
   };
+
+  const handleProflile = async () => {
+    try {
+      if (user && user._id) {
+        const res = await axios.get(`/users/${user._id}`);
+        if (res && res.data) {
+          setProfile(res.data);
+        } else {
+          console.error("No data received from the server");
+        }
+      }
+    } catch (err) {
+      dispatch({ type: "LOGOUT_FAILURE", payload: err.response.data });
+    }
+  };
+
   const handleLogout = async () => {
     dispatch({ type: "LOGIN_START" });
     try {
@@ -65,6 +90,7 @@ const Navbar = (props) => {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -114,8 +140,8 @@ const Navbar = (props) => {
             <div style={{ display: "flex", alignItems: "center" }}>
               <React.Fragment>
                 <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-                  {user ? (
-                    user.username + " " + user.lastname
+                  {profile ? (
+                    profile.name + " " + profile.lastname
                   ) : (
                     <div className="navItems" style={{ marginLeft: "auto" }}>
                       <Button variant="contained" href="/login" sx={{ background: "#32b372", fontSize: 16 }}>
@@ -123,11 +149,13 @@ const Navbar = (props) => {
                       </Button>
                     </div>
                   )}
+                  {profile &&  (
                   <Tooltip title="Account settings">
                     <IconButton onClick={handleClick} size="small" sx={{ ml: 1 }} aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined}>
-                      <Avatar sx={{ width: 32, height: 32 }}>{user.username}</Avatar>
+                      <Avatar sx={{ width: 32, height: 32 }} src={profile.photo[0]}></Avatar>
                     </IconButton>
                   </Tooltip>
+                  )}
                 </Box>
                 <Menu
                   anchorEl={anchorEl}
@@ -167,14 +195,14 @@ const Navbar = (props) => {
                   <MenuItem onClick={handleCloseAvatar}>
                     <ListItemIcon>
                       <PersonOutlineIcon fontSize="medium" />
-                    </ListItemIcon> <a href='/profile' style={{color:"black",textDecoration:"none"}}>Profile</a>
+                    </ListItemIcon> <a href='/profile' style={{ color: "black", textDecoration: "none" }}>โปรไฟล์</a>
                   </MenuItem>
                   <MenuItem onClick={handleCloseAvatar} href='/vaccine'>
                     <ListItemIcon>
                       <IconButton href="/vaccine">
-                      <VaccinesIcon fontSize="medium" hr />
+                        <VaccinesIcon fontSize="medium" hr />
                       </IconButton>
-                    </ListItemIcon>  <a href='/vaccine' style={{color:"black",textDecoration:"none"}}>My Vaccine</a>
+                    </ListItemIcon>  <a href='/vaccine' style={{ color: "black", textDecoration: "none" }}>บันทึกวัคซีน</a>
                   </MenuItem>
                   <Divider />
                   {/* <MenuItem onClick={handleCloseAvatar}>
@@ -187,7 +215,7 @@ const Navbar = (props) => {
                     <ListItemIcon>
                       <ExitToAppIcon fontSize="medium" />
                     </ListItemIcon>
-                   Logout
+                    ออกจากระบบ
                   </MenuItem>
                 </Menu>
               </React.Fragment>

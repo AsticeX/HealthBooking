@@ -26,52 +26,35 @@ const slideNumberStyle = {
 }
 const data = [
   {
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/GoldenGateBridge-001.jpg/1200px-GoldenGateBridge-001.jpg",
-    // caption: `<div>
-    //             <br/>
-    //             Next line
-    //           </div>`
+    image: "https://www.sikarin.com/wp-content/uploads/2021/06/14267362885810-1024x683.jpg",
   },
   {
-    image: "./././Pictures/bb.jpg",
+    image: "https://obs-phwebsite-prd.obs.ap-southeast-2.myhuaweicloud.com/psuv/20221202132724-1%E0%B8%A7%E0%B8%B1%E0%B8%84%E0%B8%8B%E0%B8%B5%E0%B8%99%E0%B8%AA%E0%B8%B3%E0%B8%AB%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B9%83%E0%B8%AB%E0%B8%8D%E0%B9%88%E0%B9%83%E0%B8%99%E0%B9%81%E0%B8%95%E0%B9%88%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B9%88%E0%B8%A7%E0%B8%87%E0%B8%AD%E0%B8%B2%E0%B8%A2%E0%B8%B8.jpg",
   },
   {
-    image: "https://static2.tripoto.com/media/filter/tst/img/735873/TripDocument/1537686560_1537686557954.jpg",
+    image: "https://www.nakornthon.com/Upload/Images/Content/637515065076727938/Image_AW_Banner_%E0%B8%84%E0%B8%B9%E0%B9%88%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%9A%E0%B8%A3%E0%B8%B4%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%89%E0%B8%B5%E0%B8%94%E0%B8%A7%E0%B8%B1%E0%B8%84%E0%B8%8B%E0%B8%B5%E0%B8%99%20COVID-19%20(%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%AA%E0%B8%A3%E0%B8%A3%E0%B8%82%E0%B8%AD%E0%B8%87%E0%B8%A3%E0%B8%B1%E0%B8%90%E0%B8%9A%E0%B8%B2%E0%B8%A5)%20%E0%B8%97%E0%B8%B5%E0%B9%88%20%E0%B8%A3%E0%B8%9E.%E0%B8%99%E0%B8%84%E0%B8%A3%E0%B8%98%E0%B8%99-03.jpg",
   },
   {
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Palace_of_Fine_Arts_%2816794p%29.jpg/1200px-Palace_of_Fine_Arts_%2816794p%29.jpg",
+    image: "https://www.nonthavej.co.th/datafiles/2023/Promotion/vaccine-adult/vaccine-adult-New-C-01.jpg",
   },
-  {
-    image: "https://i.natgeofe.com/n/f7732389-a045-402c-bf39-cb4eda39e786/scotland_travel_4x3.jpg",
-  },
-  {
-    image: "https://www.tusktravel.com/blog/wp-content/uploads/2020/07/Best-Time-to-Visit-Darjeeling-for-Honeymoon.jpg",
-  },
-  {
-    image: "https://www.omm.com/~/media/images/site/locations/san_francisco_780x520px.ashx",
-  },
-  {
-    image: "https://images.ctfassets.net/bth3mlrehms2/6Ypj2Qd3m3jQk6ygmpsNAM/61d2f8cb9f939beed918971b9bc59bcd/Scotland.jpg?w=750&h=422&fl=progressive&q=50&fm=jpg",
-  },
-  {
-    image: "https://www.oyorooms.com/travel-guide/wp-content/uploads/2019/02/summer-7.jpg",
-  }
+
+  
 ];
 const  CarouselHome =({MoviesPath_Description_JSON}) => {
   const classes = useStyles();
 
   return (
-    <div>
+    <div  style={{marginTop:65}}>
         <div>
           <Carousel
             data={data}
             time={2000}
-            width="100vw"
-            height="45vh"
+            width="100%"
+            height="80vh"
             captionStyle={captionStyle}
             // radius="10px"
             slideNumber={true}
-            slideNumberStyle={slideNumberStyle}
+            // slideNumberStyle={slideNumberStyle}
             captionPosition="bottom"
             automatic={true}
             dots={true}
@@ -79,6 +62,7 @@ const  CarouselHome =({MoviesPath_Description_JSON}) => {
             pauseIconSize="40px"
             slideBackgroundColor="darkgrey"
             slideImageFit="cover"
+
           />
         </div>
  </div>
