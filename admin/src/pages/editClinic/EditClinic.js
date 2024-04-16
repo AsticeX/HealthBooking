@@ -160,7 +160,7 @@ const EditClinic = () => {
                 Add Department
               </button>
               <div className="selectRooms">
-                <label>Rooms</label>
+                <label>Queue </label>
                 {queueLoading
                   ? "Loading..."
                   : queueData &&

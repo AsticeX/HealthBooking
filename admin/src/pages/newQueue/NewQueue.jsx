@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// Import necessary dependencies
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import useFetch from "../../hooks/useFetch";
 import { queueInputs } from "../../formSource";
@@ -14,9 +15,22 @@ const NewQueue = () => {
   const [department, setDepartment] = useState("");
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
-  const { data, loading, error } = useFetch("/clinics");
-
+  const [userClinics, setUserClinics] = useState([]);
   const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchUserClinics = async () => {
+      try {
+        // Fetch clinics associated with the logged-in user
+        const response = await axios.get(`/clinics/auth/${user.username}`);
+        setUserClinics(response.data);
+      } catch (error) {
+        console.error("Error fetching user clinics:", error);
+      }
+    };
+
+    fetchUserClinics();
+  }, [user]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -69,12 +83,11 @@ const NewQueue = () => {
                   <option value="" disabled>
                     Select a clinic
                   </option>
-                  {data &&
-                    data.map((clinic) => (
-                      <option key={clinic._id} value={clinic._id}>
-                        {clinic.name}
-                      </option>
-                    ))}
+                  {userClinics.map((clinic) => (
+                    <option key={clinic._id} value={clinic._id}>
+                      {clinic.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="formInput">
@@ -83,15 +96,13 @@ const NewQueue = () => {
                   <option value="" disabled>
                     Select a department
                   </option>
-                  {data &&
-                    clinicId &&
-                    data
-                      .find((clinic) => clinic._id === clinicId)
-                      ?.department.map((dept) => (
-                        <option key={dept} value={dept}>
-                          {dept}
-                        </option>
-                      ))}
+                  {userClinics
+                    .find((clinic) => clinic._id === clinicId)
+                    ?.department.map((dept) => (
+                      <option key={dept} value={dept}>
+                        {dept}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="formInput">
