@@ -9,7 +9,7 @@ import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
-import { hotelColumns, roomColumns, userColumns, queueColumns } from "./datatablesource";
+import { hotelColumns, userColumns, queueColumns } from "./datatablesource";
 import NewHotel from "./pages/newHotel/NewHotel";
 // import NewRoom from "./pages/newRoom/NewRoom";
 import NewQueue from "./pages/newQueue/NewQueue";

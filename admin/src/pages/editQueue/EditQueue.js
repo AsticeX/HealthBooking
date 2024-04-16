@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import "./editQueue.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const EditQueue = () => {
   const { id } = useParams();
@@ -15,6 +17,7 @@ const EditQueue = () => {
   const [clinics, setClinics] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchQueue = async () => {
@@ -96,13 +99,16 @@ const EditQueue = () => {
                   <option value="" disabled>
                     Select a clinic
                   </option>
-                  {clinics.map((clinic) => (
-                    <option key={clinic._id} value={clinic._id}>
-                      {clinic.name}
-                    </option>
-                  ))}
+                  {clinics
+                    .filter((clinic) => clinic.user_id === user.username) // Filter clinics based on user ID
+                    .map((clinic) => (
+                      <option key={clinic._id} value={clinic._id}>
+                        {clinic.name}
+                      </option>
+                    ))}
                 </select>
               </div>
+
               <div className="formInput">
                 <label>Select a department</label>
                 <select value={department} onChange={(e) => setDepartment(e.target.value)} required>
