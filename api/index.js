@@ -4,6 +4,12 @@ import cookieParser from 'cookie-parser';
 import { connectDB } from './config/db.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import mongoose from "mongoose";
+import authRoute from "./routes/auth.js";
+import usersRoute from "./routes/users.js";
+import clinicsRoute from "./routes/clinics.js";
+import roomsRoute from "./routes/rooms.js";
+
 
 import vaccine from "./routes/vaccine.js";
 import vaccine_userRoute from "./routes/vaccine_user.js";
