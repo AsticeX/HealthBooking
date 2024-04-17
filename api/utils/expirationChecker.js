@@ -128,7 +128,7 @@ const checkVaccineExpiration = async () => {
 
 const expirationChecker = () => {
   const now = new Date();
-  const targetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 1, 59, 0);
+  const targetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 1, 0, 0);
   const delay = targetTime.getTime() - now.getTime();
   if (delay < 0) {
     targetTime.setDate(targetTime.getDate() + 1);
