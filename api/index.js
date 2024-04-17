@@ -46,11 +46,6 @@ app.use("/api", vaccine_userRoute);
 app.use("/api", queueRoute);
 app.use("/api", appointmentRoute);
 
-app.get('/', (req, res) => {
-	res.status(200).json({ message: 'Hello World' });
-	// res.end('Hello World');
-});
-
 app.get('/hello', (req, res) => {
 	res.end('Hello from the hello route');
 });
