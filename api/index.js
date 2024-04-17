@@ -7,8 +7,7 @@ import clinicsRoute from "./routes/clinics.js";
 import roomsRoute from "./routes/rooms.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import swaggerUi from "swagger-ui-express";
-import swaggerSpec from "./config/swaggerConfig.js";
+
 import vaccine from "./routes/vaccine.js";
 import vaccine_userRoute from "./routes/vaccine_user.js";
 import queueRoute from "./routes/queue.js";
@@ -60,5 +59,3 @@ app.listen(8800, () => {
   console.log("Connected to the backend.");
   expirationChecker(); // Call the expiration checker function
 });
-
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

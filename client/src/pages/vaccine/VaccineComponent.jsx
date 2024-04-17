@@ -1,11 +1,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import Navbar from "../../components/navbar/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Select from "react-select";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { Button } from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 const VaccineComponent = () => {
   const [state, setState] = useState({
@@ -23,7 +32,7 @@ const VaccineComponent = () => {
   });
 
   const { user } = useContext(AuthContext);
-  const { vaccine_name_th, expire, email, dose_user, dose_require, hospital, priority, flag, type } = state;
+  const { vaccine_name_th, expire, dose_user, dose_require, hospital, priority, flag, type } = state;
 
   const inputValue = (name) => (event) => {
     if (name === "dose_user_1") {
@@ -373,75 +382,75 @@ const VaccineComponent = () => {
         </form>
 
         <br />
-        <h1>บันทึกวัคซีน</h1>
-
-        <div className="table-responsive">
-          <table className="table table-striped table-bordered">
-            <thead className="thead-dark">
-              <tr>
-                <th>Vaccine Name</th>
-                <th>Expire</th>
-                <th>Hospital Array</th>
-                <th>Dose User</th>
-                <th>Dose Require</th>
-                <th>Priority</th>
+        <TableContainer sx={{ mt: 8, p: 4 }}>
+          <h2 style={{ alignItem: "center", display: "flex", justifyContent: "center" }}>ประวัติการรักษา</h2>
+          <Table sx={{ minWidth: 650, mt: 4 }} aria-label="simple table">
+            <TableHead sx={{ backgroundColor: "#77B255" }}>
+              <TableRow>
+                <TableCell align="center">Vaccine Name</TableCell>
+                <TableCell align="center">Expire</TableCell>
+                <TableCell align="center">Hospital Array</TableCell>
+                <TableCell align="center">Dose User</TableCell>
+                <TableCell align="center">Dose Require</TableCell>
+                <TableCell align="center">Priority</TableCell>
                 {/* <th>Flag</th> */}
-                <th>Type</th>
+                <TableCell align="center">Type</TableCell>
                 {/* <th>User ID</th> */}
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
+                <TableCell align="center">Edit</TableCell>
+                <TableCell align="center">Delete</TableCell>
+              </TableRow>
+            </TableHead>
 
-            <tbody>
+            <TableBody sx={{ backgroundColor: "#EEEEE6" }}>
               {vaccineUsers.map((user) => (
-                <tr>
-                  <td>{user.vaccine_name}</td>
-                  <td>{user.expire ? new Date(user.expire).toLocaleDateString() : "ไม่มีวันหมดอายุ"}</td>
-                  <td>
+                <TableRow>
+                  <TableCell align="center">{user.vaccine_name}</TableCell>
+                  <TableCell align="center">{user.expire ? new Date(user.expire).toLocaleDateString() : "ไม่มีวันหมดอายุ"}</TableCell>
+                  <TableCell align="center">
                     {user.hospital.map((doseTime, index) => (
                       <div key={index}>{doseTime}</div>
                     ))}
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell align="center">
                     {user.dose_user.map((doseTime, index) => (
                       <div key={index}>{new Date(doseTime).toLocaleDateString()}</div>
                     ))}
-                  </td>
-                  <td>{user.dose_require}</td>
-                  <td>
+                  </TableCell>
+                  <TableCell align="center">{user.dose_require}</TableCell>
+                  <TableCell align="center">
                     {user.priority === 0 ? (
                       <span className="btn btn-danger" onClick={() => handleExpire(user)}>
-                        หมดอายุ
+                        <InfoOutlinedIcon className="icon" />
+                        &nbsp;หมดอายุ
                       </span>
                     ) : user.priority === 1 ? (
                       <span className="btn btn-success" onClick={() => handleExpire(user)}>
-                        ยังไม่หมดอายุ
+                        <CheckCircleOutlineIcon className="icon" />
+                        &nbsp;ยังไม่หมดอายุ
                       </span>
                     ) : (
                       <span className="badge badge-success">Low</span>
                     )}
-                  </td>
+                  </TableCell>
                   {/* <td>{user.flag ? "True" : "False"}</td> */}
-                  <td>{user.type}</td>
+                  <TableCell align="center">{user.type}</TableCell>
                   {/* <td>{user.user_id}</td> */}
-                  <td>
-                    <button className="btn btn-primary mr-2" onClick={() => handleEdit(user)}>
+                  <TableCell align="center">
+                    <Button variant="outlined" color="primary" onClick={() => handleEdit(user)}>
                       Edit
-                    </button>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger" onClick={() => handleDelete(user._id)}>
+                    </Button>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button variant="outlined" color="error" onClick={() => handleDelete(user._id)}>
                       Delete
-                    </button>
-                  </td>
-                </tr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
-
       <Modal show={formModalShow} onHide={handleCloseFormModal} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
           <Modal.Title>Vaccine User</Modal.Title>
@@ -679,7 +688,7 @@ const VaccineComponent = () => {
                 <input type="text" className="form-control" value={editUser.dose_require} readOnly />
               </div>
               <br />
-              <Button variant="primary" type="submit">
+              <Button variant="contained" color="primary" type="submit">
                 Save Changes
               </Button>
             </form>
