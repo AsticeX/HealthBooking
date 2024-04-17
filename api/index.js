@@ -17,6 +17,7 @@ import expirationChecker from "./utils/expirationChecker.js";
 
 
 dotenv.config();
+mongoose.set('strictQuery', false);
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO);
@@ -64,9 +65,11 @@ app.use((err, req, res, next) => {
 });
 
 
-connect();
-console.log("Connected to the backend.");
-expirationChecker(); // Call the expiration checker function
+app.listen(8800, () => {
+  connect();
+  console.log("Connected to the backend.");
+  expirationChecker(); // Call the expiration checker function
+});
 
 
 
