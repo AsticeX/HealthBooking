@@ -54,8 +54,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(8800, () => {
-  connect();
-  console.log("Connected to the backend.");
-  expirationChecker(); // Call the expiration checker function
-});
+
+connect();
+console.log("Connected to the backend.");
+expirationChecker(); // Call the expiration checker function
+
