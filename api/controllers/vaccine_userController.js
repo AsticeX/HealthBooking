@@ -84,3 +84,51 @@ export const getSingleVaccineUser = async (req, res, next) => {
     next(err);
   }
 };
+
+// export const checkVaccineExpiration = async () => {
+//   try {
+//     console.log("Checking vaccine expiration...");
+//     const expiredVaccines = await VaccineUser.find({ expire: { $lte: new Date() } });
+
+//     if (expiredVaccines.length > 0) {
+//       for (const vaccine of expiredVaccines) {
+//         await VaccineUser.findByIdAndUpdate(vaccine._id, { priority: 0 });
+
+//         // Retrieve user information associated with the expired vaccine
+//         const user = await User.findOne({ _id: vaccine.user_id });
+
+//         // Send email notification to the user about the expired vaccine
+//         if (user) {
+//           const token = jwt.sign({ id: user._id }, "jwt_secret_key", { expiresIn: "1d" });
+
+//           const transporter = nodemailer.createTransport({
+//             service: "gmail",
+//             auth: {
+//               user: "iceratana2@gmail.com",
+//               pass: "hlpv samr eicn gzrj",
+//             },
+//           });
+
+//           const mailOptions = {
+//             from: "iceratana2@gmail.com",
+//             to: user.email,
+//             subject: "Expired Vaccine Notification",
+//             html: `<p>Your vaccine (${vaccine.vaccine_name}) has expired. Please schedule a new vaccination appointment.</p>`,
+//           };
+
+//           transporter.sendMail(mailOptions, function (error, info) {
+//             if (error) {
+//               console.log("Error sending email:", error);
+//             } else {
+//               console.log(`Email notification sent to ${user.email} about the expired vaccine.`);
+//             }
+//           });
+//         }
+//       }
+//     } else {
+//       console.log("No vaccines have expired.");
+//     }
+//   } catch (error) {
+//     console.error("Error checking vaccine expiration:", error.message);
+//   }
+// };
