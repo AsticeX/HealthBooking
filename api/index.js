@@ -7,6 +7,8 @@ import clinicsRoute from "./routes/clinics.js";
 import roomsRoute from "./routes/rooms.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import bodyParser from 'body-parser';
+
 
 import vaccine from "./routes/vaccine.js";
 import vaccine_userRoute from "./routes/vaccine_user.js";
