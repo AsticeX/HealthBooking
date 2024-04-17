@@ -106,7 +106,7 @@ const UserProfile = () => {
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Profile
+            โปรไฟล์
           </Typography>
           <Formik
             validationSchema={schema}

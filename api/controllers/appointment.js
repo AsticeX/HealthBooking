@@ -58,3 +58,19 @@ export const deleteAppointment = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getAppointmentsByUserId = async (req, res, next) => {
+  try {
+    const { user_Id } = req.params;
+    // console.log(user_Id);
+    if (!user_Id) {
+      return res.status(400).json({ error: "User ID is required in the query." });
+    }
+
+    const appointment = await Appointment.find({ user_Id });
+
+    res.json(appointment);
+  } catch (err) {
+    next(err);
+  }
+};

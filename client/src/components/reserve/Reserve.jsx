@@ -16,7 +16,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 
 
@@ -25,11 +27,45 @@ const Reserve = ({ setOpen, clinicId }) => {
   // const [selectedRooms, setSelectedRooms] = useState([]);
   const { data, loading, error } = useFetch(`/clinics/find/${clinicId}`);
   const [departmentData, setDepartmentData] = useState('');
+  const [queue, setQueue] = useState([]);
+  const [selectedQueue, setSelectedQueue] = useState("");
+  const [date, setDate] = useState(null);
+
   // const { dates } = useContext(SearchContext);
   const navigate = useNavigate();
 
   const department = data.department
+  const hospitalName = data.name
 
+  // const queue = data.queue
+
+
+  const handleQueue = async (values, actions) => {
+    dispatch({ type: "APPOINTMENT_START" });
+    try {
+      if (user) {
+        const res = await axios.get(`${process.env.REACT_APP_API}/queue_by_hospital_id/${clinicId}`);
+        // console.log(res, "XXX");
+        const dataQueue = res.data
+        setQueue(dataQueue)
+        dispatch({ type: "APPOINTMENT_SUCCESS", payload: res.data.details });
+      }
+    } catch (err) {
+      console.error("Appointment failed:", err);
+      dispatch({ type: "APPOINTMENT_FAILURE", payload: err.response.data });
+    }
+  };
+
+
+  useEffect(() => {
+    handleQueue()
+    // console.log(queue);
+
+  }, [queue])
+
+  // useEffect(() => {
+  //   // console.log(queue);
+  // }, [])
 
 
   const schema = Yup.object().shape({
@@ -44,13 +80,26 @@ const Reserve = ({ setOpen, clinicId }) => {
     setDepartmentData(selectedValue || '');
   };
 
+  const handleQueueChange = (event) => {
+    const selectedQueueId = event.target.value;
+    setSelectedQueue(selectedQueueId || '');
+  };
 
   const handleClick = async (values, actions) => {
     dispatch({ type: "APPOINTMENT_START" });
 
     try {
       if (user) {
-        const dataToSend = { ...values, department: departmentData, hospital: clinicId, user_Id: `${user._id}` };
+        const dataToSend = {
+          ...values,
+          department: departmentData,
+          hospital: clinicId,
+          hospitalName: hospitalName,
+          user_Id: `${user._id}`,
+          queue: selectedQueue,
+          start_time: queue.find(item => item._id === selectedQueue)?.start_time, 
+          stop_time: queue.find(item => item._id === selectedQueue)?.stop_time,
+        };
         const res = await axios.post(`${process.env.REACT_APP_API}/appointment`, dataToSend);
         dispatch({ type: "APPOINTMENT_SUCCESS", payload: res.data.details });
         navigate("/main", { state: { fromLogin: true } });
@@ -75,7 +124,10 @@ const Reserve = ({ setOpen, clinicId }) => {
         <span>กรอกข้อมูลการจอง</span>
         <Formik
           validationSchema={schema}
-          initialValues={{ name: `${user.name}`, lastname: `${user.lastname}` }}
+          initialValues={{ 
+            name: user ? user.name : '', 
+            lastname: user ? user.lastname : '' 
+          }}
           onSubmit={(values, actions) => handleClick(values, actions)}
         >
           {({
@@ -146,14 +198,54 @@ const Reserve = ({ setOpen, clinicId }) => {
                     </FormControl>
                   )}
                 </Grid>
-
+                <Grid item xs={12} sm={12}>
+                  {!loading && queue && departmentData && (
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">คิว</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={selectedQueue}
+                        label="Age"
+                        onChange={handleQueueChange}
+                        sx={{ backgroundColor: 'white' }}
+                      >
+                        {queue
+                          .filter(queueItem => queueItem.department === departmentData) // Filter queue based on selected department
+                          .sort((a, b) => {
+                            return a.start_time.localeCompare(b.start_time);
+                          })
+                          .map(queueItem => (
+                            <MenuItem key={queueItem._id} value={queueItem._id}>
+                              {queueItem.start_time} น. - {queueItem.stop_time} น.
+                            </MenuItem>
+                          ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                </Grid>
+                <Grid item xs={12}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        sx={{ width: "100%" }}
+                        disablePast
+                        label="วันที่"
+                        value={data}
+                        onChange={(newValue, context) => {
+                          if (context.validationError == null) {
+                            setDate(newValue);
+                          }
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
                 <Grid item xs={12} sm={12}>
                   <TextField
                     margin="normal"
                     required
                     fullWidth
                     id="description"
-                    label="คำอธิบาย"
+                    label="หมายเหตุ"
                     name="description"
                     autoComplete="description"
                     autoFocus
@@ -167,6 +259,7 @@ const Reserve = ({ setOpen, clinicId }) => {
                 </Grid>
 
               </Grid>
+
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}> {/* Aligns the button to the right */}
                 <Button
                   type="submit"
