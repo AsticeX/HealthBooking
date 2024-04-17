@@ -4,13 +4,10 @@ import cookieParser from 'cookie-parser';
 import { connectDB } from './config/db.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import mongoose from "mongoose";
 import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import clinicsRoute from "./routes/clinics.js";
 import roomsRoute from "./routes/rooms.js";
-
-
 import vaccine from "./routes/vaccine.js";
 import vaccine_userRoute from "./routes/vaccine_user.js";
 import queueRoute from "./routes/queue.js";
@@ -21,18 +18,16 @@ import expirationChecker from "./utils/expirationChecker.js";
 dotenv.config();
 connectDB();
 
-const connect = async () => {
+const startServer = () => {
   try {
-    await mongoose.connect(process.env.MONGO);
-    console.log("Connected to MongoDB.");
-  } catch (error) {
-    throw error;
+    connectDB(process.env.MONGO)
+    app.listen(5000, () => {
+      console.log("Server listening on 5000 http://localhost:5000");
+    });
+  } catch (err) {
+    console.log(err)
   }
-};
-
-mongoose.connection.on("disconnected", () => {
-  console.log("MongoDB disconnected!");
-});
+}
 
 
 const app = express();
