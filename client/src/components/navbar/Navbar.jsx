@@ -30,7 +30,6 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import VaccinesIcon from "@mui/icons-material/Vaccines";
 import { Link } from 'react-router-dom';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 const drawerWidth = 240;
 const navItems = [
   { name: 'หน้าหลัก', href: '/' },
@@ -47,7 +46,7 @@ const Navbar = (props) => {
 
   useEffect(() => {
     handleProflile()
-
+    
   }, [profile])
 
 
@@ -77,7 +76,7 @@ const Navbar = (props) => {
   const handleLogout = async () => {
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API}/auth/logout`);
+      const res = await axios.post(`${process.env.REACT_APP_API}th/logout`);
       dispatch({ type: "LOGOUT_SUCCESS", payload: res.data.details });
       handleCloseAvatar();
       navigate("/", { state: { fromLogin: true } });
@@ -145,17 +144,17 @@ const Navbar = (props) => {
                     profile.name + " " + profile.lastname
                   ) : (
                     <div className="navItems" style={{ marginLeft: "auto" }}>
-                      <Button variant="contained" href="/login" sx={{ background: "black", fontSize: 16 }}>
-                        เข้าสู่ระบบ
+                      <Button variant="contained" href="/login" sx={{ background: "#32b372", fontSize: 16 }}>
+                        LOGIN
                       </Button>
                     </div>
                   )}
-                  {profile && (
-                    <Tooltip title="Account settings">
-                      <IconButton onClick={handleClick} size="small" sx={{ ml: 1 }} aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined}>
-                        <Avatar sx={{ width: 32, height: 32 }} src={profile.photo[0]}></Avatar>
-                      </IconButton>
-                    </Tooltip>
+                  {profile &&  (
+                  <Tooltip title="Account settings">
+                    <IconButton onClick={handleClick} size="small" sx={{ ml: 1 }} aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined}>
+                      <Avatar sx={{ width: 32, height: 32 }} src={profile.photo[0]}></Avatar>
+                    </IconButton>
+                  </Tooltip>
                   )}
                 </Box>
                 <Menu
@@ -200,13 +199,10 @@ const Navbar = (props) => {
                   </MenuItem>
                   <MenuItem onClick={handleCloseAvatar} href='/vaccine'>
                     <ListItemIcon>
-                      <VaccinesIcon fontSize="medium" />
+                      <IconButton href="/vaccine">
+                        <VaccinesIcon fontSize="medium" hr />
+                      </IconButton>
                     </ListItemIcon>  <a href='/vaccine' style={{ color: "black", textDecoration: "none" }}>บันทึกวัคซีน</a>
-                  </MenuItem>
-                  <MenuItem onClick={handleCloseAvatar} href='/vaccine'>
-                    <ListItemIcon>
-                      <AccessTimeIcon fontSize="medium" />
-                    </ListItemIcon>  <a href='/history' style={{ color: "black", textDecoration: "none" }}>ประวัติการรักษา</a>
                   </MenuItem>
                   <Divider />
                   {/* <MenuItem onClick={handleCloseAvatar}>
@@ -225,8 +221,8 @@ const Navbar = (props) => {
               </React.Fragment>
             </div>
           ) : (
-            <Button href="/login" style={{ color: "#fff", backgroundColor:'black',display: "flex", justifyContent: "center", alignItems: "center" }}>
-              เข้าสู่ระบบ
+            <Button href="/login" style={{ color: "#fff", backgroundColor: "black", display: "flex", justifyContent: "center", alignItems: "center" }}>
+              Login
             </Button>
           )}
         </Toolbar>
