@@ -16,7 +16,7 @@ const List = () => {
   //   const [options, setOptions] = useState(location.state.options);
 
   const { data, loading, error, reFetch } = useFetch(
-    `/clinics`
+    `${process.env.REACT_APP_API}/clinics`
   );
 
   const handleClick = () => {
