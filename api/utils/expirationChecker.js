@@ -64,7 +64,7 @@ const sendExpirationEmail = async (user) => {
                                               <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
                                                   เพื่อสุขภาพที่ดีคุณควรที่จะเข้ารับการฉีดวัคซีนเข็มกระตุ้น หากคุณข้ารับการฉีดวัคซีนเข็มกระตุ้น     สามารถแก้ใขประวัติของคุณได้ที่นี่🎉
                                               </p>
-                                              <a href="http://localhost:3000/vaccine"
+                                              <a href="https://healthbooking-client.vercel.app/vaccine"
                                                   style="background:#77B255;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">เช็คประวัติ</a>
                                           </td>
                                       </tr>
@@ -90,7 +90,6 @@ const sendExpirationEmail = async (user) => {
           </table>
           <!--/100% body table-->
       </body>`,
-        text: `http://localhost:3000/reset_password/${user._id}/${token}`,
       };
       await transporter.sendMail(mailOptions);
       console.log(`Expiration email sent to ${user.email}`);

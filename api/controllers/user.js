@@ -1,8 +1,7 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 import bcrypt from "bcryptjs";
-
 
 export const updateUser = async (req, res, next) => {
   try {
@@ -38,25 +37,24 @@ export const getUsers = async (req, res, next) => {
 };
 export const forgetPassword = async (req, res, next) => {
   const { email } = req.body;
-  User.findOne({ email: email })
-    .then(user => {
-      if (!user) {
-        return res.send({ Status: "User not existed" })
-      }
-      const token = jwt.sign({ id: user._id }, "jwt_secret_key", { expiresIn: "1d" })
-      var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'iceratana2@gmail.com',
-          pass: 'hlpv samr eicn gzrj'
-        }
-      });
+  User.findOne({ email: email }).then((user) => {
+    if (!user) {
+      return res.send({ Status: "User not existed" });
+    }
+    const token = jwt.sign({ id: user._id }, "jwt_secret_key", { expiresIn: "1d" });
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "iceratana2@gmail.com",
+        pass: "hlpv samr eicn gzrj",
+      },
+    });
 
-      var mailOptions = {
-        from: 'iceratana2@gmail.com',
-        to: `${user.email}`,
-        subject: 'Reset Password Link',
-        html: `<head>
+    var mailOptions = {
+      from: "iceratana2@gmail.com",
+      to: `${user.email}`,
+      subject: "Reset Password Link",
+      html: `<head>
           <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
           <title>Reset Password Email Template</title>
           <meta name="description" content="Reset Password Email Template.">
@@ -101,7 +99,7 @@ export const forgetPassword = async (req, res, next) => {
                                               <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
                                                   คุณทำการร้องขอการเปลี่ยนรหัสผ่านใหม่กดปุ่มด้านล่างเพื่อทำการเปลี่ยนรหัสผ่านใหม่  แต่ถ้าไม่ใช่คุณโปรดเพิกเฉยต่อการร้องขอนี้ 🎉
                                               </p>
-                                              <a href="http://localhost:3000/reset_password/${user._id}/${token}"
+                                              <a href="https://healthbooking-client.vercel.app/${user._id}/${token}"
                                                   style="background:#77B255;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">เปลี่ยนรหัสผ่าน</a>
                                           </td>
                                       </tr>
@@ -127,35 +125,36 @@ export const forgetPassword = async (req, res, next) => {
           </table>
           <!--/100% body table-->
       </body>`,
-          text: `http://localhost:3000/reset_password/${user._id}/${token}`
-      };
+      text: `https://healthbooking-client.vercel.app/reset_password/${user._id}/${token}`,
+    };
 
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          return res.send({ Status: "Success" })
-        }
-      });
-    })
-}
-
-export const resetPassword = async (req, res, next) =>{
-  const {id, token} = req.params
-  const {password} = req.body
-  jwt.verify(token, "jwt_secret_key", (err, decoded) => {
-      if(err) {
-          return res.json({Status: "Error with token"})
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
       } else {
-          const showpass = bcrypt.hash(password, 10)
-
-          .then(hash => {
-              const result = User.findByIdAndUpdate({_id: id}, {password: hash})
-              .then(u => res.send({Status: "Success"}))
-              .catch(err => res.send({Status: err}))
-              console.log(result)
-          })
-          .catch(err => res.send({Status: err}))
+        return res.send({ Status: "Success" });
       }
-  })
-}
+    });
+  });
+};
+
+export const resetPassword = async (req, res, next) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+  jwt.verify(token, "jwt_secret_key", (err, decoded) => {
+    if (err) {
+      return res.json({ Status: "Error with token" });
+    } else {
+      const showpass = bcrypt
+        .hash(password, 10)
+
+        .then((hash) => {
+          const result = User.findByIdAndUpdate({ _id: id }, { password: hash })
+            .then((u) => res.send({ Status: "Success" }))
+            .catch((err) => res.send({ Status: err }));
+          console.log(result);
+        })
+        .catch((err) => res.send({ Status: err }));
+    }
+  });
+};
