@@ -62,7 +62,7 @@ const Navbar = (props) => {
   const handleProflile = async () => {
     try {
       if (user && user._id) {
-        const res = await axios.get(`/users/${user._id}`);
+        const res = await axios.get(`${process.env.REACT_APP_API}/users/${user._id}`);
         if (res && res.data) {
           setProfile(res.data);
         } else {
@@ -77,7 +77,7 @@ const Navbar = (props) => {
   const handleLogout = async () => {
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await axios.post("/auth/logout");
+      const res = await axios.post(`${process.env.REACT_APP_API}/auth/logout`);
       dispatch({ type: "LOGOUT_SUCCESS", payload: res.data.details });
       handleCloseAvatar();
       navigate("/", { state: { fromLogin: true } });
