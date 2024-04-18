@@ -21,12 +21,12 @@ const EditClinic = () => {
   const [selectedAddress, setSelectedAddress] = useState("");
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const { data: queueData, loading: queueLoading } = useFetch(`/queue_by_hospital_id/${id}`);
+  const { data: queueData, loading: queueLoading } = useFetch(`${process.env.REACT_APP_API}/queue_by_hospital_id/${id}`);
 
   useEffect(() => {
     const fetchClinic = async () => {
       try {
-        const response = await axios.get(`/clinics/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API}/clinics/${id}`);
         const clinic = response.data;
         setClinicData(clinic);
         setFiles(clinic.photos); // Set uploaded photos
@@ -101,7 +101,7 @@ const EditClinic = () => {
         photos: list,
       };
 
-      const res = await axios.put(`/clinics/${id}`, updatedClinic);
+      const res = await axios.put(`${process.env.REACT_APP_API}/clinics/${id}`, updatedClinic);
       console.log(res.data);
     } catch (error) {
       console.error("Error updating clinic:", error);

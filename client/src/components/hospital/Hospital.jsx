@@ -14,7 +14,7 @@ const HospitalFinderComponent = () => {
   const [location, setLocation] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [mapInitialized, setMapInitialized] = useState(false);
-  const { data, loading, error } = useFetch(`/clinics}`);
+  const { data, loading, error } = useFetch(`${process.env.REACT_APP_API}/clinics}`);
 
   let map;
   let search;

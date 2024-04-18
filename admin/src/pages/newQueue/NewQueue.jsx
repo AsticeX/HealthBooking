@@ -22,7 +22,7 @@ const NewQueue = () => {
     const fetchUserClinics = async () => {
       try {
         // Fetch clinics associated with the logged-in user
-        const response = await axios.get(`/clinics/auth/${user.username}`);
+        const response = await axios.get(`${process.env.REACT_APP_API}/clinics/auth/${user.username}`);
         setUserClinics(response.data);
       } catch (error) {
         console.error("Error fetching user clinics:", error);

@@ -41,7 +41,7 @@ const Reset = () => {
         dispatch({ type: "REGISTER_START" });
         try {
             // console.log("XXXXX",token);
-            const res = await axios.post(`/users/reset-password/${id}/${token}`, values);
+            const res = await axios.post(`${process.env.REACT_APP_API}/users/reset-password/${id}/${token}`, values);
             dispatch({ type: "REGISTER_SUCCESS", payload: res.data.details });
             navigate("/Login", { state: { fromLogin: true } });
             handleClickSnack();

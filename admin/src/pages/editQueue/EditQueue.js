@@ -22,7 +22,7 @@ const EditQueue = () => {
   useEffect(() => {
     const fetchQueue = async () => {
       try {
-        const response = await axios.get(`/queue/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API}/queue/${id}`);
         const data = response.data;
         setClinicId(data.hospital_id);
         setDepartment(data.department);
@@ -37,7 +37,7 @@ const EditQueue = () => {
 
     const fetchClinics = async () => {
       try {
-        const response = await axios.get("/clinics");
+        const response = await axios.get(`${process.env.REACT_APP_API}/clinics`);
         setClinics(response.data);
       } catch (err) {
         console.error("Error fetching clinics:", err);
@@ -52,7 +52,7 @@ const EditQueue = () => {
     const fetchDepartments = async () => {
       try {
         if (clinicId) {
-          const response = await axios.get(`/clinics/${clinicId}/departments`);
+          const response = await axios.get(`${process.env.REACT_APP_API}/clinics/${clinicId}/departments`);
           setDepartments(response.data);
         }
       } catch (err) {
@@ -66,7 +66,7 @@ const EditQueue = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/queue/${id}`, {
+      await axios.put(`${process.env.REACT_APP_API}/queue/${id}`, {
         hospital_id: clinicId,
         department,
         start_time: startTime,

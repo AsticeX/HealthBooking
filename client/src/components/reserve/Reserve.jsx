@@ -25,7 +25,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 const Reserve = ({ setOpen, clinicId }) => {
   const { dispatch, user } = useContext(AuthContext);
   // const [selectedRooms, setSelectedRooms] = useState([]);
-  const { data, loading, error } = useFetch(`/clinics/find/${clinicId}`);
+  const { data, loading, error } = useFetch(`${process.env.REACT_APP_API}/clinics/find/${clinicId}`);
   const [departmentData, setDepartmentData] = useState('');
   const [queue, setQueue] = useState([]);
   const [selectedQueue, setSelectedQueue] = useState("");

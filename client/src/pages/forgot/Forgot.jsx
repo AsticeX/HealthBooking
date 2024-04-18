@@ -39,7 +39,7 @@ const Forgot = () => {
     const handleClick = async (values, actions) => {
         dispatch({ type: "REGISTER_START" });
         try {
-            const res = await axios.post("/users/forgot-password", values);
+            const res = await axios.post(`${process.env.REACT_APP_API}/users/forgot-password`, values);
             dispatch({ type: "REGISTER_SUCCESS", payload: res.data.details });
             navigate("/Login", { state: { fromLogin: true } });
             handleClickSnack();

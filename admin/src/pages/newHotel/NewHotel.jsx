@@ -21,7 +21,7 @@ const NewHotel = () => {
   const [latitude, setLatitude] = useState(null);
   const [longtidue, setLongtitude] = useState(null);
 
-  const { data, loading, error } = useFetch("/queue");
+  const { data, loading, error } = useFetch(`${process.env.REACT_APP_API}/queue`);
   const { user } = useContext(AuthContext);
 
   const handleChange = (e) => {

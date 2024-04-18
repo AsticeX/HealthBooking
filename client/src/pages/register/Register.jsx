@@ -53,7 +53,7 @@ const Register = () => {
     dispatch({ type: "REGISTER_START" });
     try {
       const dataToSend = { ...values, phone, birthday };
-      const res = await axios.post("/auth/register", dataToSend);
+      const res = await axios.post(`${process.env.REACT_APP_API}/auth/register`, dataToSend);
       dispatch({ type: "REGISTER_SUCCESS", payload: res.data.details });
       navigate("/Login", { state: { fromLogin: true } });
       handleClickSnack();
