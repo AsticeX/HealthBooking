@@ -9,7 +9,7 @@ import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
-import { hotelColumns, userColumns, queueColumns } from "./datatablesource";
+import { hotelColumns, userColumns, queueColumns, appointmentColumns } from "./datatablesource";
 import NewHotel from "./pages/newHotel/NewHotel";
 // import NewRoom from "./pages/newRoom/NewRoom";
 import NewQueue from "./pages/newQueue/NewQueue";
@@ -43,12 +43,38 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="users">
+            {/* <Route path="users">
               <Route
                 index
                 element={
                   <ProtectedRoute>
                     <List columns={userColumns} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path=":userId"
+                element={
+                  <ProtectedRoute>
+                    <Single />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="new"
+                element={
+                  <ProtectedRoute>
+                    <New inputs={userInputs} title="Add New User" />
+                  </ProtectedRoute>
+                }
+              />
+            </Route> */}
+            <Route path="appointment">
+              <Route
+                index
+                element={
+                  <ProtectedRoute>
+                    <List columns={appointmentColumns} />
                   </ProtectedRoute>
                 }
               />
