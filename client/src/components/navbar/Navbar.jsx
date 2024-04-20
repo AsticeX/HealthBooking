@@ -153,7 +153,8 @@ const Navbar = (props) => {
                   {profile && (
                     <Tooltip title="Account settings">
                       <IconButton onClick={handleClick} size="small" sx={{ ml: 1 }} aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined}>
-                        <Avatar sx={{ width: 32, height: 32 }} src={profile.photo[0]}></Avatar>
+                      <Avatar sx={{ width: 32, height: 32 }} src={profile?.photo?.[0]}></Avatar>
+
                       </IconButton>
                     </Tooltip>
                   )}
