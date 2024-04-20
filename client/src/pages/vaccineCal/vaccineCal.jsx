@@ -103,7 +103,7 @@ const VaccineCal = () => {
     <div style={{ backgroundColor: "#EEEEE6", minHeight: "100vh" }}>
       <TableContainer sx={{ mt: 8, p: 4 }}>
         <Navbar />
-        <h2 style={{ alignItems: "center", display: "flex", justifyContent: "center" }}>ค้นหาหาวัคซีน</h2>
+        <h2 style={{ alignItems: "center", display: "flex", justifyContent: "center" }}>ค้นหาวัคซีน</h2>
         <Grid container component="main" sx={{ mt: 2 }}>
           <Box component="form" noValidate sx={{ width: '100%', pl: 2, pr: 2 }}>
             <Grid container spacing={2}>
