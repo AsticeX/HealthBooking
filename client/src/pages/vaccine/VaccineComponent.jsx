@@ -403,7 +403,7 @@ const VaccineComponent = () => {
           <br />
           <Box sx={{ height: 2, bgcolor: "#BBBBBB81" }}></Box>
           <TableContainer sx={{ mt: 8, p: 4 }}>
-            <h2 style={{ alignItem: "center", display: "flex", justifyContent: "center" }}>ประวัติการรักษา</h2>
+            <h2 style={{ alignItem: "center", display: "flex", justifyContent: "center" }}>ประวัติการฉีดวัคซีน</h2>
             <Table sx={{ minWidth: 650, mt: 4 }} aria-label="simple table">
               <TableHead sx={{ backgroundColor: "#77B255" }}>
                 <TableRow>

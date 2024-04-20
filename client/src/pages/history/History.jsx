@@ -84,7 +84,7 @@ const History = () => {
     <div style={{ backgroundColor: "#EEEEE6", minHeight: "100vh" }}>
       <TableContainer sx={{ mt: 8, p: 4 }}>
         <Navbar />
-        <h2 style={{ alignItems: "center", display: "flex", justifyContent: "center" }}>ประวัติการรักษา</h2>
+        <h2 style={{ alignItems: "center", display: "flex", justifyContent: "center" }}>บันทึกการเข้ารับบริการทางการแพทย์</h2>
         <Table sx={{ minWidth: 650, mt: 4 }} aria-label="simple table">
           <TableHead sx={{ backgroundColor: "#77B255" }}>
             <TableRow>

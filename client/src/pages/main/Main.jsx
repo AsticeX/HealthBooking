@@ -36,11 +36,11 @@ const Main = () => {
         <ClinicList />
         <Footer />
       </div>
-      {/* <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
         <Alert onClose={handleCloseSnackbar} severity="success" variant="filled">
           Login Successful
         </Alert>
-      </Snackbar> */}
+      </Snackbar>
     </div>
   );
 };

@@ -260,12 +260,12 @@ const Reserve = ({ setOpen, clinicId }) => {
 
               </Grid>
 
-              <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}> {/* Aligns the button to the right */}
+              <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}> 
                 <Button
                   type="submit"
                   variant="contained"
                   sx={{ background: "#77B255" }}
-                  onClick={handleSubmit} // Add your submit handler function here
+                  onClick={handleSubmit} 
                 >
                   จอง
                 </Button>
