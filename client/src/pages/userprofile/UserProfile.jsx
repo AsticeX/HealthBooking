@@ -92,7 +92,7 @@ const UserProfile = () => {
   }
 
   return (
-    <Grid container component="main" sx={{ height: '100vh', display: "flex", justifyContent: "center" }}>
+    <Grid container component="main" sx={{ height: '100vh', display: "flex", justifyContent: "center" , backgroundColor:"#EEEEE6"}}>
       <Navbar />
       <CssBaseline />
       <Grid item xs={12} sm={8} md={5} elevation={6} square >
@@ -141,7 +141,7 @@ const UserProfile = () => {
                         <form style={{ display: "flex", justifyContent: "center" }}>
                           <div >
                             <label htmlFor="file">
-                              Upload: <UploadIcon className="icon" />
+                              อัพโหลด: <UploadIcon className="icon" />
                             </label>
                             <input
                               type="file"

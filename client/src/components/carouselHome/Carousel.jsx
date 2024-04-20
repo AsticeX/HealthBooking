@@ -44,7 +44,7 @@ const  CarouselHome =({MoviesPath_Description_JSON}) => {
   const classes = useStyles();
 
   return (
-    <div  style={{marginTop:65}}>
+    <div  style={{marginTop:55}}>
         <div>
           <Carousel
             data={data}

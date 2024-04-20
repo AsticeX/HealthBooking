@@ -65,7 +65,7 @@ const Hotel = () => {
 
 
   useEffect(() => {
-    
+
     if (latitude !== null && longitude !== null && data) {
       const latClinic = data.latitude;
       const lonClinic = data.longtitude;
@@ -73,7 +73,7 @@ const Hotel = () => {
       setDistanceClinic(distance);
     }
   }, [latitude, longitude, data]);
-  
+
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
@@ -121,7 +121,7 @@ const Hotel = () => {
   return (
     <div>
       <Navbar />
-      <Header type="list" />
+      {/* <Header type="list" /> */}
       {loading ? (
         "loading"
       ) : (
@@ -138,13 +138,13 @@ const Hotel = () => {
                 className="arrow"
                 onClick={() => handleMove("l")}
               />
-              <div className="sliderWrapper">
+              {/* <div className="sliderWrapper">
                 <img
                   src={data.photos[slideNumber]}
                   alt=""
                   className="sliderImg"
                 />
-              </div>
+              </div> */}
               <FontAwesomeIcon
                 icon={faCircleArrowRight}
                 className="arrow"
@@ -154,7 +154,7 @@ const Hotel = () => {
           )}
           <div className="hotelWrapper">
             {/* <button className="bookNow">Reserve or Book Now!</button> */}
-            <h1 className="hotelTitle">{data.name}</h1>
+            <h1 className="hotelTitle"><strong>{data.name}</strong></h1>
             <div className="hotelAddress">
               <FontAwesomeIcon icon={faLocationDot} />
               <span>{data.address}</span>
@@ -162,15 +162,15 @@ const Hotel = () => {
             <span className="hotelDistance">
               ระยะห่างจากคุณ – {distanceClinic.toFixed(2)} km
             </span>
-            <span className="hotelPriceHighlight">
+            {/* <span className="hotelPriceHighlight">
               Book a stay over ${data.cheapestPrice} at this property and get a
               free airport taxi
-            </span>
+            </span> */}
             <div className="hotelImages">
               {data.photos?.map((photo, i) => (
                 <div className="hotelImgWrapper" key={i}>
                   <img
-                    onClick={() => handleOpen(i)}
+                    // onClick={() => handleOpen(i)}
                     src={photo}
                     alt=""
                     className="hotelImg"
@@ -181,8 +181,9 @@ const Hotel = () => {
 
             <div className="hotelDetails">
               <div className="hotelDetailsTexts">
-                <h1 className="hotelTitle">{data.title}</h1>
-                <p className="hotelDesc">{data.desc}</p>
+                {/* <h1 className="hotelTitle">{data.title}</h1> */}
+               <span style={{ marginTop: 6,color:"#77B255" }}><strong>รายละเอียด</strong></span>
+                <p className="hotelDesc">{data.description}</p>
               </div>
               <div className="hotelDetailsPrice">
                 <button onClick={handleClick}>ทำการจอง</button>

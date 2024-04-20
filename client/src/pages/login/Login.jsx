@@ -38,7 +38,7 @@ const Login = () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_API}/auth/login`, values);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-      navigate("/Main", {state: { fromLogin: true }});
+      navigate("/main", {state: { fromLogin: true }});
       handleClickSnack();
     } catch (err) { 
       setShowAlert(true)

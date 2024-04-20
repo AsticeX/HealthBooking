@@ -51,19 +51,19 @@ const BlogHome = () => {
   }, []);
 
   return (
-    <div>
-      <Card sx={{ width: "100%", height: "700px", pl: 4,pr:4,pb:10, backgroundColor: "#EEEEE6" }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+      <Card sx={{width: '100%', backgroundColor: "#EEEEE6" ,p:2}}>
         <CardContent>
           <Typography sx={{ fontSize: 20, color: "#77B255" }} color="text.secondary" gutterBottom>
             ข้อมูลวัคซีน
           </Typography>
         </CardContent>
-        <Card sx={{ width:"100%",height: "100%", backgroundColor: "#77B255", borderRadius: 4 }}>
+        <Card sx={{ width: "100%", backgroundColor: "#77B255", borderRadius: 4 }}>
           <CardContent>
-            <Typography sx={{ fontSize: 18 }} color="text.secondary" gutterBottom>
+            <Typography sx={{ fontSize: 18 ,color:"#EEEEE6"}} color="text.secondary" gutterBottom>
               เลือกวัคซีน
             </Typography>
-            <FormControl sx={{ width: 200 }}>
+            <FormControl sx={{ width: '100%' }}>
               <InputLabel id="demo-simple-select-label">วัคซีน</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -105,7 +105,7 @@ const BlogHome = () => {
           </CardContent>
         </Card>
       </Card>
-    </div>
+    </Box>
   );
 }
 

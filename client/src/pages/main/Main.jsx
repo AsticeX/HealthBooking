@@ -26,27 +26,21 @@ const Main = () => {
     if (reason === 'clickaway') {
       return;
     }
-  
+
   };
   return (
-    <div>
+    <div style={{backgroundColor:"#77B255"}}>
       <Navbar />
-      {/* <SearchItem /> */}
-      {/* <Header/> */}
+      <Header/>
       <div className="homeContainer">
-        {/* <Featured /> */}
-        {/* <h1 className="homeTitle">Browse by property type</h1> */}
-        {/* <PropertyList /> */}
-        {/* <h1 className="homeTitle">Homes guests love</h1> */}
-        {/* <FeaturedProperties /> */}
         <ClinicList />
         <Footer />
       </div>
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+      {/* <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
         <Alert onClose={handleCloseSnackbar} severity="success" variant="filled">
           Login Successful
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
     </div>
   );
 };
