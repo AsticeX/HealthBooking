@@ -10,6 +10,16 @@ const SearchItem = ({ item }) => {
   const [longitude, setLongitude] = useState(null);
   const [distanceClinic, setDistanceClinic] = useState(0);
   
+
+  function ShortenLabel({ label, maxLength }) {
+    if (label.length <= maxLength) {
+      return <span>{label}</span>;
+    } else {
+      const shortenedLabel = label.substring(0, maxLength) + '...';
+      return <span title={label}>{shortenedLabel}</span>;
+    }
+  }
+  
   const deg2rad = (deg) => {
     return deg * (Math.PI / 180);
   };
@@ -76,7 +86,7 @@ const SearchItem = ({ item }) => {
         {/* <span className="siFeatures">{item.desc}</span> */}
         <span className="siCancelOp">รายละเอียด </span>
         <span className="siCancelOpSubtitle">
-        {item.description}
+         <ShortenLabel label={item.description} maxLength={200} />
         </span>
       </div>
       <div className="siDetails">

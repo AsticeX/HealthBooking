@@ -19,6 +19,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 // import Carousel from 'react-material-ui-carousel';
 import { Grid } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
@@ -33,7 +34,7 @@ import { Link } from 'react-router-dom';
 const drawerWidth = 240;
 const navItems = [
   { name: 'หน้าหลัก', href: '/' },
-  { name: 'คำนวณราคาวัคซีน', href: '/' },
+  { name: 'คำนวณราคาวัคซีน', href: '/vaccinecalculate' },
   { name: 'ค้นหาสถานบริการ', href: '/hospital' },
   { name: 'จองคลินิค', href: '/Main' }
 ];
@@ -199,10 +200,13 @@ const Navbar = (props) => {
                   </MenuItem>
                   <MenuItem onClick={handleCloseAvatar} href='/vaccine'>
                     <ListItemIcon>
-                      <IconButton href="/vaccine">
-                        <VaccinesIcon fontSize="medium" hr />
-                      </IconButton>
+                        <VaccinesIcon fontSize="medium"  />
                     </ListItemIcon>  <a href='/vaccine' style={{ color: "black", textDecoration: "none" }}>บันทึกวัคซีน</a>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseAvatar} href='/history'>
+                    <ListItemIcon>
+                      <AccessTimeIcon fontSize="medium" />
+                    </ListItemIcon>  <a href='/history' style={{ color: "black", textDecoration: "none" }}>ประวัติการรักษา</a>
                   </MenuItem>
                   <Divider />
                   {/* <MenuItem onClick={handleCloseAvatar}>

@@ -396,8 +396,8 @@ const VaccineComponent = () => {
                 <label>จำนวนโดสที่ต้องฉีด</label>
                 <input type="number" className="form-control" value={dose_require} onChange={inputValue("dose_require")} required min="1" />
               </div>
-
-              <input type="submit" value="ต่อไป" className="btn btn-primary mb-2" />
+              <Button type="submit" variant="contained" sx={{backgroundColor:"#77B255"}}>ต่อไป</Button>
+              {/* <input type="submit" value="ต่อไป" className="btn btn-primary mb-2" /> */}
             </form>
           </Box>
           <br />

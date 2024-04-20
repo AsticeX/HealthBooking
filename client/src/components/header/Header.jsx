@@ -1,186 +1,74 @@
-    import {
-    faBed,
-    faCalendarDays,
-    faCar,
-    faPerson,
-    faPlane,
-    faTaxi,
-  } from "@fortawesome/free-solid-svg-icons";
-  import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-  import "./header.css";
-  import { DateRange } from "react-date-range";
-  import { useContext, useState } from "react";
-  import "react-date-range/dist/styles.css"; // main css file
-  import "react-date-range/dist/theme/default.css"; // theme css file
-  import { format } from "date-fns";
-  import { useNavigate } from "react-router-dom";
-  import { SearchContext } from "../../context/SearchContext";
-  import { AuthContext } from "../../context/AuthContext";
+import React from 'react';
+import { Box, TextField } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
-  const Header = ({ type }) => {
-    const [destination, setDestination] = useState("");
-    const [openDate, setOpenDate] = useState(false);
-    const [dates, setDates] = useState([
-      {
-        startDate: new Date(),
-        endDate: new Date(),
-        key: "selection",
-      },
-    ]);
-    const [openOptions, setOpenOptions] = useState(false);
-    const [options, setOptions] = useState({
-      adult: 1,
-      children: 0,
-      room: 1,
-    });
+const Header = () => {
+  const [age, setAge] = React.useState('');
 
-    const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
-
-
-    const handleOption = (name, operation) => {
-      setOptions((prev) => {
-        return {
-          ...prev,
-          [name]: operation === "i" ? options[name] + 1 : options[name] - 1,
-        };
-      });
-    };
-
-    const { dispatch } = useContext(SearchContext);
-
-    const handleSearch = () => {
-      dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
-      navigate("/clinics", { state: { destination, dates, options } });
-    };
-
-    return (
-      <div className="header">
-        <div
-          className={
-            type === "list" ? "headerContainer listMode" : "headerContainer"
-          }
-        >
-          {type !== "list" && (
-            <>
-              <h1 className="headerTitle">
-                A lifetime of discounts? It's Genius.
-              </h1>
-              <div className="headerSearch">
-                <div className="headerSearchItem">
-                  <FontAwesomeIcon icon={faBed} className="headerIcon" />
-                  <input
-                    type="text"
-                    placeholder="Where are you going?"
-                    className="headerSearchInput"
-                    onChange={(e) => setDestination(e.target.value)}
-                  />
-                </div>
-                <div className="headerSearchItem">
-                  <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
-                  <span
-                    onClick={() => setOpenDate(!openDate)}
-                    className="headerSearchText"
-                  >{`${format(dates[0].startDate, "MM/dd/yyyy")} to ${format(
-                    dates[0].endDate,
-                    "MM/dd/yyyy"
-                  )}`}</span>
-                  {openDate && (
-                    <DateRange
-                      editableDateInputs={true}
-                      onChange={(item) => setDates([item.selection])}
-                      moveRangeOnFirstSelection={false}
-                      ranges={dates}
-                      className="date"
-                      minDate={new Date()}
-                    />
-                  )}
-                </div>
-                <div className="headerSearchItem">
-                  <FontAwesomeIcon icon={faPerson} className="headerIcon" />
-                  <span
-                    onClick={() => setOpenOptions(!openOptions)}
-                    className="headerSearchText"
-                  >{`${options.adult} adult · ${options.children} children · ${options.room} room`}</span>
-                  {openOptions && (
-                    <div className="options">
-                      <div className="optionItem">
-                        <span className="optionText">Adult</span>
-                        <div className="optionCounter">
-                          <button
-                            disabled={options.adult <= 1}
-                            className="optionCounterButton"
-                            onClick={() => handleOption("adult", "d")}
-                          >
-                            -
-                          </button>
-                          <span className="optionCounterNumber">
-                            {options.adult}
-                          </span>
-                          <button
-                            className="optionCounterButton"
-                            onClick={() => handleOption("adult", "i")}
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                      <div className="optionItem">
-                        <span className="optionText">Children</span>
-                        <div className="optionCounter">
-                          <button
-                            disabled={options.children <= 0}
-                            className="optionCounterButton"
-                            onClick={() => handleOption("children", "d")}
-                          >
-                            -
-                          </button>
-                          <span className="optionCounterNumber">
-                            {options.children}
-                          </span>
-                          <button
-                            className="optionCounterButton"
-                            onClick={() => handleOption("children", "i")}
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                      <div className="optionItem">
-                        <span className="optionText">Room</span>
-                        <div className="optionCounter">
-                          <button
-                            disabled={options.room <= 1}
-                            className="optionCounterButton"
-                            onClick={() => handleOption("room", "d")}
-                          >
-                            -
-                          </button>
-                          <span className="optionCounterNumber">
-                            {options.room}
-                          </span>
-                          <button
-                            className="optionCounterButton"
-                            onClick={() => handleOption("room", "i")}
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div className="headerSearchItem">
-                  <button className="headerBtn" onClick={handleSearch}>
-                    Search
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    );
+  const handleChange = (event) => {
+    setAge(event.target.value);
   };
 
-  export default Header;
+  return (
+    <Grid container component="main" sx={{ mt: 15 }}>
+      <Box component="form" noValidate sx={{ width: '100%', pl: 2, pr: 2 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              variant="filled"
+              id="username"
+              label="ค้นหา"
+              name="username"
+              autoComplete="username"
+              autoFocus
+              sx={{ backgroundColor: "white" }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'center' }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">บริการ</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={age}
+                label="Age"
+                onChange={handleChange}
+                sx={{ backgroundColor: "white" }}
+              >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'center' }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">ตัวกรอง</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={age}
+                label="Age"
+                onChange={handleChange}
+                sx={{ backgroundColor: "white" }}
+              >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+      </Box>
+    </Grid>
+  );
+};
+
+export default Header;

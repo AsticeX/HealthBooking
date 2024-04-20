@@ -65,7 +65,7 @@ const Hotel = () => {
 
 
   useEffect(() => {
-    
+
     if (latitude !== null && longitude !== null && data) {
       const latClinic = data.latitude;
       const lonClinic = data.longtitude;
@@ -73,7 +73,7 @@ const Hotel = () => {
       setDistanceClinic(distance);
     }
   }, [latitude, longitude, data]);
-  
+
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
@@ -121,7 +121,7 @@ const Hotel = () => {
   return (
     <div>
       <Navbar />
-      <Header type="list" />
+      {/* <Header type="list" /> */}
       {loading ? (
         "loading"
       ) : (
@@ -181,7 +181,8 @@ const Hotel = () => {
 
             <div className="hotelDetails">
               <div className="hotelDetailsTexts">
-                <h1 className="hotelTitle">{data.title}</h1>
+                {/* <h1 className="hotelTitle">{data.title}</h1> */}
+               <span style={{ marginTop: 6,color:"#77B255" }}><strong>รายละเอียด</strong></span>
                 <p className="hotelDesc">{data.description}</p>
               </div>
               <div className="hotelDetailsPrice">

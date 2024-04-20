@@ -11,6 +11,7 @@ import Hospital from "./pages/hospital/Hospital";
 import UserProfile from "./pages/userprofile/UserProfile";
 import Reset from "./pages/resetpassword/Reset";
 import History from "./pages/history/History";
+import VaccineCal from "./pages/vaccineCal/vaccineCal";
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +27,7 @@ function App() {
         <Route path="/hospital" element={<Hospital />} />
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/history" element={<History />} />
+        <Route path="/vaccinecalculate" element={<VaccineCal />} />
         <Route path="/reset_password/:id/:token" element={<Reset />} />
       </Routes>
     </BrowserRouter>

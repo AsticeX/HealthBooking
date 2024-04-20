@@ -13,11 +13,24 @@ import axios from "axios";
 import { Button } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import moment from "moment";
+import { Box, TextField } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-const History = () => {
+
+const VaccineCal = () => {
   const { dispatch, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [queue, setQueue] = useState([]);
+  const [birthday, setBirthday] = React.useState(null);
+
+
 
   useEffect(() => {
     handleQueue();
@@ -80,20 +93,89 @@ const History = () => {
     )
   );
 
+  const [age, setAge] = React.useState('');
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
   return (
     <div style={{ backgroundColor: "#EEEEE6", minHeight: "100vh" }}>
       <TableContainer sx={{ mt: 8, p: 4 }}>
         <Navbar />
-        <h2 style={{ alignItems: "center", display: "flex", justifyContent: "center" }}>ประวัติการรักษา</h2>
+        <h2 style={{ alignItems: "center", display: "flex", justifyContent: "center" }}>ค้นหาหาวัคซีน</h2>
+        <Grid container component="main" sx={{ mt: 2 }}>
+          <Box component="form" noValidate sx={{ width: '100%', pl: 2, pr: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    sx={{ width: "100%",backgroundColor: "white" }}
+                    disableFuture
+                    value={birthday}
+                    onChange={(newValue, context) => {
+                      if (context.validationError == null) {
+                        setBirthday(newValue);
+                      }
+                    }}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: 'center' }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">ราคาต่ำสุด</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={age}
+                    label="Age"
+                    onChange={handleChange}
+                    sx={{ backgroundColor: "white" }}
+                  >
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: 'center' }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">ราคาสูงสุด</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={age}
+                    label="Age"
+                    onChange={handleChange}
+                    sx={{ backgroundColor: "white" }}
+                  >
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                <Button
+                fullWidth
+                variant="contain"
+                sx={{backgroundColor:"#77B255"}}
+                >
+                  ค้นหา
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Grid>
         <Table sx={{ minWidth: 650, mt: 4 }} aria-label="simple table">
           <TableHead sx={{ backgroundColor: "#77B255" }}>
             <TableRow>
-              <TableCell>ชื่อ-นามสกุล</TableCell>
-              <TableCell align="center">วันที่</TableCell>
-              <TableCell align="center">คลินิค</TableCell>
-              <TableCell align="center">แผนก</TableCell>
-              <TableCell align="center">เวลา</TableCell>
-              <TableCell align="center">สถานะ</TableCell>
+              <TableCell>ชื่อวัคซีน</TableCell>
+              <TableCell align="center">ช่วงอายุ</TableCell>
+              <TableCell align="center">ประเภทวัคซีน</TableCell>
+              <TableCell align="center">ราคาวัคซีน</TableCell>
+              {/* <TableCell align="center">เวลา</TableCell> */}
+              <TableCell align="center">เลือก</TableCell>
               <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
@@ -161,7 +243,7 @@ const History = () => {
                         variant="outlined"
                         color="primary"
                         sx={{ ml: 2 }}
-                        // onClick={() => handleEdit(row)} // Assuming you have a handleEdit function for editing
+                      // onClick={() => handleEdit(row)} // Assuming you have a handleEdit function for editing
                       >
                         แก้ไข
                       </Button>
@@ -190,4 +272,4 @@ const History = () => {
   );
 };
 
-export default History;
+export default VaccineCal;

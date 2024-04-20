@@ -29,8 +29,9 @@ const Main = () => {
 
   };
   return (
-    <div>
+    <div style={{backgroundColor:"#77B255"}}>
       <Navbar />
+      <Header/>
       <div className="homeContainer">
         <ClinicList />
         <Footer />
