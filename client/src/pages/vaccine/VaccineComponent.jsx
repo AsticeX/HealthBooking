@@ -13,6 +13,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Button } from "@mui/material";
+import { Box } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
@@ -159,6 +160,13 @@ const VaccineComponent = () => {
       return;
     }
 
+    let priority = 1;
+    if (expire) {
+      priority = 1;
+    } else {
+      priority = 2;
+    }
+
     axios
       .post(`${process.env.REACT_APP_API}/vaccine_user`, {
         email: user.email,
@@ -238,6 +246,15 @@ const VaccineComponent = () => {
   const submitEditForm = (e) => {
     e.preventDefault();
 
+    // Check if expiration date is greater than today's date
+    const today = new Date();
+    const expireDate = new Date(editUser.expire);
+    let priority = 1; // Default priority
+
+    if (expireDate < today) {
+      priority = 0; // Set priority to 0 if expiration date is less than today
+    }
+
     axios
       .put(`${process.env.REACT_APP_API}/vaccine_user/${editUser._id}`, {
         user_id: editUser.user_id,
@@ -248,7 +265,7 @@ const VaccineComponent = () => {
         dose_user: editUser.dose_user,
         dose_require: editUser.dose_require,
         hospital: editUser.hospital,
-        priority: editUser.priority,
+        priority: priority, // Update priority based on expiration date
         flag: editUser.flag,
         vaccine_name: editUser.vaccine_name_th,
       })
@@ -353,104 +370,112 @@ const VaccineComponent = () => {
   };
 
   return (
-    <div className="container">
-      <div className="container p-5">
-        <Navbar />
-        <h1 className="mt-5">บันทึกวัคซีน</h1>
+    <div>
+      <Box sx={{ height: "100vh", bgcolor: "#F7F7F6" }}>
+        {" "}
+        <div className="  p-5">
+          <Navbar />
+          <Box>
+            <h1 className="mt-5">บันทึกวัคซีน</h1>
+            <form onSubmit={submitDose}>
+              <div className="form-group">
+                <label>วัคซีน</label>
+                <div className="form-group">
+                  <Select
+                    options={vaccineOptions.map((option) => ({ value: option.name, label: option.name }))}
+                    value={{ value: vaccine_name_th, label: vaccine_name_th }}
+                    onChange={(selectedOption) => handleSelectChange(selectedOption)}
+                  />
+                </div>
+              </div>
+              <div className="form-group">
+                <label>จำนวนโดสที่ฉีดไปแล้ว</label>
+                <input type="number" className="form-control" id="administeredDoses" required min="1" />
+              </div>
+              <div className="form-group mb-2">
+                <label>จำนวนโดสที่ต้องฉีด</label>
+                <input type="number" className="form-control" value={dose_require} onChange={inputValue("dose_require")} required min="1" />
+              </div>
 
-        <form onSubmit={submitDose}>
-          <div className="form-group">
-            <label>วัคซีน</label>
-            <div className="form-group">
-              <Select
-                options={vaccineOptions.map((option) => ({ value: option.name, label: option.name }))}
-                value={{ value: vaccine_name_th, label: vaccine_name_th }}
-                onChange={(selectedOption) => handleSelectChange(selectedOption)}
-              />
-            </div>
-          </div>
-          <div className="form-group">
-            <label>จำนวนโดสที่ฉีดไปแล้ว</label>
-            <input type="number" className="form-control" id="administeredDoses" required min="1" />
-          </div>
-          <div className="form-group mb-2">
-            <label>จำนวนโดสที่ต้องฉีด</label>
-            <input type="number" className="form-control" value={dose_require} onChange={inputValue("dose_require")} required min="1" />
-          </div>
-
-          <input type="submit" value="ต่อไป" className="btn btn-primary mb-2" />
-        </form>
-
-        <br />
-        <TableContainer sx={{ mt: 8, p: 4 }}>
-          <h2 style={{ alignItem: "center", display: "flex", justifyContent: "center" }}>ประวัติการรักษา</h2>
-          <Table sx={{ minWidth: 650, mt: 4 }} aria-label="simple table">
-            <TableHead sx={{ backgroundColor: "#77B255" }}>
-              <TableRow>
-                <TableCell align="center">Vaccine Name</TableCell>
-                <TableCell align="center">Expire</TableCell>
-                <TableCell align="center">Hospital Array</TableCell>
-                <TableCell align="center">Dose User</TableCell>
-                <TableCell align="center">Dose Require</TableCell>
-                <TableCell align="center">Priority</TableCell>
-                {/* <th>Flag</th> */}
-                <TableCell align="center">Type</TableCell>
-                {/* <th>User ID</th> */}
-                <TableCell align="center">Edit</TableCell>
-                <TableCell align="center">Delete</TableCell>
-              </TableRow>
-            </TableHead>
-
-            <TableBody sx={{ backgroundColor: "#EEEEE6" }}>
-              {vaccineUsers.map((user) => (
+              <input type="submit" value="ต่อไป" className="btn btn-primary mb-2" />
+            </form>
+          </Box>
+          <br />
+          <Box sx={{ height: 2, bgcolor: "#BBBBBB81" }}></Box>
+          <TableContainer sx={{ mt: 8, p: 4 }}>
+            <h2 style={{ alignItem: "center", display: "flex", justifyContent: "center" }}>ประวัติการรักษา</h2>
+            <Table sx={{ minWidth: 650, mt: 4 }} aria-label="simple table">
+              <TableHead sx={{ backgroundColor: "#77B255" }}>
                 <TableRow>
-                  <TableCell align="center">{user.vaccine_name}</TableCell>
-                  <TableCell align="center">{user.expire ? new Date(user.expire).toLocaleDateString() : "ไม่มีวันหมดอายุ"}</TableCell>
-                  <TableCell align="center">
-                    {user.hospital.map((doseTime, index) => (
-                      <div key={index}>{doseTime}</div>
-                    ))}
-                  </TableCell>
-                  <TableCell align="center">
-                    {user.dose_user.map((doseTime, index) => (
-                      <div key={index}>{new Date(doseTime).toLocaleDateString()}</div>
-                    ))}
-                  </TableCell>
-                  <TableCell align="center">{user.dose_require}</TableCell>
-                  <TableCell align="center">
-                    {user.priority === 0 ? (
-                      <span className="btn btn-danger" onClick={() => handleExpire(user)}>
-                        <InfoOutlinedIcon className="icon" />
-                        &nbsp;หมดอายุ
-                      </span>
-                    ) : user.priority === 1 ? (
-                      <span className="btn btn-success" onClick={() => handleExpire(user)}>
-                        <CheckCircleOutlineIcon className="icon" />
-                        &nbsp;ยังไม่หมดอายุ
-                      </span>
-                    ) : (
-                      <span className="badge badge-success">Low</span>
-                    )}
-                  </TableCell>
-                  {/* <td>{user.flag ? "True" : "False"}</td> */}
-                  <TableCell align="center">{user.type}</TableCell>
-                  {/* <td>{user.user_id}</td> */}
-                  <TableCell align="center">
-                    <Button variant="outlined" color="primary" onClick={() => handleEdit(user)}>
-                      Edit
-                    </Button>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button variant="outlined" color="error" onClick={() => handleDelete(user._id)}>
-                      Delete
-                    </Button>
-                  </TableCell>
+                  <TableCell align="center">ชื่อวัคซีน</TableCell>
+                  <TableCell align="center">วันหมดอายุ</TableCell>
+                  <TableCell align="center">โรงพยาบาลที่เข้ารับการฉีดวัคซีน</TableCell>
+                  <TableCell align="center">วันที่เข้ารับการฉีดวัคซีน</TableCell>
+                  <TableCell align="center">จำนวนโดสที่ต้องฉีด</TableCell>
+                  <TableCell align="center">สถานะ</TableCell>
+                  {/* <th>Flag</th> */}
+                  <TableCell align="center">ประเภท</TableCell>
+                  {/* <th>User ID</th> */}
+                  <TableCell align="center">ปรับแต่ง</TableCell>
+                  <TableCell align="center">ลบ</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+              </TableHead>
+
+              <TableBody sx={{ backgroundColor: "#EEEEE6" }}>
+                {vaccineUsers.map((user) => (
+                  <TableRow>
+                    <TableCell align="center">{user.vaccine_name}</TableCell>
+                    <TableCell align="center">{user.expire ? new Date(user.expire).toLocaleDateString() : "ไม่มีวันหมดอายุ"}</TableCell>
+                    <TableCell align="center">
+                      {user.hospital.map((doseTime, index) => (
+                        <div key={index}>{doseTime}</div>
+                      ))}
+                    </TableCell>
+                    <TableCell align="center">
+                      {user.dose_user.map((doseTime, index) => (
+                        <div key={index}>{new Date(doseTime).toLocaleDateString()}</div>
+                      ))}
+                    </TableCell>
+                    <TableCell align="center">{user.dose_require}</TableCell>
+                    <TableCell align="center">
+                      {user.priority === 0 ? (
+                        <span className="btn btn-danger" onClick={() => handleExpire(user)}>
+                          <InfoOutlinedIcon className="icon" />
+                          &nbsp;หมดอายุ
+                        </span>
+                      ) : user.priority === 1 ? (
+                        <span className="btn btn-success" onClick={() => handleExpire(user)}>
+                          <CheckCircleOutlineIcon className="icon" />
+                          &nbsp;ยังไม่หมดอายุ
+                        </span>
+                      ) : user.priority === 2 ? (
+                        <span className="btn btn-secondary">
+                          <CheckCircleOutlineIcon className="icon" />
+                          &nbsp;ไม่มีวันหมดอายุ
+                        </span>
+                      ) : null}
+                    </TableCell>
+                    {/* <td>{user.flag ? "True" : "False"}</td> */}
+                    <TableCell align="center">{user.type}</TableCell>
+                    {/* <td>{user.user_id}</td> */}
+                    <TableCell align="center">
+                      <Button variant="outlined" color="primary" onClick={() => handleEdit(user)}>
+                        Edit
+                      </Button>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button variant="outlined" color="error" onClick={() => handleDelete(user._id)}>
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </Box>
+
       <Modal show={formModalShow} onHide={handleCloseFormModal} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
           <Modal.Title>Vaccine User</Modal.Title>
@@ -570,13 +595,7 @@ const VaccineComponent = () => {
               <div className="form-group">
                 <label>Expire</label>
                 {editUser.expire ? (
-                  <input
-                    type="date"
-                    max={new Date().toISOString().split("T")[0]}
-                    className="form-control"
-                    value={editUser.expire?.split("T")[0]}
-                    onChange={(e) => setEditUser({ ...editUser, expire: e.target.value })}
-                  />
+                  <input type="date" className="form-control" value={editUser.expire?.split("T")[0]} onChange={(e) => setEditUser({ ...editUser, expire: e.target.value })} />
                 ) : (
                   <input type="text" className="form-control" value="Not specified" readOnly />
                 )}
