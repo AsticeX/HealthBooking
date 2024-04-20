@@ -4,6 +4,7 @@ const AppointmentSchema = new mongoose.Schema(
   {
     name: String,
     user_Id: String,
+    user_name: String,
     queue: String,
     lastname: String,
     hospital: String,
@@ -13,8 +14,8 @@ const AppointmentSchema = new mongoose.Schema(
     department: Array,
     status: {
       type: String,
-      enum: ['Pending', 'Complete', 'Cancel'],
-      default: 'Pending'
+      enum: ["Pending", "Complete", "Cancel"],
+      default: "Pending",
     },
     description: String,
   },

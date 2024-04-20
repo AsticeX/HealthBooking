@@ -36,6 +36,50 @@ export const userColumns = [
   },
 ];
 
+export const appointmentColumns = [
+  { field: "_id", headerName: "ID", width: 250 },
+  {
+    field: "name",
+    headerName: "Name",
+    width: 150,
+  },
+  {
+    field: "user_Id",
+    headerName: "User ID",
+    width: 150,
+  },
+  {
+    field: "hospital",
+    headerName: "Hospital",
+    width: 200,
+  },
+  {
+    field: "start_time",
+    headerName: "Start Time",
+    width: 150,
+  },
+  {
+    field: "stop_time",
+    headerName: "Stop Time",
+    width: 150,
+  },
+  {
+    field: "department",
+    headerName: "Department",
+    width: 150,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 120,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 200,
+  },
+];
+
 export const hotelColumns = [
   { field: "_id", headerName: "ID", width: 250 },
   {
