@@ -36,22 +36,13 @@ export const login = async (req, res, next) => {
       process.env.JWT_SECRET,
       { expiresIn: '5h' }
     );
-    const { password, isAdmin, ...otherDetails } = user._doc;
-    const domain = 'finalproejectweb-1.onrender.com';
-    const expirationDate = new Date();
-    expirationDate.setTime(expirationDate.getTime() + (5 * 60 * 60 * 1000));
-    res.cookie("access_token", token, {
-      httpOnly: true,
-      expires: expirationDate,
-      domain: domain
-    })
 
-      .status(200)
-      .json({ details: { ...otherDetails }, isAdmin,access_token: token });
+    res.status(200).json({ token });
   } catch (err) {
     next(err);
   }
 };
+
 
 
 export const logout = async (req, res, next) => {

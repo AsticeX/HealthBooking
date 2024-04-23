@@ -16,7 +16,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 const Login = () => {
   const { dispatch,user } = useContext(AuthContext);
@@ -40,9 +40,7 @@ const Login = () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_API}/auth/login`, values);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-      console.log(res.data);
-      const token = res.data.details.access_token;
-      Cookies.set('access_token', token, { expires: 1 });
+      localStorage.setItem('access_token', res.data.access_token);
       navigate("/main", { state: { fromLogin: true } });
       handleClickSnack();
     } catch (err) {
