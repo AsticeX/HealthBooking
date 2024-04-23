@@ -62,7 +62,7 @@ const Navbar = (props) => {
   const handleProflile = async () => {
     try {
       if (user && user._id) {
-        const res = await axios.get(`/users/${user._id}`);
+        const res = await axios.get(`${process.env.REACT_APP_API}/users/${user._id}`);
         if (res && res.data) {
           setProfile(res.data);
         } else {

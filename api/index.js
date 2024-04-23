@@ -1,10 +1,10 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
+import express from "express";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 
-import dotenv from 'dotenv';
-import cors from 'cors';
+import dotenv from "dotenv";
+import cors from "cors";
 import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import clinicsRoute from "./routes/clinics.js";
@@ -15,9 +15,8 @@ import queueRoute from "./routes/queue.js";
 import appointmentRoute from "./routes/appointment.js";
 import expirationChecker from "./utils/expirationChecker.js";
 
-
 dotenv.config();
-mongoose.set('strictQuery', false);
+mongoose.set("strictQuery", false);
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO);
@@ -31,14 +30,17 @@ mongoose.connection.on("disconnected", () => {
   console.log("MongoDB disconnected!");
 });
 
-
-
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+  })
+);
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
@@ -49,8 +51,8 @@ app.use("/api", vaccine_userRoute);
 app.use("/api", queueRoute);
 app.use("/api", appointmentRoute);
 
-app.get('/hello', (req, res) => {
-	res.end('Hello from the hello route');
+app.get("/hello", (req, res) => {
+  res.end("Hello from the hello route");
 });
 
 app.use((err, req, res, next) => {
@@ -64,13 +66,10 @@ app.use((err, req, res, next) => {
   });
 });
 
-
 app.listen(8800, () => {
   connect();
   console.log("Connected to the backend.");
   expirationChecker(); // Call the expiration checker function
 });
-
-
 
 export default app;

@@ -12,6 +12,11 @@ import UserProfile from "./pages/userprofile/UserProfile";
 import Reset from "./pages/resetpassword/Reset";
 import History from "./pages/history/History";
 import VaccineCal from "./pages/vaccineCal/vaccineCal";
+
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+
 function App() {
   return (
     <BrowserRouter>

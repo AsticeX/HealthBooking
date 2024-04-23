@@ -16,8 +16,10 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import Cookies from 'js-cookie';
+
 const Login = () => {
-  const { dispatch } = useContext(AuthContext);
+  const { dispatch,user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [open, setOpen] = useState(false);
@@ -38,9 +40,11 @@ const Login = () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_API}/auth/login`, values);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-      navigate("/main", {state: { fromLogin: true }});
+      // const token = res.data.details.access_token;
+      // Cookies.set('access_token', token, { expires: 1 });
+      navigate("/main", { state: { fromLogin: true } });
       handleClickSnack();
-    } catch (err) { 
+    } catch (err) {
       setShowAlert(true)
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
@@ -52,7 +56,7 @@ const Login = () => {
       .required("โปรดกรอกอีเมล"),
     password: Yup.string()
       .required("โปรดกรอกรหัสผ่าน")
-      // .min(8, "Password must be at least 8 characters"),
+    // .min(8, "Password must be at least 8 characters"),
   });
 
   return (
@@ -154,7 +158,7 @@ const Login = () => {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="/register" variant  ="body2">
+                    <Link href="/register" variant="body2">
                       {"ไม่มีบัญชี?สร้างบัญชี"}
                     </Link>
                   </Grid>
