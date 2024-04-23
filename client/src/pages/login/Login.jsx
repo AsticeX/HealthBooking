@@ -41,6 +41,7 @@ const Login = () => {
       const res = await axios.post(`${process.env.REACT_APP_API}/auth/login`, values);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
       localStorage.setItem('access_token', res.data.token);
+      axios.defaults.headers.common['access_token'] = res.data.token;
       // console.log(res.data);
       navigate("/main", { state: { fromLogin: true } });
       handleClickSnack();

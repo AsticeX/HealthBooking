@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { createError } from "../utils/error.js";
 
 export const verifyToken = (req, res, next) => {
-  const token = localStorage.getItem('access_token');;
+  const token = req.headers['access_token'];
   
   console.log(token,"XXXXXXXX");
   if (!token) {
