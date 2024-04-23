@@ -40,6 +40,7 @@ const Login = () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_API}/auth/login`, values);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+      console.log(res.data);
       const token = res.data.details.access_token;
       Cookies.set('access_token', token, { expires: 1 });
       navigate("/main", { state: { fromLogin: true } });

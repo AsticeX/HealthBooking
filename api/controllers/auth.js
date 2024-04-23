@@ -45,9 +45,9 @@ export const login = async (req, res, next) => {
       expires: expirationDate,
       domain: domain
     })
-    
+
       .status(200)
-      .json({ details: { ...otherDetails }, isAdmin,access_token:{...token  } });
+      .json({ details: { ...otherDetails }, isAdmin,access_token: token });
   } catch (err) {
     next(err);
   }
