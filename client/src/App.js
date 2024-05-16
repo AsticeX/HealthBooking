@@ -15,7 +15,7 @@ import VaccineCal from "./pages/vaccineCal/vaccineCal";
 
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 function App() {
   return (
