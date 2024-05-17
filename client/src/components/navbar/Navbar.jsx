@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
@@ -19,29 +19,22 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-// import Carousel from 'react-material-ui-carousel';
-import { Grid } from "@mui/material";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Tooltip from "@mui/material/Tooltip";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { Grid, CircularProgress, Avatar, Menu, MenuItem, ListItemIcon, Tooltip } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import VaccinesIcon from "@mui/icons-material/Vaccines";
 import { Link } from 'react-router-dom';
-import { useState } from "react";
+
 const drawerWidth = 240;
 const navItems = [
-  { name: "หน้าหลัก", href: "/" },
-  { name: "คำนวณราคาวัคซีน", href: "/vaccinecalculate" },
-  { name: "ค้นหาสถานบริการ", href: "/hospital" },
-  { name: "จองคลินิค", href: "/Main" },
+  { name: 'หน้าหลัก', href: '/' },
+  { name: 'คำนวณราคาวัคซีน', href: '/vaccinecalculate' },
+  { name: 'ค้นหาสถานบริการ', href: '/hospital' },
+  { name: 'จองคลินิค', href: '/Main' }
 ];
 
 const Navbar = (props) => {
-  // const { token} = useContext(AuthContext);
   const { user, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -49,10 +42,25 @@ const Navbar = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    handleProfile()
+    const handleProfile = async () => {
+      try {
+        setLoading(true);
+        if (user && user._id) {
+          const res = await axios.get(`${process.env.REACT_APP_API}/users/${user._id}`);
+          if (res && res.data) {
+            setProfile(res.data);
+          } else {
+            console.error("No data received from the server");
+          }
+        }
+      } catch (err) {
+        dispatch({ type: "LOGOUT_FAILURE", payload: err.response.data });
+      }
+      setLoading(false);
+    };
 
-  }, [profile])
-
+    handleProfile();
+  }, [user, dispatch]);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -60,23 +68,6 @@ const Navbar = (props) => {
   };
   const handleCloseAvatar = () => {
     setAnchorEl(null);
-  };
-
-  const handleProfile = async () => {
-    try {
-      if (user && user._id) {
-       
-        const res = await axios.get(`${process.env.REACT_APP_API}/users/${user._id}`);
-        // axios.defaults.headers.common['access_token'] = token;
-        if (res && res.data) {
-          setProfile(res.data);
-        } else {
-          console.error("No data received from the server");
-        }
-      }
-    } catch (err) {
-      dispatch({ type: "LOGOUT_FAILURE", payload: err.response.data });
-    }
   };
 
   const handleLogout = async () => {
@@ -90,8 +81,9 @@ const Navbar = (props) => {
       dispatch({ type: "LOGOUT_FAILURE", payload: err.response.data });
     }
   };
+
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -141,27 +133,18 @@ const Navbar = (props) => {
               </Button>
             ))}
           </Box>
-          {user ? (
+          {loading ? (
+            <CircularProgress color="inherit" />
+          ) : profile ? (
             <div style={{ display: "flex", alignItems: "center" }}>
               <React.Fragment>
                 <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-                  {profile ? (
-                    profile.name + " " + profile.lastname
-                  ) : (
-                    <div className="navItems" style={{ marginLeft: "auto" }}>
-                      <Button variant="contained" href="/login" sx={{ background: "black", fontSize: 16 }}>
-                        LOGIN
-                      </Button>
-                    </div>
-                  )}
-                  {profile && (
-                    <Tooltip title="Account settings">
-                      <IconButton onClick={handleClick} size="small" sx={{ ml: 1 }} aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined}>
+                  {profile.name + " " + profile.lastname}
+                  <Tooltip title="Account settings">
+                    <IconButton onClick={handleClick} size="small" sx={{ ml: 1 }} aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined}>
                       <Avatar sx={{ width: 32, height: 32 }} src={profile?.photo?.[0]}></Avatar>
-
-                      </IconButton>
-                    </Tooltip>
-                  )}
+                    </IconButton>
+                  </Tooltip>
                 </Box>
                 <Menu
                   anchorEl={anchorEl}
@@ -201,34 +184,22 @@ const Navbar = (props) => {
                   <MenuItem onClick={handleCloseAvatar}>
                     <ListItemIcon>
                       <PersonOutlineIcon fontSize="medium" />
-                    </ListItemIcon>{" "}
-                    <a href="/profile" style={{ color: "black", textDecoration: "none" }}>
-                      โปรไฟล์
-                    </a>
+                    </ListItemIcon>
+                    <Link to='/profile' style={{ color: "black", textDecoration: "none" }}>โปรไฟล์</Link>
                   </MenuItem>
-                  <MenuItem onClick={handleCloseAvatar} href="/vaccine">
+                  <MenuItem onClick={handleCloseAvatar}>
                     <ListItemIcon>
                       <VaccinesIcon fontSize="medium" />
-                    </ListItemIcon>{" "}
-                    <a href="/vaccine" style={{ color: "black", textDecoration: "none" }}>
-                      บันทึกวัคซีน
-                    </a>
+                    </ListItemIcon>
+                    <Link to='/vaccine' style={{ color: "black", textDecoration: "none" }}>บันทึกวัคซีน</Link>
                   </MenuItem>
-                  <MenuItem onClick={handleCloseAvatar} href="/history">
+                  <MenuItem onClick={handleCloseAvatar}>
                     <ListItemIcon>
                       <AccessTimeIcon fontSize="medium" />
-                    </ListItemIcon>{" "}
-                    <a href="/history" style={{ color: "black", textDecoration: "none" }}>
-                      ประวัติการรักษา
-                    </a>
+                    </ListItemIcon>
+                    <Link to='/history' style={{ color: "black", textDecoration: "none" }}>ประวัติการรักษา</Link>
                   </MenuItem>
                   <Divider />
-                  {/* <MenuItem onClick={handleCloseAvatar}>
-                    <ListItemIcon>
-                      <SettingsIcon fontSize="medium" />
-                    </ListItemIcon>
-                    Settings
-                  </MenuItem> */}
                   <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
                       <ExitToAppIcon fontSize="medium" />

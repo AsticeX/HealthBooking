@@ -31,7 +31,7 @@ const Main = () => {
   return (
     <div style={{backgroundColor:"#77B255"}}>
       <Navbar />
-      <Header/>
+      {/* <Header/> */}
       <div className="homeContainer">
         <ClinicList />
         <Footer />
