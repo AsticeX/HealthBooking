@@ -13,20 +13,16 @@ import Reset from "./pages/resetpassword/Reset";
 import History from "./pages/history/History";
 import VaccineCal from "./pages/vaccineCal/vaccineCal";
 import { useEffect } from "react";
+
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
-
-const api = axios.create({
-  baseURL: process.env.REACT_APP_API, 
-  withCredentials: true, 
-});
+// axios.defaults.withCredentials = true;
 
 function App() {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      api.defaults.headers.common['access_token'] = token; // Use the Axios instance created above
+      axios.defaults.headers.common['access_token'] = token;
     }
   }, []);
   return (
