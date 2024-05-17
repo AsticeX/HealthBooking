@@ -15,7 +15,9 @@ import VaccineCal from "./pages/vaccineCal/vaccineCal";
 import { useEffect } from "react";
 import axios from "axios";
 
-const api = create({
+axios.defaults.withCredentials = true;
+
+const api = axios.create({
   baseURL: process.env.REACT_APP_API, 
   withCredentials: true, 
 });
