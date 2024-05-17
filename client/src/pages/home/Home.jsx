@@ -9,7 +9,7 @@ const Home = () => {
       <Navbar />
       <Carousel/>
       <BlogHome />
-      <MailList />
+      {/* <MailList /> */}
       <Footer />
     </div>
   );

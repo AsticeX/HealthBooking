@@ -40,13 +40,15 @@ const navItems = [
 ];
 
 const Navbar = (props) => {
+  // const { token} = useContext(AuthContext);
   const { user, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [profile, setProfile] = React.useState(null);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    handleProflile()
+    // handleProfile()
 
   }, [profile])
 
@@ -59,10 +61,11 @@ const Navbar = (props) => {
     setAnchorEl(null);
   };
 
-  const handleProflile = async () => {
+  const handleProfile = async () => {
     try {
       if (user && user._id) {
         const res = await axios.get(`${process.env.REACT_APP_API}/users/${user._id}`);
+        // axios.defaults.headers.common['access_token'] = token;
         if (res && res.data) {
           setProfile(res.data);
         } else {
@@ -141,8 +144,8 @@ const Navbar = (props) => {
             <div style={{ display: "flex", alignItems: "center" }}>
               <React.Fragment>
                 <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-                  {profile ? (
-                    profile.name + " " + profile.lastname
+                  {user ? (
+                    user.name + " " + user.lastname
                   ) : (
                     <div className="navItems" style={{ marginLeft: "auto" }}>
                       <Button variant="contained" href="/login" sx={{ background: 'black', fontSize: 16 }}>
@@ -150,10 +153,10 @@ const Navbar = (props) => {
                       </Button>
                     </div>
                   )}
-                  {profile && (
+                  {user && (
                     <Tooltip title="Account settings">
                       <IconButton onClick={handleClick} size="small" sx={{ ml: 1 }} aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined}>
-                      <Avatar sx={{ width: 32, height: 32 }} src={profile?.photo?.[0]}></Avatar>
+                      <Avatar sx={{ width: 32, height: 32 }} src={user?.photo?.[0]}></Avatar>
 
                       </IconButton>
                     </Tooltip>
