@@ -14,14 +14,13 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
-import ApartmentIcon from "@mui/icons-material/Apartment"; // Import the ApartmentIcon for the "Department" option
-
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
   return (
     <div className="sidebar">
       <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link to="/appointment" style={{ textDecoration: "none" }}>
           <span className="logo">HealthBooking</span>
         </Link>
       </div>
@@ -29,11 +28,6 @@ const Sidebar = () => {
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
-          <li>
-            <DashboardIcon className="icon" />
-            <span>Dashboard</span>
-          </li>
-          <p className="title">LISTS</p>
           {/* <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
@@ -43,13 +37,13 @@ const Sidebar = () => {
           <Link to="/appointment" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
-              <span>Appointment</span>
+              <span>การจอง</span>
             </li>
           </Link>
           <Link to="/clinics" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />
-              <span>Clinics</span>
+              <span>สถานบริการ</span>
             </li>
           </Link>
           {/* <Link to="/rooms" style={{ textDecoration: "none" }}>
@@ -60,8 +54,8 @@ const Sidebar = () => {
           </Link> */}
           <Link to="/queue" style={{ textDecoration: "none" }}>
             <li>
-              <ApartmentIcon className="icon" />
-              <span>Queue</span>
+              <AccessTimeIcon className="icon" />
+              <span>เวลาให้บริการ</span>
             </li>
           </Link>
           {/* <li>
