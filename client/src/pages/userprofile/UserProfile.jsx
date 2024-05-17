@@ -51,7 +51,6 @@ const UserProfile = () => {
 
   const handleClick = async (values, actions) => {
 
-    console.log("XXXXXXXXXX");
     try {
       if (user) {
         const photo = await Promise.all(
@@ -69,7 +68,7 @@ const UserProfile = () => {
           })
         );
         const dataToSend = { ...values, birthday,photo:photo[0] };
-        const res = await axios.put(`/users/${user._id}`, dataToSend);
+        const res = await axios.put(`${process.env.REACT_APP_API}/users/${user._id}`, dataToSend);
         navigate("/main", { state: { fromLogin: true } });
         handleClickSnack();
       }
