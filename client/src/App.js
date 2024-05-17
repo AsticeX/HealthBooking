@@ -13,7 +13,6 @@ import Reset from "./pages/resetpassword/Reset";
 import History from "./pages/history/History";
 import VaccineCal from "./pages/vaccineCal/vaccineCal";
 import { useEffect } from "react";
-
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
