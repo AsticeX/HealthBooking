@@ -36,7 +36,6 @@ export const login = async (req, res, next) => {
       process.env.JWT,
       { expiresIn: '5h' }
     );
-    localStorage.setItem('access_token', token);
     const { password, isAdmin, ...otherDetails } = user._doc;
     const domain = 'finalproejectweb-1.onrender.com';
     const expirationDate = new Date();
