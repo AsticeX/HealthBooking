@@ -15,8 +15,19 @@ import NewHotel from "./pages/newHotel/NewHotel";
 import NewQueue from "./pages/newQueue/NewQueue";
 import EditQueue from "./pages/editQueue/EditQueue";
 import EditClinic from "./pages/editClinic/EditClinic";
+import { useEffect } from "react";
+
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 function App() {
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      axios.defaults.headers.common["access_token"] = token;
+    }
+  }, []);
   const { darkMode } = useContext(DarkModeContext);
 
   const ProtectedRoute = ({ children }) => {
@@ -33,13 +44,28 @@ function App() {
     <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
-          <Route path="/">
-            <Route path="login" element={<Login />} />
+          <Route path="">
             <Route
               index
               element={
                 <ProtectedRoute>
-                  <Home />
+                  <List columns={appointmentColumns} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path=":userId"
+              element={
+                <ProtectedRoute>
+                  <Single />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="new"
+              element={
+                <ProtectedRoute>
+                  <New inputs={userInputs} title="Add New User" />
                 </ProtectedRoute>
               }
             />
