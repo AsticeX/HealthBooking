@@ -2,7 +2,6 @@ import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
-
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoute from "./routes/auth.js";
@@ -17,6 +16,7 @@ import expirationChecker from "./utils/expirationChecker.js";
 
 dotenv.config();
 mongoose.set("strictQuery", false);
+
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO);
@@ -35,12 +35,18 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use((req, res, next) => {
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
 app.use(
   cors({
     origin: ["http://localhost:3000"],
     credentials: true,
-  })
-);
+  }))
+
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);

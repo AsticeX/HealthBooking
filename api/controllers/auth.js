@@ -40,7 +40,7 @@ export const login = async (req, res, next) => {
     const domain = 'finalproejectweb-1.onrender.com';
     const expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + (5 * 60 * 60 * 1000));
-    res.cookie("access_token", token, {
+    res.cookie("access_token1", token, {
       httpOnly: true,
       expires: expirationDate,
       domain: domain
