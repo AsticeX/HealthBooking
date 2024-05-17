@@ -20,7 +20,6 @@ const Header = () => {
           <Grid item xs={12} sm={4}>
             <TextField
               margin="normal"
-              required
               fullWidth
               variant="filled"
               id="username"
@@ -59,9 +58,8 @@ const Header = () => {
                 onChange={handleChange}
                 sx={{ backgroundColor: "white" }}
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem value={"near"}>ใกล้สุด-ไกลสุด</MenuItem>
+                <MenuItem value={"far"}>ไกลสุด-ใกล้สุด</MenuItem>
               </Select>
             </FormControl>
           </Grid>
