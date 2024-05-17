@@ -36,15 +36,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+app.use((req, res, next) => {
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   next();
 });
 
-app.use(cors({
-  credentials: true, // for authorization
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+  }))
 
 
 app.use("/api/auth", authRoute);
