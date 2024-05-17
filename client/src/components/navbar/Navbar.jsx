@@ -19,7 +19,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 // import Carousel from 'react-material-ui-carousel';
 import { Grid } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
@@ -30,13 +30,13 @@ import Tooltip from "@mui/material/Tooltip";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import VaccinesIcon from "@mui/icons-material/Vaccines";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 const drawerWidth = 240;
 const navItems = [
-  { name: 'หน้าหลัก', href: '/' },
-  { name: 'คำนวณราคาวัคซีน', href: '/vaccinecalculate' },
-  { name: 'ค้นหาสถานบริการ', href: '/hospital' },
-  { name: 'จองคลินิค', href: '/Main' }
+  { name: "หน้าหลัก", href: "/" },
+  { name: "คำนวณราคาวัคซีน", href: "/vaccinecalculate" },
+  { name: "ค้นหาสถานบริการ", href: "/hospital" },
+  { name: "จองคลินิค", href: "/Main" },
 ];
 
 const Navbar = (props) => {
@@ -49,9 +49,7 @@ const Navbar = (props) => {
 
   useEffect(() => {
     // handleProfile()
-
-  }, [profile])
-
+  }, [profile]);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -95,7 +93,6 @@ const Navbar = (props) => {
     setMobileOpen((prevState) => !prevState);
   };
 
-
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center", backgroundColor: "#EEEEE6" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
@@ -106,7 +103,7 @@ const Navbar = (props) => {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item.name} disablePadding >
+          <ListItem key={item.name} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }} href={item.href}>
               <ListItemText primary={item.name} />
             </ListItemButton>
@@ -148,7 +145,7 @@ const Navbar = (props) => {
                     user.name + " " + user.lastname
                   ) : (
                     <div className="navItems" style={{ marginLeft: "auto" }}>
-                      <Button variant="contained" href="/login" sx={{ background: 'black', fontSize: 16 }}>
+                      <Button variant="contained" href="/login" sx={{ background: "black", fontSize: 16 }}>
                         LOGIN
                       </Button>
                     </div>
@@ -156,8 +153,7 @@ const Navbar = (props) => {
                   {user && (
                     <Tooltip title="Account settings">
                       <IconButton onClick={handleClick} size="small" sx={{ ml: 1 }} aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined}>
-                      <Avatar sx={{ width: 32, height: 32 }} src={user?.photo?.[0]}></Avatar>
-
+                        <Avatar sx={{ width: 32, height: 32 }} src={user?.photo?.[0]}></Avatar>
                       </IconButton>
                     </Tooltip>
                   )}
@@ -200,17 +196,26 @@ const Navbar = (props) => {
                   <MenuItem onClick={handleCloseAvatar}>
                     <ListItemIcon>
                       <PersonOutlineIcon fontSize="medium" />
-                    </ListItemIcon> <a href='/profile' style={{ color: "black", textDecoration: "none" }}>โปรไฟล์</a>
+                    </ListItemIcon>{" "}
+                    <a href="/profile" style={{ color: "black", textDecoration: "none" }}>
+                      โปรไฟล์
+                    </a>
                   </MenuItem>
-                  <MenuItem onClick={handleCloseAvatar} href='/vaccine'>
+                  <MenuItem onClick={handleCloseAvatar} href="/vaccine">
                     <ListItemIcon>
-                        <VaccinesIcon fontSize="medium"  />
-                    </ListItemIcon>  <a href='/vaccine' style={{ color: "black", textDecoration: "none" }}>บันทึกวัคซีน</a>
+                      <VaccinesIcon fontSize="medium" />
+                    </ListItemIcon>{" "}
+                    <a href="/vaccine" style={{ color: "black", textDecoration: "none" }}>
+                      บันทึกวัคซีน
+                    </a>
                   </MenuItem>
-                  <MenuItem onClick={handleCloseAvatar} href='/history'>
+                  <MenuItem onClick={handleCloseAvatar} href="/history">
                     <ListItemIcon>
                       <AccessTimeIcon fontSize="medium" />
-                    </ListItemIcon>  <a href='/history' style={{ color: "black", textDecoration: "none" }}>ประวัติการรักษา</a>
+                    </ListItemIcon>{" "}
+                    <a href="/history" style={{ color: "black", textDecoration: "none" }}>
+                      ประวัติการรักษา
+                    </a>
                   </MenuItem>
                   <Divider />
                   {/* <MenuItem onClick={handleCloseAvatar}>

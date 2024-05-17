@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 const AppointmentSchema = new mongoose.Schema(
   {
+    hospital_user_Id: String,
+    date: String,
     name: String,
     user_Id: String,
     user_name: String,
