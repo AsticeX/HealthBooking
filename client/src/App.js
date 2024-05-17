@@ -15,13 +15,16 @@ import VaccineCal from "./pages/vaccineCal/vaccineCal";
 import { useEffect } from "react";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
+const api = create({
+  baseURL: process.env.REACT_APP_API, 
+  withCredentials: true, 
+});
 
 function App() {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      axios.defaults.headers.common['access_token'] = token;
+      api.defaults.headers.common['access_token'] = token; // Use the Axios instance created above
     }
   }, []);
   return (

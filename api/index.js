@@ -36,18 +36,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Add middleware to set Referrer-Policy header
+// Change Referrer-Policy header
 app.use((req, res, next) => {
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Referrer-Policy', 'no-referrer-when-downgrade');
   next();
 });
 
-app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    credentials: true,
-}))
-
+// CORS configuration
+app.use(cors({
+  origin: "http://localhost:3000", 
+  credentials: true, 
+}));
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
@@ -76,7 +75,7 @@ app.use((err, req, res, next) => {
 app.listen(8800, () => {
   connect();
   console.log("Connected to the backend.");
-  expirationChecker(); 
+  expirationChecker();
 });
 
 export default app;
