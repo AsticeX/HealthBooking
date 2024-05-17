@@ -43,7 +43,8 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: true
+  origin: process.env.CLIENT_URL, 
+  credentials: true, 
 }));
 
 app.use("/api/auth", authRoute);
