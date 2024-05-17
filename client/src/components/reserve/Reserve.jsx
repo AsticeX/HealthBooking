@@ -84,7 +84,7 @@ const Reserve = ({ setOpen, clinicId }) => {
       if (user) {
         const dataToSend = {
           ...values,
-          hospital_user_Id: hospitalUserIdData,
+          user_name: hospitalUserIdData,
           date: date,
           department: departmentData,
           hospital: clinicId,

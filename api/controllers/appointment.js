@@ -77,12 +77,12 @@ export const getAppointmentsByUserId = async (req, res, next) => {
 
 export const getAppointmentsByUserName = async (req, res, next) => {
   try {
-    const { hospital_user_Id } = req.params;
-    if (!hospital_user_Id) {
+    const { user_name } = req.params;
+    if (!user_name) {
       return res.status(400).json({ error: "User name is required in the query." });
     }
 
-    const appointment = await Appointment.find({ hospital_user_Id });
+    const appointment = await Appointment.find({ user_name });
 
     res.json(appointment);
   } catch (err) {
