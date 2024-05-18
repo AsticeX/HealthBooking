@@ -15,6 +15,7 @@ import NewHotel from "./pages/newHotel/NewHotel";
 import NewQueue from "./pages/newQueue/NewQueue";
 import EditQueue from "./pages/editQueue/EditQueue";
 import EditClinic from "./pages/editClinic/EditClinic";
+import EditAppointment from "./pages/editAppointment/EditAppointment";
 import { useEffect } from "react";
 
 import axios from "axios";
@@ -54,10 +55,10 @@ function App() {
               }
             />
             <Route
-              path=":userId"
+              path="/appointment/:id"
               element={
                 <ProtectedRoute>
-                  <Single />
+                  <EditAppointment />
                 </ProtectedRoute>
               }
             />
@@ -105,10 +106,10 @@ function App() {
                 }
               />
               <Route
-                path=":userId"
+                path="/appointment/:id"
                 element={
                   <ProtectedRoute>
-                    <Single />
+                    <EditAppointment />
                   </ProtectedRoute>
                 }
               />

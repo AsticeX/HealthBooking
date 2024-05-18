@@ -127,3 +127,18 @@ export const getAppointmentsByUserName = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getAppointmentById = async (req, res, next) => {
+  try {
+    const appointmentId = req.params.id;
+    const appointment = await Appointment.findById(appointmentId);
+
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
+    res.json(appointment);
+  } catch (err) {
+    next(err);
+  }
+};

@@ -40,42 +40,43 @@ export const appointmentColumns = [
   { field: "_id", headerName: "ID", width: 250 },
   {
     field: "name",
-    headerName: "Name",
+    headerName: "ชื่อ",
     width: 150,
   },
   {
-    field: "user_Id",
-    headerName: "User ID",
+    field: "lastname",
+    headerName: "นามสกุล",
     width: 150,
   },
+
   {
-    field: "hospital",
-    headerName: "Hospital",
+    field: "hospitalName",
+    headerName: "สถานบริการ",
     width: 200,
   },
   {
     field: "start_time",
-    headerName: "Start Time",
+    headerName: "เวลาเริ้ม",
     width: 150,
   },
   {
     field: "stop_time",
-    headerName: "Stop Time",
+    headerName: "เวลาสิ้นสุด",
     width: 150,
   },
   {
     field: "department",
-    headerName: "Department",
+    headerName: "แผนก",
     width: 150,
   },
   {
     field: "status",
-    headerName: "Status",
+    headerName: "สถานะ",
     width: 120,
   },
   {
     field: "description",
-    headerName: "Description",
+    headerName: "หมายเหตุ",
     width: 200,
   },
 ];
@@ -84,53 +85,50 @@ export const hotelColumns = [
   { field: "_id", headerName: "ID", width: 250 },
   {
     field: "name",
-    headerName: "Name",
+    headerName: "สถานบริการ",
     width: 150,
   },
   {
     field: "type",
-    headerName: "Type",
+    headerName: "ประเภท",
     width: 100,
   },
   {
-    field: "title",
-    headerName: "Title",
-    width: 230,
+    field: "address",
+    headerName: "ที่ตั้ง",
+    width: 100,
   },
   {
-    field: "address",
-    headerName: "Address",
+    field: "contract",
+    headerName: "เบอร์",
     width: 100,
   },
 ];
 
 export const queueColumns = [
   { field: "_id", headerName: "ID", width: 70 },
-  {
-    field: "hospital_id",
-    headerName: "Hospital ID",
-    width: 150,
-  },
+
   {
     field: "department",
-    headerName: "Department",
+    headerName: "ชื่อแผนก",
     width: 150,
   },
   {
     field: "start_time",
-    headerName: "Start Time",
+    headerName: "เวลาเริ้ม",
     width: 150,
   },
   {
     field: "stop_time",
-    headerName: "Stop Time",
+    headerName: "เวลาสิ้นสุด",
     width: 150,
   },
   {
     field: "max_queue",
-    headerName: "Max Queue",
+    headerName: "ผู้ใช้บริการสูงสุด",
     width: 120,
   },
+
   // {
   //   field: "count",
   //   headerName: "Count",
