@@ -11,12 +11,28 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import axios from "axios";
+
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    dispatch({ type: "LOGIN_START" });
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API}/auth/logout`);
+      dispatch({ type: "LOGOUT_SUCCESS", payload: res.data.details });
+      navigate("/login", { state: { fromLogin: true } });
+    } catch (err) {
+      dispatch({ type: "LOGOUT_FAILURE", payload: err.response.data });
+    }
+  };
+
   return (
     <div className="sidebar">
       <div className="top">
@@ -89,7 +105,7 @@ const Sidebar = () => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li> */}
-          <li>
+          <li onClick={handleLogout}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
           </li>

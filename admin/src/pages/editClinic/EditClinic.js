@@ -12,6 +12,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 const EditClinic = () => {
   const { id } = useParams();
+  const [type, setTypes] = useState(""); // State for status dropdown
   const [clinicData, setClinicData] = useState({});
   const [files, setFiles] = useState([]);
   const [queue, setQueue] = useState([]);
@@ -29,6 +30,7 @@ const EditClinic = () => {
         const response = await axios.get(`${process.env.REACT_APP_API}/clinics/${id}`);
         const clinic = response.data;
         setClinicData(clinic);
+        setTypes(clinic.type);
         setFiles(clinic.photos); // Set uploaded photos
         setInputValue(clinic.name);
         setSelectedAddress(clinic.address);
@@ -77,28 +79,15 @@ const EditClinic = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      const list = await Promise.all(
-        files.map(async (file) => {
-          if (file.url) {
-            return file.url; // If file already uploaded, use URL directly
-          }
-          const data = new FormData();
-          data.append("file", file);
-          data.append("upload_preset", "gijwryvm");
-          const uploadRes = await axios.post("https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload", data);
-          return uploadRes.data.url;
-        })
-      );
-
       const updatedClinic = {
         ...clinicData,
         name: inputValue,
+        type: type,
         address: selectedAddress,
         latitude: latitude,
         longitude: longitude,
         department: departmentInputs,
         queue: queue,
-        photos: list,
       };
 
       const res = await axios.put(`${process.env.REACT_APP_API}/clinics/${id}`, updatedClinic);
@@ -119,30 +108,37 @@ const EditClinic = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Edit Clinic</h1>
+          <h1>แก้ไขสถานบริการ</h1>
         </div>
         <div className="bottom">
-          <div className="left">
-            {files.map((file, index) => (
-              <img key={index} src={file.url ? file.url : file instanceof File && URL.createObjectURL(file)} alt={`Image ${index}`} />
-            ))}
-          </div>
           <div className="right">
             <form onSubmit={handleClick}>
               <div className="formInput">
-                <label htmlFor="file">
-                  Image: <DriveFolderUploadOutlinedIcon className="icon" />
-                </label>
-                <input type="file" id="file" multiple onChange={(e) => setFiles(e.target.files)} style={{ display: "none" }} />
-              </div>
-              <div className="formInput">
-                <label>Name</label>
+                <label>ชื่อสถานบริการ</label>
                 <input id="name" value={inputValue} onChange={handleInputChange} />
               </div>
               <div className="formInput">
-                <label>Address</label>
+                <label>ประเภท</label>
+                <select value={type} onChange={(e) => setTypes(e.target.value)}>
+                  <option value={type} disabled>
+                    {type}
+                  </option>
+                  <option value="คลินิกเวชกรรม">คลินิกเวชกรรม</option>
+                  <option value="คลินิกทันตกรรม">คลินิกทันตกรรม</option>
+                  <option value="คลินิกการพยาบาลและผดุงครรภ์">คลินิกการพยาบาลและผดุงครรภ์</option>
+                  <option value="คลินิกกายภาพบำบัด">คลินิกกายภาพบำบัด</option>
+                  <option value="คลินิกเทคนิคการแพทย์">คลินิกเทคนิคการแพทย์</option>
+                  <option value="คลินิกการแพทย์แผนไทย">คลินิกการแพทย์แผนไทย</option>
+                  <option value="คลินิกการประกอบโรคศิลปะ 7 สาขา">คลินิกการประกอบโรคศิลปะ 7 สาขา</option>
+                  <option value="คลินิกเฉพาะด้าน">คลินิกเฉพาะด้าน</option>
+                  <option value="สหคลินิก">สหคลินิก</option>
+                </select>
+              </div>
+              <div className="formInput">
+                <label>ที่ตั้ง</label>
                 <input id="address" value={selectedAddress} onChange={(e) => setSelectedAddress(e.target.value)} />
               </div>
+
               {clinicInputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>
@@ -152,12 +148,12 @@ const EditClinic = () => {
               {/* Department Inputs */}
               {departmentInputs.map((input, index) => (
                 <div className="formInput" key={index}>
-                  <label htmlFor={`department${index}`}>Department</label>
+                  <label htmlFor={`department${index}`}>แผนกที่ {index + 1}</label>
                   <input id={`department${index}`} value={input} onChange={(e) => handleDepartmentInputChange(index, e.target.value)} type="text" placeholder="Enter department" />
                 </div>
               ))}
               <button type="button" onClick={addDepartmentInput}>
-                Add Department
+                เพิ่มแผนก
               </button>
               <div className="selectRooms">
                 <label>Queue </label>
@@ -168,7 +164,7 @@ const EditClinic = () => {
                       <div key={queueItem._id}>
                         <input type="checkbox" id={queueItem._id} value={queueItem._id} checked={queue.includes(queueItem._id)} onChange={handleCheckboxChange} />
                         <label htmlFor={queueItem._id}>
-                          {queueItem.start_time} - {queueItem.stop_time}
+                          &nbsp;{queueItem.department} : {queueItem.start_time} - {queueItem.stop_time}
                         </label>
                       </div>
                     ))}

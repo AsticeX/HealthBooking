@@ -13,18 +13,17 @@ import {
   addToQueue,
   getClinicsByUserId,
 } from "../controllers/clinic.js";
-import { verifyAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
 //CREATE
-router.post("/", verifyAdmin, createClinic);
+router.post("/", createClinic);
 
 //UPDATE
-router.put("/:id", verifyAdmin, updateClinic);
+router.put("/:id", updateClinic);
 
 //DELETE
-router.delete("/:id", verifyAdmin, deleteClinic);
+router.delete("/:id", deleteClinic);
 
 //GET
 router.get("/find/:id", getClinic);

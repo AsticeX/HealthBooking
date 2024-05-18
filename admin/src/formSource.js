@@ -39,19 +39,19 @@ export const userInputs = [
 export const productInputs = [
   {
     id: 1,
-    label: "Title",
+    label: "หัวข้อ",
     type: "text",
     placeholder: "Apple Macbook Pro",
   },
   {
     id: 2,
-    label: "Description",
+    label: "คำอธิบาย",
     type: "text",
     placeholder: "Description",
   },
   {
     id: 3,
-    label: "Category",
+    label: "ประเภท",
     type: "text",
     placeholder: "Computers",
   },
@@ -78,7 +78,7 @@ export const clinicInputs = [
   // },
   {
     id: "title",
-    label: "Title",
+    label: "หัวข้อ",
     type: "text",
     placeholder: "The best Clinic ",
   },
@@ -90,13 +90,13 @@ export const clinicInputs = [
   // },
   {
     id: "description",
-    label: "Description",
+    label: "คำอธิบาย",
     type: "textarea",
     placeholder: "description",
   },
   {
     id: "contract",
-    label: "Contract",
+    label: "ติดต่อ",
     type: "text",
     placeholder: "0953215652",
   },
@@ -135,7 +135,7 @@ export const queueInputs = [
   // },
   {
     id: "max_queue",
-    label: "Max Queue",
+    label: "ผู้เข้ารับบริการสูงสุด",
     type: "number",
     placeholder: "100",
   },

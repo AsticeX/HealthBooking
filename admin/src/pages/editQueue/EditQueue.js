@@ -88,16 +88,16 @@ const EditQueue = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Edit Queue</h1>
+          <h1>แก้ไขบริการ</h1>
         </div>
         <div className="bottom">
           <div className="right">
             <form onSubmit={handleUpdate}>
               <div className="formInput">
-                <label>Choose a clinic</label>
+                <label>เลือกสถานบริการ</label>
                 <select value={clinicId} onChange={(e) => setClinicId(e.target.value)} required>
                   <option value="" disabled>
-                    Select a clinic
+                    เลือกสถานบริการ{" "}
                   </option>
                   {clinics
                     .filter((clinic) => clinic.user_id === user.username) // Filter clinics based on user ID
@@ -110,10 +110,10 @@ const EditQueue = () => {
               </div>
 
               <div className="formInput">
-                <label>Select a department</label>
+                <label>เลือกแผนก</label>
                 <select value={department} onChange={(e) => setDepartment(e.target.value)} required>
                   <option value="" disabled>
-                    Select a department
+                    เลือกแผนก
                   </option>
                   {departments.map((dept) => (
                     <option key={dept} value={dept}>
@@ -123,15 +123,15 @@ const EditQueue = () => {
                 </select>
               </div>
               <div className="formInput">
-                <label>Start Time</label>
+                <label>เวลาเริ้ม</label>
                 <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} required />
               </div>
               <div className="formInput">
-                <label>Stop Time</label>
+                <label>เวลาสิ้นสุด</label>
                 <input type="time" value={stopTime} onChange={(e) => setStopTime(e.target.value)} required />
               </div>
               <div className="formInput">
-                <label>Max Queue</label>
+                <label>ผู้ใช้บริการสูงสุด</label>
                 <input type="number" value={maxQueue} onChange={(e) => setMaxQueue(e.target.value)} required />
               </div>
               <div className="submitBtn">

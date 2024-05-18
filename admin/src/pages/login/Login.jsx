@@ -42,20 +42,8 @@ const Login = () => {
   return (
     <div className="login">
       <div className="lContainer">
-        <input
-          type="text"
-          placeholder="email"
-          id="email"
-          onChange={handleChange}
-          className="lInput"
-        />
-        <input
-          type="password"
-          placeholder="password"
-          id="password"
-          onChange={handleChange}
-          className="lInput"
-        />
+        <input type="text" placeholder="email" id="email" onChange={handleChange} className="lInput" />
+        <input type="password" placeholder="password" id="password" onChange={handleChange} className="lInput" />
         <button disabled={loading} onClick={handleClick} className="lButton">
           Login
         </button>

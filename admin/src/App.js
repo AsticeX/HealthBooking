@@ -45,7 +45,7 @@ function App() {
     <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
-          <Route path="">
+          <Route path="/">
             <Route
               index
               element={
@@ -188,6 +188,7 @@ function App() {
                 /> */}
             {/* </Route> */}
           </Route>
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>
