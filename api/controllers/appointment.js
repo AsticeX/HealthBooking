@@ -1,6 +1,7 @@
 // controllers/appointmentController.js
 
 import Appointment from "../models/Appointment.js";
+import Queue from "../models/Queue.js";
 
 // Controller function to get all appointments
 export const getAppointment = async (req, res, next) => {
@@ -15,12 +16,52 @@ export const getAppointment = async (req, res, next) => {
 // Controller function to create a new appointment
 export const createAppointment = async (req, res, next) => {
   try {
-    const appointment = await Appointment.create(req.body);
-    res.status(201).json(appointment);
-  } catch (err) {
+    const queueId = req.params.queue;
+    const { date } = req.body; 
+
+    // Find the queue by ID
+    let queue = await Queue.findOne({ queueId });
+    if (!queue) {
+      return res.status(404).json({ message: "Queue not found" });
+    }
+
+    const appointmentsOnDate = await Appointment.find({ queueId, date }).countDocuments();
+    
+    if (appointmentsOnDate >= queue.max_queue) {
+      return res.status(400).json({ message: "Queue is full for the selected date" });
+    }
+
+    const availableSlots = queue.max_queue - appointmentsOnDate;
+
+    const appointment = await Appointment.create({ ...req.body, queueId });
+    await queue.save();
+    return res.status(201).json({ appointment, availableSlots });
+    } catch (err) {
     next(err);
   }
 };
+
+// export const getAvailableSlots = async (req, res, next) => {
+//   try {
+//     const queueId = req.params.queue;
+//     const { date } = req.query; 
+
+
+//     let queue = await Queue.findOne({ queueId });
+//     if (!queue) {
+//       return res.status(404).json({ message: "Queue not found" });
+//     }
+
+
+//     const appointmentsOnDate = await Appointment.find({ queueId, date }).countDocuments();
+    
+//     const availableSlots = queue.max_queue - appointmentsOnDate;
+
+//     return res.status(200).json({ availableSlots });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 // Controller function to update an appointment by ID
 export const updateAppointment = async (req, res, next) => {
