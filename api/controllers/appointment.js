@@ -1,6 +1,7 @@
 // controllers/appointmentController.js
 
 import Appointment from "../models/Appointment.js";
+import Queue from "../models/Queue.js";
 
 // Controller function to get all appointments
 export const getAppointment = async (req, res, next) => {
@@ -12,17 +13,54 @@ export const getAppointment = async (req, res, next) => {
   }
 };
 
-// Controller function to create a new appointment
 export const createAppointment = async (req, res, next) => {
   try {
-    const appointment = await Appointment.create(req.body);
+    const { date, hospital_id, department, start_time, stop_time, ...rest } = req.body;
+
+    let queue = await Queue.findOne({
+      date: new Date(date),
+      hospital_id,
+      department,
+      start_time,
+      stop_time
+    });
+
+    if (queue) {
+      if (queue.count >= queue.max_queue) {
+        return res.status(400).json({ message: "Queue is full for the selected time slot" });
+      } else {
+        queue.count += 1;
+        await queue.save();
+      }
+    } else {
+      queue = new Queue({
+        date: new Date(date),
+        hospital_id,
+        department,
+        start_time,
+        stop_time,
+        max_queue: rest.max_queue,
+        count: 1
+      });
+      await queue.save();
+    }
+
+    const appointment = new Appointment({
+      date: new Date(date),
+      hospital: hospital_id,
+      department,
+      start_time,
+      stop_time,
+      queue_Id: queue._id,
+      ...rest
+    });
+
+    await appointment.save();
     res.status(201).json(appointment);
   } catch (err) {
     next(err);
   }
 };
-
-// Controller function to update an appointment by ID
 export const updateAppointment = async (req, res, next) => {
   const appointmentId = req.params.id;
   const updatedData = req.body;
