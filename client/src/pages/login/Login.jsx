@@ -16,13 +16,16 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-// import Cookies from 'js-cookie';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const Login = () => {
   const { dispatch,user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [open, setOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickSnack = () => {
     setOpen(true);
@@ -53,11 +56,10 @@ const Login = () => {
 
   const schema = Yup.object().shape({
     email: Yup.string()
-      .email('แบบฟอร์มอีเมลไม่ถูกต้อง')
-      .required("โปรดกรอกอีเมล"),
+      .email('Invalid email format')
+      .required("Please enter your email"),
     password: Yup.string()
-      .required("โปรดกรอกรหัสผ่าน")
-    // .min(8, "Password must be at least 8 characters"),
+      .required("Please enter your password")
   });
 
   return (
@@ -87,7 +89,7 @@ const Login = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-            เข้าสู่ระบบ
+            Sign in
           </Typography>
           <Formik
             validationSchema={schema}
@@ -108,7 +110,7 @@ const Login = () => {
                   required
                   fullWidth
                   id="email"
-                  label="อีเมล"
+                  label="Email Address"
                   name="email"
                   autoComplete="email"
                   autoFocus
@@ -118,15 +120,14 @@ const Login = () => {
                   error={touched.email && !!errors.email}
                   helperText={touched.email && errors.email}
                   variant="outlined"
-                  className={touched.email && errors.email}
                 />
                 <TextField
                   margin="normal"
                   required
                   fullWidth
                   name="password"
-                  label="รหัสผ่าน"
-                  type="password"
+                  label="Password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   autoComplete="current-password"
                   value={values.password}
@@ -135,32 +136,38 @@ const Login = () => {
                   error={touched.password && !!errors.password}
                   helperText={touched.password && errors.password}
                   variant="outlined"
-                  className={touched.password && errors.password}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    ),
+                  }}
                 />
                 {showAlert && (
-                  <Alert severity="error">อีเมลหรือรหัสผ่านผิดโปรดตรวจสอบ </Alert>
+                  <Alert severity="error">Incorrect email or password. Please check.</Alert>
                 )}
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="จำรหัสผ่าน"
-                />
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2, background: '#77B255', }}
+                  sx={{ mt: 3, mb: 2, background: '#77B255' }}
                 >
-                  เข้าสู่ระบบ
+                  Sign In
                 </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link href="/forgot" variant="body2">
-                      ลืมรหัสผ่าน?
+                      Forgot password?
                     </Link>
                   </Grid>
                   <Grid item>
                     <Link href="/register" variant="body2">
-                      {"ไม่มีบัญชี?สร้างบัญชี"}
+                      {"Don't have an account? Sign Up"}
                     </Link>
                   </Grid>
                 </Grid>

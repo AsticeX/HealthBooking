@@ -31,7 +31,11 @@ const Register = () => {
   const [open, setOpen] = useState(false);
   const [phone, setPhone] = React.useState('');
   const [birthday, setBirthday] = React.useState(null);
+  const [gender, setGender] = useState('MALE');
 
+  const handleChangeGender = (event) => {
+    setGender(event.target.value);
+  };
 
   const handleChangeTel = (newPhone) => {
     setPhone(newPhone);
@@ -52,7 +56,7 @@ const Register = () => {
   const handleClick = async (values, actions) => {
     dispatch({ type: "REGISTER_START" });
     try {
-      const dataToSend = { ...values, phone, birthday };
+      const dataToSend = { ...values, phone, birthday,gender: gender };
       const res = await axios.post(`${process.env.REACT_APP_API}/auth/register`, dataToSend);
       dispatch({ type: "REGISTER_SUCCESS", payload: res.data.details });
       navigate("/Login", { state: { fromLogin: true } });
@@ -113,7 +117,7 @@ const Register = () => {
           </Typography>
           <Formik
             validationSchema={schema}
-            initialValues={{ username: "", email: "", name: "", lastname: "", disease: "", phone: 0, password: "", gender: "MALE" }}
+            initialValues={{ username: "", email: "", name: "", lastname: "", disease: "", phone: 0, password: "", }}
             onSubmit={(values, actions) => handleClick(values, actions)}
           >
             {({
@@ -226,7 +230,7 @@ const Register = () => {
                       label="Congenital disease(not required)"
                       name="congenitaldisease"
                       autoComplete="current-congenitaldisease"
-                      value={values.disease}
+                      // value={values.disease}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={touched.disease && !!errors.disease}
@@ -255,7 +259,7 @@ const Register = () => {
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
-                        sx={{width:"100%"}}
+                        sx={{ width: "100%" }}
                         disableFuture
                         value={birthday}
                         onChange={(newValue, context) => {
@@ -292,12 +296,12 @@ const Register = () => {
                         aria-labelledby="demo-row-radio-buttons-group-label"
                         name="row-radio-buttons-group"
                         defaultValue="MALE"
-                        value={values.gender}
-                        onChange={handleChange}
+                        value={gender}
+                        onChange={handleChangeGender}
                       >
                         <FormControlLabel value="MALE" control={<Radio />} label="Male" />
                         <FormControlLabel value="FEMALE" control={<Radio />} label="Female" />
-                        <FormControlLabel value="other" control={<Radio />} label="Other" />
+                        <FormControlLabel value="OTHER" control={<Radio />} label="Other" />
                       </RadioGroup>
 
                     </FormControl>

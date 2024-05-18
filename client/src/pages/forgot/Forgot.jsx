@@ -121,6 +121,14 @@ const Forgot = () => {
                                 >
                                     ส่ง
                                 </Button>
+                                <Button
+                                 onClick={() => navigate("/login")}
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{  mb: 2, background: '#000000', }}
+                                >
+                                    กลับ
+                                </Button>
                                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                                     <Alert
                                         onClose={handleClose}
