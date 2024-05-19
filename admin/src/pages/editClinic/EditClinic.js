@@ -98,8 +98,27 @@ const EditClinic = () => {
   };
 
   const searchPlace = (value) => {
-    // Implement your search function here
-    // Use the value to search for clinics/places
+    axios
+      .get("https://api.longdo.com/POIService/json/search?", {
+        params: {
+          key: "79e088d5668d8e7316d055233c8cf1c4",
+          keyword: value,
+          tag: "hospital",
+          limit: 5,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        const hospitals = response.data.data.map((hospital) => {
+          return hospital;
+        });
+        // const suggest = document.getElementById('result');
+        // suggest.style.display = 'none';
+        setSearchResults(hospitals);
+      })
+      .catch((error) => {
+        console.error("Error searching nearby:", error);
+      });
   };
 
   return (

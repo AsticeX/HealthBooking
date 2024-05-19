@@ -18,17 +18,7 @@ import EditClinic from "./pages/editClinic/EditClinic";
 import EditAppointment from "./pages/editAppointment/EditAppointment";
 import { useEffect } from "react";
 
-import axios from "axios";
-
-axios.defaults.withCredentials = true;
-
 function App() {
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (token) {
-      axios.defaults.headers.common["access_token"] = token;
-    }
-  }, []);
   const { darkMode } = useContext(DarkModeContext);
 
   const ProtectedRoute = ({ children }) => {
