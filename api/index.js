@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: [`${process.env.CLIENT_URL}`,`${process.env.ADMIN_URL}`],
+    origin: [`${process.env.CLIENT_URL}`,`${process.env.ADMIN_URL}`,`${process.env.UPLOAD_URL}`],
     credentials: true,
   })
 );

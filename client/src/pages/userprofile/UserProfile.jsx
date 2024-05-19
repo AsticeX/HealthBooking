@@ -60,7 +60,12 @@ const UserProfile = () => {
             data.append("upload_preset", "gijwryvm");
             const uploadRes = await axios.post(
               "https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload",
-              data
+              data,
+              {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
             );
             console.log();
             const { url } = uploadRes.data;
@@ -108,8 +113,8 @@ const UserProfile = () => {
             โปรไฟล์
           </Typography>
           <Formik
-            validationSchema={schema}
-            initialValues={{ name: `${user.name}`, lastname: `${user.lastname}`, disease: `${user.disease}` }}
+            // validationSchema={schema}
+            initialValues={{ name: '', lastname: '', disease: '' }}
             onSubmit={(values, actions) => handleClick(values, actions)}
           >
             {({
