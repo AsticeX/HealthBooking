@@ -71,7 +71,7 @@ const Forgot = () => {
                     }}
                 >
                     <Typography component="h1" variant="h5">
-                        เปลี่ยนรหัสผ่าน 
+                        ลืมรหัสผ่าน 
                     </Typography>
                     <Formik
                         validationSchema={schema}
@@ -94,7 +94,7 @@ const Forgot = () => {
                                             required
                                             fullWidth
                                             id="email"
-                                            label="Email address"
+                                            label="อีเมล"
                                             name="email"
                                             autoComplete="email"
                                             value={values.email}

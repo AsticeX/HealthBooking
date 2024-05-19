@@ -216,6 +216,8 @@ const UserProfile = () => {
                         sx={{ width: "100%" }}
                         disableFuture
                         value={birthday}
+                        format="DD/MM/YYYY"
+                        label="วัน/เดือน/ปีเกิด"
                         onChange={(newValue, context) => {
                           if (context.validationError == null) {
                             setBirthday(newValue);

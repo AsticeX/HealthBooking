@@ -213,7 +213,7 @@ const Navbar = (props) => {
             </div>
           ) : (
             <Button href="/login" style={{ color: "#fff", backgroundColor: "black", display: "flex", justifyContent: "center", alignItems: "center" }}>
-              Login
+              เข้าสู่ระบบ
             </Button>
           )}
         </Toolbar>
