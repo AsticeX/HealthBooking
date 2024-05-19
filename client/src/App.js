@@ -20,9 +20,9 @@ axios.defaults.withCredentials = true;
 
 function App() {
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem("access_token");
     if (token) {
-      axios.defaults.headers.common['access_token'] = token;
+      axios.defaults.headers.common["access_token"] = token;
     }
   }, []);
   return (

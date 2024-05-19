@@ -8,6 +8,7 @@ import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import clinicsRoute from "./routes/clinics.js";
 import roomsRoute from "./routes/rooms.js";
+import vaccine_cal from "./routes/vaccine_cal.js";
 import vaccine from "./routes/vaccine.js";
 import vaccine_userRoute from "./routes/vaccine_user.js";
 import queueRoute from "./routes/queue.js";
@@ -43,7 +44,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: [`${process.env.CLIENT_URL}`,`${process.env.ADMIN_URL}`,`${process.env.UPLOAD_URL}`],
+    origin: [`${process.env.CLIENT_URL}`, `${process.env.ADMIN_URL}`, `${process.env.UPLOAD_URL}`],
     credentials: true,
   })
 );
@@ -52,6 +53,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/clinics", clinicsRoute);
 app.use("/api/rooms", roomsRoute);
+app.use("/api", vaccine_cal);
 app.use("/api", vaccine);
 app.use("/api", vaccine_userRoute);
 app.use("/api", queueRoute);

@@ -1,0 +1,21 @@
+.topbar {
+    position: fixed; /* Set the position to fixed */
+    top: 0; /* Position it at the top of the viewport */
+    left: 0; /* Align it to the left */
+    width: 100%; /* Make it span the full width of the viewport */
+    background-color: #77B255; /* Background color of the top bar */
+    color: #fff; /* Text color */
+    padding: 10px; /* Padding around the content */
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+
+  @media screen and (max-width: 768px) {
+
+    
+  }
+
+  
+
+  
+
+  
