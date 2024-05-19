@@ -56,10 +56,10 @@ const Login = () => {
 
   const schema = Yup.object().shape({
     email: Yup.string()
-      .email('Invalid email format')
-      .required("Please enter your email"),
+      .email('แบบฟอร์มอีเมลไม่ถูกต้อง')
+      .required("โปรดใส่อีเมล"),
     password: Yup.string()
-      .required("Please enter your password")
+      .required("โปรดใส่รหัสผ่าน")
   });
 
   return (
@@ -89,7 +89,7 @@ const Login = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Sign in
+            เข้าสู่ระบบ
           </Typography>
           <Formik
             validationSchema={schema}
@@ -110,7 +110,7 @@ const Login = () => {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="อีเมล"
                   name="email"
                   autoComplete="email"
                   autoFocus
@@ -126,7 +126,7 @@ const Login = () => {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="รหัสผ่าน"
                   type={showPassword ? 'text' : 'password'}
                   id="password"
                   autoComplete="current-password"
@@ -149,7 +149,7 @@ const Login = () => {
                   }}
                 />
                 {showAlert && (
-                  <Alert severity="error">Incorrect email or password. Please check.</Alert>
+                  <Alert severity="error">อีเมลหรือรหัสผ่านผิดโปรดตรวจสอบ</Alert>
                 )}
                 <Button
                   type="submit"
@@ -157,17 +157,17 @@ const Login = () => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2, background: '#77B255' }}
                 >
-                  Sign In
+                  เข้าสู่ระบบ
                 </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link href="/forgot" variant="body2">
-                      Forgot password?
+                      ลืมรหัสผ่าน?
                     </Link>
                   </Grid>
                   <Grid item>
                     <Link href="/register" variant="body2">
-                      {"Don't have an account? Sign Up"}
+                      {"ไม่มีบัญชี? สมัครสมาชิก"}
                     </Link>
                   </Grid>
                 </Grid>

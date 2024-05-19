@@ -113,7 +113,7 @@ const Register = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Sign up
+            สมัครสมาชิก
           </Typography>
           <Formik
             validationSchema={schema}
@@ -136,7 +136,7 @@ const Register = () => {
                       required
                       fullWidth
                       id="username"
-                      label="Username"
+                      label="ชื่อผู้ใช้"
                       name="username"
                       autoComplete="username"
                       autoFocus
@@ -155,7 +155,7 @@ const Register = () => {
                       required
                       fullWidth
                       id="password"
-                      label="Password"
+                      label="รหัสผ่าน"
                       name="password"
                       type="password"
                       autoComplete="current-password"
@@ -174,7 +174,7 @@ const Register = () => {
                       required
                       fullWidth
                       id="email"
-                      label="Email address"
+                      label="อีเมล"
                       name="email"
                       autoComplete="email"
                       value={values.email}
@@ -192,7 +192,7 @@ const Register = () => {
                       required
                       fullWidth
                       id="name"
-                      label="Name"
+                      label="ชื่อ"
                       name="name"
                       autoComplete="name"
                       value={values.name}
@@ -210,7 +210,7 @@ const Register = () => {
                       required
                       fullWidth
                       id="lastname"
-                      label="Lastname"
+                      label="นามสกุล"
                       name="lastname"
                       autoComplete="current-lastname"
                       value={values.lastname}
@@ -227,7 +227,7 @@ const Register = () => {
                       margin="normal"
                       fullWidth
                       id="congenitaldisease"
-                      label="Congenital disease(not required)"
+                      label="โรคประจำตัว(ไม่จำเป็นต้องกรอก)"
                       name="congenitaldisease"
                       autoComplete="current-congenitaldisease"
                       // value={values.disease}
@@ -262,6 +262,8 @@ const Register = () => {
                         sx={{ width: "100%" }}
                         disableFuture
                         value={birthday}
+                        format="DD/MM/YYYY"
+                        label="วัน/เดือน/ปีเกิด"
                         onChange={(newValue, context) => {
                           if (context.validationError == null) {
                             setBirthday(newValue);
@@ -274,7 +276,7 @@ const Register = () => {
                     <MuiTelInput
                       fullWidth
                       name="phone"
-                      label="Phone Number"
+                      label="เบอร์โทรศัพท์"
                       type="phone"
                       id="phone"
                       defaultCountry="TH"
@@ -290,7 +292,7 @@ const Register = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl component="fieldset">
-                      <FormLabel component="legend">Gender</FormLabel>
+                      <FormLabel component="legend">เพศ</FormLabel>
                       <RadioGroup
                         row
                         aria-labelledby="demo-row-radio-buttons-group-label"
@@ -299,9 +301,9 @@ const Register = () => {
                         value={gender}
                         onChange={handleChangeGender}
                       >
-                        <FormControlLabel value="MALE" control={<Radio />} label="Male" />
-                        <FormControlLabel value="FEMALE" control={<Radio />} label="Female" />
-                        <FormControlLabel value="OTHER" control={<Radio />} label="Other" />
+                        <FormControlLabel value="MALE" control={<Radio />} label="ชาย" />
+                        <FormControlLabel value="FEMALE" control={<Radio />} label="หญิง" />
+                        <FormControlLabel value="OTHER" control={<Radio />} label="อื่นๆ" />
                       </RadioGroup>
 
                     </FormControl>
@@ -316,7 +318,7 @@ const Register = () => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2, background: '#77B255', }}
                 >
-                  Sign Up
+                  สมัครสมาชิก
                 </Button>
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                   <Alert

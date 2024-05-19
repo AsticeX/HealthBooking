@@ -24,6 +24,9 @@ const List = () => {
   const handleSortChange = (event) => {
     setSortOrder(event.target.value);
   };
+  // const handleSortClinic = (event) => {
+  //   setSortOrder(event.target.value);
+  // };
 
   const handleClick = () => {
     reFetch();
@@ -78,10 +81,13 @@ const List = () => {
   });
 
   const filteredData = sortedData.filter(clinic => {
-    if (searchTerm.length < 3) {
-      return true; 
+    if (searchTerm.length >= 3 && !clinic.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return false;
     }
-    return clinic.name.toLowerCase().includes(searchTerm.toLowerCase());
+    if (age && clinic.type !== age) {
+      return false;
+    }
+    return true;
   });
 
   
@@ -108,7 +114,7 @@ const List = () => {
             </Grid>
             <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'center' }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">บริการ</InputLabel>
+                <InputLabel id="demo-simple-select-label">คลินิค</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -117,9 +123,18 @@ const List = () => {
                   onChange={handleChange}
                   sx={{ backgroundColor: "white" }}
                 >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  <MenuItem value="">ทั้งหมด</MenuItem>
+                  <MenuItem value="คลินิกเวชกรรม">คลินิกเวชกรรม</MenuItem>
+                  <MenuItem value="คลินิกทันตกรรม">คลินิกทันตกรรม</MenuItem>
+                  <MenuItem value="คลินิกการพยาบาลและผดุงครรภ์">คลินิกการพยาบาลและผดุงครรภ์</MenuItem>
+                  <MenuItem value="คลินิกกายภาพบำบัด">คลินิกกายภาพบำบัด</MenuItem>
+                  <MenuItem value="คลินิกเทคนิคการแพทย์">คลินิกเทคนิคการแพทย์</MenuItem>
+                  <MenuItem value="คลินิกการแพทย์แผนไทย">คลินิกการแพทย์แผนไทย</MenuItem>
+                  <MenuItem value="คลินิกการประกอบโรคศิลปะ 7 สาขา">คลินิกการประกอบโรคศิลปะ 7 สาขา</MenuItem>
+                  <MenuItem value="คลินิกเฉพาะด้าน">คลินิกเฉพาะด้าน</MenuItem>
+                  <MenuItem value="สหคลินิก">สหคลินิก</MenuItem>
+                  <MenuItem value="อื่นๆ">อื่นๆ</MenuItem>
+
                 </Select>
               </FormControl>
             </Grid>
