@@ -64,6 +64,7 @@ const NewHotel = () => {
         console.error("Error searching nearby:", error);
       });
   };
+
   const handleDepartmentInputChange = (index, value) => {
     const newInputs = [...departmentInputs];
     newInputs[index] = value;
