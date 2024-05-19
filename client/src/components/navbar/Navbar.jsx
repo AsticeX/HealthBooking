@@ -54,7 +54,8 @@ const Navbar = (props) => {
           }
         }
       } catch (err) {
-        dispatch({ type: "LOGOUT_FAILURE", payload: err.response.data });
+        const errorMessage = err.response?.data?.message || "An error occurred";
+        dispatch({ type: "LOGOUT_FAILURE", payload: errorMessage });
       }
       setLoading(false);
     };
@@ -78,7 +79,8 @@ const Navbar = (props) => {
       handleCloseAvatar();
       navigate("/", { state: { fromLogin: true } });
     } catch (err) {
-      dispatch({ type: "LOGOUT_FAILURE", payload: err.response.data });
+      const errorMessage = err.response?.data?.message || "An error occurred";
+      dispatch({ type: "LOGOUT_FAILURE", payload: errorMessage });
     }
   };
 
