@@ -37,7 +37,7 @@ export const userColumns = [
 ];
 
 export const appointmentColumns = [
-  { field: "_id", headerName: "ID", width: 250 },
+  { field: "_id", headerName: "ID", width: 70 },
   {
     field: "name",
     headerName: "ชื่อ",
@@ -57,12 +57,12 @@ export const appointmentColumns = [
   {
     field: "start_time",
     headerName: "เวลาเริ้ม",
-    width: 150,
+    width: 100,
   },
   {
     field: "stop_time",
     headerName: "เวลาสิ้นสุด",
-    width: 150,
+    width: 100,
   },
   {
     field: "department",
@@ -82,7 +82,7 @@ export const appointmentColumns = [
 ];
 
 export const hotelColumns = [
-  { field: "_id", headerName: "ID", width: 250 },
+  { field: "_id", headerName: "ID", width: 70 },
   {
     field: "name",
     headerName: "สถานบริการ",
@@ -126,7 +126,7 @@ export const queueColumns = [
   {
     field: "max_queue",
     headerName: "ผู้ใช้บริการสูงสุด",
-    width: 120,
+    width: 200,
   },
 
   // {

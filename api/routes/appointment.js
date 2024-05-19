@@ -19,6 +19,6 @@ router.delete("/appointment/:id", deleteAppointment);
 
 router.get("/appointment/:user_Id", getAppointmentsByUserId);
 router.get("/appointment/auth/:hospital_user_Id", getAppointmentsByUserName);
-router.get("/appointment/:id", getAppointmentById);
+router.get("/appointments/:id", getAppointmentById);
 
 export default router;

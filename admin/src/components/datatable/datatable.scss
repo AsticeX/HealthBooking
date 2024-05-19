@@ -59,7 +59,7 @@
     align-items: center;
     gap: 15px;
 
-    .viewButton {
+    .editButton {
       padding: 2px 5px;
       border-radius: 5px;
       color: darkblue;
@@ -72,6 +72,20 @@
       border-radius: 5px;
       color: crimson;
       border: 1px dotted rgba(220, 20, 60, 0.6);
+      cursor: pointer;
+    }
+    .approveButton {
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: green;
+      border: 1px dotted green;
+      cursor: pointer;
+    }
+    .rejectButton {
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: orange;
+      border: 1px dotted orange;
       cursor: pointer;
     }
   }

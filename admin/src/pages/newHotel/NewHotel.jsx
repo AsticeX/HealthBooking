@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 const NewHotel = () => {
+  const [type, setTypes] = useState(""); // State for status dropdown
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
   const [queue, setQueue] = useState([]);
@@ -101,6 +102,7 @@ const NewHotel = () => {
         ...info,
         user_id: user.username,
         name: inputValue,
+        type: type,
         address: selectedAddress,
         latitude: latitude,
         longtitude: longtidue,
@@ -121,7 +123,7 @@ const NewHotel = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Add New Clinic</h1>
+          <h1>เพิ่มสถานบริการ</h1>
         </div>
         <div className="bottom">
           <div className="left">
@@ -136,7 +138,25 @@ const NewHotel = () => {
                 <input type="file" id="file" multiple onChange={(e) => setFiles(e.target.files)} style={{ display: "none" }} />
               </div>
               <div className="formInput">
-                <label>Name</label>
+                <label>ประเภท</label>
+                <select value={type} onChange={(e) => setTypes(e.target.value)}>
+                  <option value="" disabled>
+                    เลือกประเภท
+                  </option>
+                  <option value="คลินิกเวชกรรม">คลินิกเวชกรรม</option>
+                  <option value="คลินิกทันตกรรม">คลินิกทันตกรรม</option>
+                  <option value="คลินิกการพยาบาลและผดุงครรภ์">คลินิกการพยาบาลและผดุงครรภ์</option>
+                  <option value="คลินิกกายภาพบำบัด">คลินิกกายภาพบำบัด</option>
+                  <option value="คลินิกเทคนิคการแพทย์">คลินิกเทคนิคการแพทย์</option>
+                  <option value="คลินิกการแพทย์แผนไทย">คลินิกการแพทย์แผนไทย</option>
+                  <option value="คลินิกการประกอบโรคศิลปะ 7 สาขา">คลินิกการประกอบโรคศิลปะ 7 สาขา</option>
+                  <option value="คลินิกเฉพาะด้าน">คลินิกเฉพาะด้าน</option>
+                  <option value="สหคลินิก">สหคลินิก</option>
+                  <option value="สหคลินิก">อื่นๆ</option>
+                </select>
+              </div>
+              <div className="formInput">
+                <label>ชื่อสถานบริการ</label>
                 <input id="search" value={inputValue} onChange={handleInputChange} />
                 {searchResults.length > 0 && info.search && (
                   <div>
@@ -149,7 +169,7 @@ const NewHotel = () => {
                 )}
               </div>
               <div className="formInput">
-                <label>Address</label>
+                <label>ที่ตั้ง</label>
                 <input id="search" value={selectedAddress} onChange={handleInputChange} />
               </div>
 
@@ -159,18 +179,16 @@ const NewHotel = () => {
                   <input id={input.id} onChange={handleChange} type={input.type} placeholder={input.placeholder} />
                 </div>
               ))}
-
               {/* Department Inputs */}
               {departmentInputs.map((input, index) => (
                 <div className="formInput" key={index}>
-                  <label htmlFor={`department${index}`}>Department</label>
+                  <label htmlFor={`department${index}`}>แผนกที่ {index + 1}</label>
                   <input id={`department${index}`} value={input} onChange={(e) => handleDepartmentInputChange(index, e.target.value)} type="text" placeholder="Enter department" />
                 </div>
               ))}
               <button type="button" onClick={addDepartmentInput}>
-                Add Department
+                เพิ่มแผนก
               </button>
-
               <button onClick={handleClick}>Add</button>
             </form>
           </div>

@@ -72,16 +72,16 @@ const NewQueue = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Add New Service</h1>
+          <h1>เพิ่มบริการ</h1>
         </div>
         <div className="bottom">
           <div className="right">
             <form>
               <div className="formInput">
-                <label>Choose a clinic</label>
+                <label>เลือกสถานบริการ</label>
                 <select id="clinicId" onChange={(e) => setClinicId(e.target.value)} value={clinicId || ""}>
                   <option value="" disabled>
-                    Select a clinic
+                    เลือกสถานบริการ
                   </option>
                   {userClinics.map((clinic) => (
                     <option key={clinic._id} value={clinic._id}>
@@ -91,10 +91,10 @@ const NewQueue = () => {
                 </select>
               </div>
               <div className="formInput">
-                <label>Select a department</label>
+                <label>เลือกแผนก</label>
                 <select id="department" onChange={(e) => setDepartment(e.target.value)} value={department || ""}>
                   <option value="" disabled>
-                    Select a department
+                    เลือกแผนก
                   </option>
                   {userClinics
                     .find((clinic) => clinic._id === clinicId)
@@ -106,11 +106,11 @@ const NewQueue = () => {
                 </select>
               </div>
               <div className="formInput">
-                <label>Start Time</label>
+                <label>เวลาเริ้ม</label>
                 <input type="time" id="startTime" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
               </div>
               <div className="formInput">
-                <label>Stop Time</label>
+                <label>เวลาสิ้นสุด</label>
                 <input type="time" id="stopTime" value={stopTime} onChange={(e) => setStopTime(e.target.value)} />
               </div>
               {queueInputs.map((input) => (
