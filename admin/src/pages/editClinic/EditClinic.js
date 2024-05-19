@@ -132,6 +132,7 @@ const EditClinic = () => {
                   <option value="คลินิกการประกอบโรคศิลปะ 7 สาขา">คลินิกการประกอบโรคศิลปะ 7 สาขา</option>
                   <option value="คลินิกเฉพาะด้าน">คลินิกเฉพาะด้าน</option>
                   <option value="สหคลินิก">สหคลินิก</option>
+                  <option value="สหคลินิก">อื่นๆ</option>
                 </select>
               </div>
               <div className="formInput">
