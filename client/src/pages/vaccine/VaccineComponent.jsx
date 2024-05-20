@@ -519,7 +519,7 @@ const VaccineComponent = () => {
 
       <Modal show={formModalShow2} onHide={handleCloseFormModal2} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Vaccine User</Modal.Title>
+          <Modal.Title>บันทึกวัคซีน</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={submitForm}>
@@ -555,7 +555,7 @@ const VaccineComponent = () => {
 
       <Modal show={formModalShow3} onHide={handleCloseFormModal3} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Vaccine User</Modal.Title>
+          <Modal.Title>บันทึกวัคซีน</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={submitForm}>
