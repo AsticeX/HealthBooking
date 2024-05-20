@@ -49,7 +49,7 @@ const TopBar = ({ handleSearch, handleSort, selectedItems = [], removeItem }) =>
   return (
     <div className="topbar">
       <Grid container component="main" sx={{ mt: 8, bgcolor: "#77B255" }}></Grid>
-      <Box component="form" noValidate sx={{ width: "100%", pl: 2, pr: 2 }}>
+      <Box component="form" noValidate sx={{ width: "100%", pl: 2, pr: 2 }} onSubmit={(e) => e.preventDefault()}>
         <Grid container spacing={3}>
           <Grid item xs={10} sm={3} mt={4} sx={{ display: "flex", alignItems: "center" }}>
             <TextField
@@ -104,7 +104,7 @@ const TopBar = ({ handleSearch, handleSort, selectedItems = [], removeItem }) =>
             </div>
           </Grid>
           <Grid item xs={10} sm={2} mt={2} sx={{ width: "100%", display: "flex", alignItems: "center" }}>
-            <button className="siCheckButton2" onClick={handleCalculatePrice}>
+            <button type="button" className="siCheckButton2" onClick={handleCalculatePrice}>
               คำนวนราคา
             </button>
           </Grid>
