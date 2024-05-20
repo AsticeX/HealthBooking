@@ -14,12 +14,10 @@ const HospitalFinderComponent = () => {
   const [location, setLocation] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [mapInitialized, setMapInitialized] = useState(false);
-  const { data, loading, error } = useFetch(`${process.env.REACT_APP_API}/clinics}`);
+  const { data, loading, error } = useFetch(`${process.env.REACT_APP_API}/clinics`);
 
   let map;
   let search;
-
-
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -62,49 +60,42 @@ const HospitalFinderComponent = () => {
       icon: { url: 'https://mmmap15.longdo.com/mmmap/images/icons/hospital.png' }
     });
     map.location(window.longdo.LocationMode.Geolocation);
-
-
-  }
+  };
 
   const routeMap = (hospitalId) => {
     const { latitude, longitude } = location;
-    // console.log(hospitalId);
-    showMap()
-    axios.get("https://api.longdo.com/POIService/json/search?", {
+    showMap();
+    axios.get('/proxy', {
       params: {
-        key: '79e088d5668d8e7316d055233c8cf1c4',
         lon: longitude,
         lat: latitude,
         tag: 'hospital',
         limit: 10,
-      }
+      },
+      withCredentials: true,
     })
-      .then((response) => {
-        // console.log(hospitalId);
-        const hospitals = response.data.data.map(hospital => {
-          hospital.distance = calculateDistance(latitude, longitude, hospital.lat, hospital.lon);
-          if (hospitalId === hospital.id) {
-            var marker = new window.longdo.Marker({ lon: longitude, lat: latitude });
-            map.Route.add(marker);
-            map.Route.add({ lon: hospital.lon, lat: hospital.lat });
-            map.Route.search();
-          }
-          return hospital;
-        });
-        // console.log(hospitals);
-        setSearchResults(hospitals);
-      })
-      .catch((error) => {
-        console.error('Error searching nearby:', error);
+    .then((response) => {
+      const hospitals = response.data.data.map(hospital => {
+        hospital.distance = calculateDistance(latitude, longitude, hospital.lat, hospital.lon);
+        if (hospitalId === hospital.id) {
+          var marker = new window.longdo.Marker({ lon: longitude, lat: latitude });
+          map.Route.add(marker);
+          map.Route.add({ lon: hospital.lon, lat: hospital.lat });
+          map.Route.search();
+        }
+        return hospital;
       });
+      setSearchResults(hospitals);
+    })
+    .catch((error) => {
+      console.error('Error searching nearby:', error);
+    });
     map.Route.placeholder(document.getElementById('result'));
-  }
-
-
+  };
 
   const initMap = () => {
-    showMap()
-    search = document.getElementById('search')
+    showMap();
+    search = document.getElementById('search');
     if (search) {
       map.Search.placeholder(document.getElementById('result'));
       search.onkeyup = function (event) {
@@ -118,31 +109,31 @@ const HospitalFinderComponent = () => {
 
   const searchNearby = () => {
     const { latitude, longitude } = location;
-    showMap()
-    axios.get("https://api.longdo.com/POIService/json/search?", {
+    showMap();
+    axios.get(`${process.env.REACT_APP_API}/proxy`, {
       params: {
-        key: '79e088d5668d8e7316d055233c8cf1c4',
         lon: longitude,
         lat: latitude,
         tag: 'hospital',
         limit: 10,
-      }
+      },
+      withCredentials: true,
     })
-      .then((response) => {
-        console.log(response.data.data);
-        const hospitals = response.data.data.map(hospital => {
-          hospital.distance = calculateDistance(latitude, longitude, hospital.lat, hospital.lon);
-          var marker = new window.longdo.Marker({ lon: hospital.lon, lat: hospital.lat });
-          map.Overlays.add(marker);
-          return hospital;
-        });
-        const suggest = document.getElementById('result');
-        suggest.style.display = 'none';
-        setSearchResults(hospitals);
-      })
-      .catch((error) => {
-        console.error('Error searching nearby:', error);
+    .then((response) => {
+      console.log(response.data.data);
+      const hospitals = response.data.data.map(hospital => {
+        hospital.distance = calculateDistance(latitude, longitude, hospital.lat, hospital.lon);
+        var marker = new window.longdo.Marker({ lon: hospital.lon, lat: hospital.lat });
+        map.Overlays.add(marker);
+        return hospital;
       });
+      const suggest = document.getElementById('result');
+      suggest.style.display = 'none';
+      setSearchResults(hospitals);
+    })
+    .catch((error) => {
+      console.error('Error searching nearby:', error);
+    });
   };
 
   const doSearch = () => {
@@ -155,7 +146,6 @@ const HospitalFinderComponent = () => {
       suggest.style.display = 'block';
     }
   };
-
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
@@ -196,7 +186,6 @@ const HospitalFinderComponent = () => {
               </CardContent>
             ))}
           </Card>
-
         </Grid>
         <Grid item xs={6} sx={{ height: '100%', mt: 8.5, position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -218,7 +207,7 @@ const HospitalFinderComponent = () => {
               label='Search'
               InputProps={{
                 endAdornment: (
-                  <IconButton sx={{color:'blue'}}>
+                  <IconButton sx={{color:'blue'}}  >
                     <SearchIcon />
                   </IconButton>
                 ),

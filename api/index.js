@@ -14,7 +14,7 @@ import vaccine_userRoute from "./routes/vaccine_user.js";
 import queueRoute from "./routes/queue.js";
 import appointmentRoute from "./routes/appointment.js";
 import expirationChecker from "./utils/expirationChecker.js";
-
+import axios from 'axios';
 dotenv.config();
 mongoose.set("strictQuery", false);
 
@@ -50,6 +50,23 @@ app.use(
   })
 );
 
+app.get('api/proxy', async (req, res) => {
+  try {
+    const { lon, lat, tag, limit } = req.query;
+    const response = await axios.get('https://api.longdo.com/POIService/json/search?', {
+      params: {
+        key: process.env.LONGDO_API_KEY, 
+        lon,
+        lat,
+        tag,
+        limit,
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).send(error.toString());
+  }
+});
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/clinics", clinicsRoute);
