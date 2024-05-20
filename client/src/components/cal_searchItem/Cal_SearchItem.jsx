@@ -2,13 +2,14 @@ import React from "react";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import "./cal_searchItem.css";
 
-const Cal_SearchItem = ({ item }) => {
+const Cal_SearchItem = ({ item, addItem }) => {
   const handleButtonClick = () => {
     window.open(item.description_link, "_blank");
   };
 
   const handleAddButtonClick = (e) => {
     e.stopPropagation(); // Prevent click event from reaching the parent container
+    addItem(item); // Add item to selected items
   };
 
   return (

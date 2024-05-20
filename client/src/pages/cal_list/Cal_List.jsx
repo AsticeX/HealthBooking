@@ -5,16 +5,17 @@ import useFetch from "../../hooks/useFetch";
 import "./cal_list.css";
 import TopBar from "../../components/topbar/Topbar";
 
-const ITEMS_PER_PAGE = 10; // Number of items to display per page
+const ITEMS_PER_PAGE = 10;
 
 const Cal_List = () => {
   const { data: initialData, loading, error, reFetch } = useFetch(`${process.env.REACT_APP_API}/vaccine_cal`);
   const [allData, setAllData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedItems, setSelectedItems] = useState([]); // Initialize as an empty array
 
   useEffect(() => {
     if (!loading && initialData) {
-      setAllData(initialData); // Set initial data without concatenating
+      setAllData(initialData);
     }
   }, [loading, initialData]);
 
@@ -23,16 +24,11 @@ const Cal_List = () => {
   };
 
   const handleSearch = (searchTerm) => {
-    // Perform search logic here
-    console.log("Searching for:", searchTerm);
-    // Example: Filter data based on search term
     const filteredData = initialData.filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase()));
     setAllData(filteredData);
   };
 
   const handleSort = (sortOrder) => {
-    // Perform sorting logic here
-    console.log("Sorting order:", sortOrder);
     const sortedData = [...allData].sort((a, b) => {
       if (sortOrder === "near") {
         return a.price_no_thb - b.price_no_thb;
@@ -44,6 +40,14 @@ const Cal_List = () => {
     setAllData(sortedData);
   };
 
+  const addItem = (item) => {
+    setSelectedItems((prevItems) => [...prevItems, item]);
+  };
+
+  const removeItem = (itemId) => {
+    setSelectedItems((prevItems) => prevItems.filter((item) => item._id !== itemId));
+  };
+
   if (loading && !allData.length) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -53,15 +57,20 @@ const Cal_List = () => {
 
   return (
     <div>
-      <TopBar handleSearch={handleSearch} handleSort={handleSort} /> {/* Pass handleSearch and handleSort functions to the TopBar component */}
+      <TopBar
+        handleSearch={handleSearch}
+        handleSort={handleSort}
+        selectedItems={selectedItems} // Pass selectedItems to TopBar
+        removeItem={removeItem}
+      />
       <div className="listResult">
         {currentPageData.map((item) => (
-          <Cal_SearchItem key={item._id} item={item} />
+          <Cal_SearchItem key={item._id} item={item} addItem={addItem} />
         ))}
       </div>
       {allData.length > endIndex && (
         <div style={{ textAlign: "center" }}>
-          <Button variant="contained" onClick={loadMoreItems}>
+          <Button variant="contained" onClick={loadMoreItems} sx={{ mt: 2 }}>
             ดูแพ็กเกจเพิ่มเติม
           </Button>
         </div>

@@ -184,7 +184,7 @@ const NewHotel = () => {
               {departmentInputs.map((input, index) => (
                 <div className="formInput" key={index}>
                   <label htmlFor={`department${index}`}>แผนกที่ {index + 1}</label>
-                  <input id={`department${index}`} value={input} onChange={(e) => handleDepartmentInputChange(index, e.target.value)} type="text" placeholder="Enter department" />
+                  <input id={`department${index}`} value={input} onChange={(e) => handleDepartmentInputChange(index, e.target.value)} type="text" placeholder="" />
                 </div>
               ))}
               <button type="button" onClick={addDepartmentInput}>
