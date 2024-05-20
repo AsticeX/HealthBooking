@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { Formik } from "formik";
-import "./reserve.css";
+import "./editreserve.css";
 import useFetch from "../../hooks/useFetch";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
@@ -21,7 +21,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Alert from '@mui/material/Alert';
 
 
-const Reserve = ({ setOpen, clinicId }) => {
+const EditReserve = ({ setOpen, clinicId,appointmentId }) => {
   const { dispatch, user } = useContext(AuthContext);
   // const [selectedRooms, setSelectedRooms] = useState([]);
   const { data, loading, error } = useFetch(`${process.env.REACT_APP_API}/clinics/find/${clinicId}`);
@@ -99,9 +99,6 @@ const Reserve = ({ setOpen, clinicId }) => {
     handleQueue();
   }, [queue]);
 
-  // useEffect(() => {
-  //   // console.log(queue);
-  // }, [])
 
   const schema = Yup.object().shape({
     name: Yup.string().required("Name is a required field"),
@@ -125,17 +122,15 @@ const Reserve = ({ setOpen, clinicId }) => {
       if (user) {
         const dataToSend = {
           ...values,
-          hospital_user_Id: hospitalUserIdData,
           date: date,
           department: departmentData,
           hospital: clinicId,
           hospitalName: hospitalName,
-          user_Id: `${user._id}`,
           queue: selectedQueue,
           start_time: queue.find((item) => item._id === selectedQueue)?.start_time,
           stop_time: queue.find((item) => item._id === selectedQueue)?.stop_time,
         };
-        const res = await axios.post(`${process.env.REACT_APP_API}/appointment`, dataToSend);
+        const res = await axios.put(`${process.env.REACT_APP_API}/appointment/${appointmentId}`, dataToSend);
         setAvaliable(res.data.availableSlots)
         setShowAlert(false)
         dispatch({ type: "APPOINTMENT_SUCCESS", payload: res.data.details });
@@ -288,7 +283,7 @@ const Reserve = ({ setOpen, clinicId }) => {
               )}
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
                 <Button type="submit" variant="contained" sx={{ background: "#77B255" }} onClick={handleSubmit}>
-                  จอง
+                  แก้ไข
                 </Button>
               </Grid>
             </Box>
@@ -299,4 +294,4 @@ const Reserve = ({ setOpen, clinicId }) => {
   );
 };
 
-export default Reserve;
+export default EditReserve;
