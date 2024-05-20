@@ -1,5 +1,4 @@
 import express from "express";
-// import vaccineController from "../controllers/vaccineController.js";
 import { getVaccines, createVaccine, updateVaccine, deleteVaccine, searchVaccineByName } from "../controllers/vaccineController.js";
 
 const router = express.Router();

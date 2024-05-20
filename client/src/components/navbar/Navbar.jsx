@@ -95,9 +95,17 @@ const Navbar = (props) => {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center", backgroundColor: "#EEEEE6" }}>
+    <Box
+      onClick={handleDrawerToggle}
+      sx={{
+        textAlign: "center",
+        backgroundColor: "#EEEEE6",
+        height: "100%", // Ensure it takes the full height
+        width: "100%", // Ensure it takes the full width
+      }}
+    >
       <Typography variant="h6" sx={{ my: 2 }}>
-        <Grid container justifyContent="center" alignItems="center">
+        <Grid container justifyContent="center" alignItems="center" sx={{ textAlign: "center", width: "100%", height: "100%", backgroundColor: "#77B255" }}>
           <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" style={{ maxWidth: "128px", maxHeight: "128px" }} />
         </Grid>
       </Typography>

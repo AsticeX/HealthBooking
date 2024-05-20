@@ -8,8 +8,11 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const NewQueue = () => {
+  const navigate = useNavigate();
+
   const [info, setInfo] = useState({});
   const [clinicId, setClinicId] = useState(undefined);
   const [department, setDepartment] = useState("");
@@ -61,6 +64,7 @@ const NewQueue = () => {
       const updatedQueue = [...currentQueue, queueId];
       await axios.put(`/clinics/${clinicId}`, { queue: updatedQueue });
       console.log("Service added successfully!");
+      navigate("/queue"); // Navigate to /appointment after successful update
     } catch (err) {
       console.error("Error adding service:", err);
     }

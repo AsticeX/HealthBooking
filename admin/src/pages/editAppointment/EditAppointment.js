@@ -6,8 +6,10 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const EditQueue = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [clinicId, setClinicId] = useState("");
   const [name, setName] = useState("");
@@ -80,7 +82,9 @@ const EditQueue = () => {
         start_time: startTime,
         stop_time: stopTime,
         status: status, // Include status in the request body
+        description: description, // Include status in the request body
       });
+      navigate("/appointment"); // Navigate to /appointment after successful update
     } catch (err) {
       console.error("Error updating appointment:", err);
     }

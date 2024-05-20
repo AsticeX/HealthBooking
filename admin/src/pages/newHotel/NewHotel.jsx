@@ -9,8 +9,11 @@ import axios from "axios";
 import Select from "react-select";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const NewHotel = () => {
+  const navigate = useNavigate();
+
   const [type, setTypes] = useState(""); // State for status dropdown
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
@@ -60,6 +63,7 @@ const NewHotel = () => {
         // suggest.style.display = 'none';
         setSearchResults(hospitals);
       })
+
       .catch((error) => {
         console.error("Error searching nearby:", error);
       });
@@ -113,6 +117,7 @@ const NewHotel = () => {
       };
       const res = await axios.post("/clinics", newclinic);
       // console.log(res,"xxxxxx");
+      navigate("/clinics"); // Navigate to /appointment after successful update
     } catch (err) {
       console.log(err);
     }

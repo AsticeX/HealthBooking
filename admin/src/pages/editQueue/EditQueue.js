@@ -6,8 +6,11 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const EditQueue = () => {
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const [clinicId, setClinicId] = useState("");
   const [department, setDepartment] = useState("");
@@ -73,6 +76,7 @@ const EditQueue = () => {
         stop_time: stopTime,
         max_queue: maxQueue,
       });
+      navigate("/queue"); // Navigate to /appointment after successful update
     } catch (err) {
       console.error("Error updating queue:", err);
     }
@@ -135,7 +139,7 @@ const EditQueue = () => {
                 <input type="number" value={maxQueue} onChange={(e) => setMaxQueue(e.target.value)} required />
               </div>
               <div className="submitBtn">
-                <button type="submit">Update</button>
+                <button type="submit">บันทึก</button>
               </div>
             </form>
           </div>

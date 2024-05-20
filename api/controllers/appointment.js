@@ -1,5 +1,4 @@
 // controllers/appointmentController.js
-
 import Appointment from "../models/Appointment.js";
 import Queue from "../models/Queue.js";
 
@@ -17,7 +16,7 @@ export const getAppointment = async (req, res, next) => {
 export const createAppointment = async (req, res, next) => {
   try {
     const queueId = req.params.queue;
-    const { date } = req.body; 
+    const { date } = req.body;
 
     // Find the queue by ID
     let queue = await Queue.findOne({ queueId });
@@ -26,7 +25,7 @@ export const createAppointment = async (req, res, next) => {
     }
 
     const appointmentsOnDate = await Appointment.find({ queueId, date }).countDocuments();
-    
+
     if (appointmentsOnDate >= queue.max_queue) {
       return res.status(400).json({ message: "Queue is full for the selected date" });
     }
@@ -36,7 +35,7 @@ export const createAppointment = async (req, res, next) => {
     const appointment = await Appointment.create({ ...req.body, queueId });
     await queue.save();
     return res.status(201).json({ appointment, availableSlots });
-    } catch (err) {
+  } catch (err) {
     next(err);
   }
 };
@@ -44,17 +43,15 @@ export const createAppointment = async (req, res, next) => {
 // export const getAvailableSlots = async (req, res, next) => {
 //   try {
 //     const queueId = req.params.queue;
-//     const { date } = req.query; 
-
+//     const { date } = req.query;
 
 //     let queue = await Queue.findOne({ queueId });
 //     if (!queue) {
 //       return res.status(404).json({ message: "Queue not found" });
 //     }
 
-
 //     const appointmentsOnDate = await Appointment.find({ queueId, date }).countDocuments();
-    
+
 //     const availableSlots = queue.max_queue - appointmentsOnDate;
 
 //     return res.status(200).json({ availableSlots });
