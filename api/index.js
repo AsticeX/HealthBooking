@@ -50,7 +50,7 @@ app.use(
   })
 );
 
-app.get('api/proxy', async (req, res) => {
+app.get('/api/proxy', async (req, res) => {
   try {
     const { lon, lat, tag, limit } = req.query;
     const response = await axios.get('https://api.longdo.com/POIService/json/search?', {
