@@ -122,7 +122,7 @@ const History = () => {
                 <TableCell>ชื่อ-นามสกุล</TableCell>
                 <TableCell align="center">วัน/เดือน/ปีเกิด</TableCell>
                 <TableCell align="center">คลินิค</TableCell>
-                <TableCell align="center">แผนก</TableCell>
+                <TableCell align="center">บริการ</TableCell>
                 <TableCell align="center">เวลา</TableCell>
                 <TableCell align="center">สถานะ</TableCell>
                 <TableCell align="right"></TableCell>
@@ -150,7 +150,7 @@ const History = () => {
                           padding: "8px",
                         }}
                       >
-                        รอคิว
+                        รอการยืนยัน
                       </Alert>
                     ) : row.status === "Cancel" ? (
                       <Alert
