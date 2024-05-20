@@ -256,7 +256,7 @@ const EditReserve = ({ setOpen, clinicId,appointmentId }) => {
                     <p>{loading ? 'Loading...' : 'No queues available'}</p>
                   )}
                 </Grid>
-
+                
                 <Grid item xs={12} sm={12}>
                   <TextField
                     margin="normal"

@@ -19,6 +19,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Alert from "@mui/material/Alert";
+import { MuiTelInput } from 'mui-tel-input'
+
 
 const Reserve = ({ setOpen, clinicId }) => {
   const { dispatch, user } = useContext(AuthContext);
@@ -30,6 +32,11 @@ const Reserve = ({ setOpen, clinicId }) => {
   const [date, setDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [available, setAvaliable] = useState(0);
+  const [phone, setPhone] = useState(`+66${user.phone}`);
+
+  const handleChangeTel = (newPhone) => {
+    setPhone(newPhone);
+  };
 
   const isTimeInRange = (startTime, stopTime, selectedDate) => {
     const currentDate = new Date();
@@ -37,7 +44,6 @@ const Reserve = ({ setOpen, clinicId }) => {
     const currentDateTime = currentDate.setHours(0, 0, 0, 0);
     const selectedDateTime = selectedDateObj.setHours(0, 0, 0, 0);
 
-    // If the selected date is in the future, return false to indicate all times are selectable
     if (selectedDateTime > currentDateTime) {
       return false;
     }
@@ -64,9 +70,7 @@ const Reserve = ({ setOpen, clinicId }) => {
     return currentMinutes >= startMinutes && currentMinutes < stopMinutes;
   };
 
-  // Test cases
-  console.log(isTimeInRange("19:00", "22:40")); // true
-  console.log(isTimeInRange("23:00", "00:00")); // true
+
 
   const navigate = useNavigate();
 
@@ -127,9 +131,11 @@ const Reserve = ({ setOpen, clinicId }) => {
           hospitalName: hospitalName,
           user_Id: `${user._id}`,
           queue: selectedQueue,
+          phone_no: phone,
           start_time: queue.find((item) => item._id === selectedQueue)?.start_time,
           stop_time: queue.find((item) => item._id === selectedQueue)?.stop_time,
         };
+        console.log(dataToSend);
         const res = await axios.post(`${process.env.REACT_APP_API}/appointment`, dataToSend);
         setAvaliable(res.data.availableSlots);
         setShowAlert(false);
@@ -246,7 +252,24 @@ const Reserve = ({ setOpen, clinicId }) => {
                   )}
                   {(loading || !queue || queue.length === 0) && <p>{loading ? "Loading..." : "No queues available"}</p>}
                 </Grid>
-
+                <Grid item xs={12} sm={12}>
+                    <MuiTelInput
+                      fullWidth
+                      name="phone"
+                      label="เบอร์โทรศัพท์"
+                      type="phone"
+                      id="phone"
+                      defaultCountry="TH"
+                      autoComplete="current-phone"
+                      value={phone}
+                      onChange={handleChangeTel}
+                      onBlur={handleBlur}
+                      error={touched.phone && !!errors.phone}
+                      helperText={touched.phone && errors.phone}
+                      variant="outlined"
+                      className={touched.phone && errors.phone}
+                    />
+                  </Grid>
                 <Grid item xs={12} sm={12}>
                   <TextField
                     margin="normal"
