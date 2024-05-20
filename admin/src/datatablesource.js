@@ -86,22 +86,22 @@ export const hotelColumns = [
   {
     field: "name",
     headerName: "สถานบริการ",
-    width: 150,
+    width: 300,
   },
   {
     field: "type",
     headerName: "ประเภท",
-    width: 100,
+    width: 250,
   },
   {
     field: "address",
     headerName: "ที่ตั้ง",
-    width: 100,
+    width: 200,
   },
   {
     field: "contract",
     headerName: "เบอร์",
-    width: 100,
+    width: 150,
   },
 ];
 

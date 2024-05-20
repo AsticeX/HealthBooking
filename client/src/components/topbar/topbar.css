@@ -1,0 +1,40 @@
+.topbar {
+    position: fixed; /* Set the position to fixed */
+    top: 0; /* Position it at the top of the viewport */
+    left: 0; /* Align it to the left */
+    width: 100%; /* Make it span the full width of the viewport */
+    background-color: #77B255; /* Background color of the top bar */
+    color: #838383; /* Text color */
+    padding: 10px; /* Padding around the content */
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+
+  .selectedItemsContainer {
+    height: 110px; /* Set a fixed height */
+    overflow-y: auto;
+    background-color: white; /* Enable vertical scrolling */
+   
+  }
+  
+  .selectedItemsList {
+    padding: 5px; /* Add padding to the list */
+  }
+  .emptyContainer {
+    padding: 10px;
+    color: #aaa; /* Placeholder text color */
+  }
+  
+  .selectedItemContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .selectedItemTitle {
+    flex-grow: 1; /* Allow title to grow to fill available space */
+  }
+
+  .descriptionBox{
+    margin: 10px;
+  }
+  

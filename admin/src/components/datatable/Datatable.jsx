@@ -53,7 +53,7 @@ const Datatable = ({ columns }) => {
       <div className="datatableTitle">
         {path === "clinics" ? "สถานบริการ" : path === "queue" ? "เวลาให้บริการ" : path === "appointment" ? "การจอง" : path}
         <Link to={`/${path}/new`} className="link">
-          Add New
+          เพิ่มข้อมูล
         </Link>
       </div>
       <DataGrid
@@ -64,21 +64,21 @@ const Datatable = ({ columns }) => {
             ? [
                 {
                   field: "action",
-                  headerName: "Action",
+                  headerName: "การกระทำ",
                   width: 300,
                   renderCell: (params) => (
                     <div className="cellAction">
                       <div className="approveButton" onClick={() => handleApprove(params.row._id)}>
-                        Approve
+                        ยืนยัน
                       </div>
                       <div className="rejectButton" onClick={() => handleReject(params.row._id)}>
-                        Reject
+                        ปฏิเสธ
                       </div>
                       <Link to={`/${path}/${params.row._id}`} style={{ textDecoration: "none" }}>
-                        <div className="editButton">Edit</div>
+                        <div className="editButton">แก้ไข</div>
                       </Link>
                       <div className="deleteButton" onClick={() => handleDelete(params.row._id)}>
-                        Delete
+                        &nbsp;&nbsp; ลบ &nbsp;&nbsp;
                       </div>
                     </div>
                   ),
@@ -92,10 +92,10 @@ const Datatable = ({ columns }) => {
                   renderCell: (params) => (
                     <div className="cellAction">
                       <Link to={`/${path}/${params.row._id}`} style={{ textDecoration: "none" }}>
-                        <div className="editButton">Edit</div>
+                        <div className="editButton">แก้ไข</div>
                       </Link>
                       <div className="deleteButton" onClick={() => handleDelete(params.row._id)}>
-                        Delete
+                        &nbsp;&nbsp; ลบ &nbsp;&nbsp;
                       </div>
                     </div>
                   ),
