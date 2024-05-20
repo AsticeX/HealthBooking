@@ -52,19 +52,22 @@ const UserProfile = () => {
   const handleClick = async (values, actions) => {
 
     try {
+      const accessToken = localStorage.getItem('access_token');
       if (user) {
         const photo = await Promise.all(
           Object.values(files).map(async (file) => {
             const data = new FormData();
             data.append("file", file);
             data.append("upload_preset", "gijwryvm");
-            const uploadRes = await axios.post(
-              "https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload",
-              data,
-              {
+            const uploadRes = await axios.post("https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload", data,
+             {
+              headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'multipart/form-data'
               }
-            );
-            console.log();
+            });
+            
+            console.log(uploadRes, "XXXXX");
             const { url } = uploadRes.data;
             return url;
           })
@@ -75,7 +78,7 @@ const UserProfile = () => {
         handleClickSnack();
       }
     } catch (err) {
-      console.error("Registration failed:", err);
+      console.error("Upload:", err);
       setShowAlert(true);
     }
   };
@@ -156,8 +159,6 @@ const UserProfile = () => {
                     </div>
                   </div>
                 </div>
-
-
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
