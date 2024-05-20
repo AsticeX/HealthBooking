@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./topbar.css";
-import { TextField, Grid, InputLabel, MenuItem, FormControl, Select, IconButton, Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from "@mui/material";
+import { Box, TextField, Grid, InputLabel, MenuItem, FormControl, Select, IconButton, Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import { styled } from "@mui/material/styles";
 import { red, green, blue } from "@mui/material/colors";
@@ -46,35 +46,12 @@ const TopBar = ({ handleSearch, handleSort, selectedItems = [], removeItem }) =>
     setOpenDialog(false);
   };
 
-  const Root = styled("div")(({ theme }) => ({
-    padding: theme.spacing(1),
-    [theme.breakpoints.down("md")]: {
-      width: 450,
-      backgroundColor: "#77B255",
-    },
-    [theme.breakpoints.up("md")]: {
-      width: 1878,
-      backgroundColor: "#77B255",
-    },
-    [theme.breakpoints.up("lg")]: {
-      width: 1878,
-      backgroundColor: "#77B255",
-    },
-  }));
-
-  const Root1 = styled("div")(({ theme }) => ({
-    padding: theme.spacing(1),
-    [theme.breakpoints.down("md")]: {
-      width: 300,
-    },
-  }));
-
   return (
     <div className="topbar">
       <Grid container component="main" sx={{ mt: 8, bgcolor: "#77B255" }}></Grid>
-      <Root>
+      <Box component="form" noValidate sx={{ width: "100%", pl: 2, pr: 2 }}>
         <Grid container spacing={3}>
-          <Grid item xs={10} sm={3} mt={3}>
+          <Grid item xs={10} sm={3} mt={4} sx={{ display: "flex", alignItems: "center" }}>
             <TextField
               margin="normal"
               fullWidth
@@ -91,7 +68,7 @@ const TopBar = ({ handleSearch, handleSort, selectedItems = [], removeItem }) =>
               className="searchField"
             />
           </Grid>
-          <Grid item xs={10} sm={3} mt={5}>
+          <Grid item xs={10} sm={3} mt={5} sx={{ display: "flex", alignItems: "center" }}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">เรียงวัคซีนจากราคา</InputLabel>
               <Select sx={{ backgroundColor: "white" }} value={sortOrder} onChange={handleSortChange} displayEmpty inputProps={{ "aria-label": "Sort by price" }} className="sortSelect">
@@ -103,13 +80,13 @@ const TopBar = ({ handleSearch, handleSort, selectedItems = [], removeItem }) =>
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={10} sm={4} mt={2}>
-            <div className="selectedItemsContainer">
+          <Grid item xs={10} sm={4} mt={2} sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+            <div sx={{ width: "100%" }} className="selectedItemsContainer">
               {showDescription && (
                 <div className="descriptionBox">
                   {(!selectedItems || selectedItems.length === 0) && (
                     <div className="descriptionBox">
-                      <p>กด "เพิ่ม" เพื่อคำนวนราคาวัคซีน</p>
+                      <p>กด "เพิ่ม" เพื่อคำนวนราคาวัคซีน &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
                     </div>
                   )}
                 </div>
@@ -126,35 +103,33 @@ const TopBar = ({ handleSearch, handleSort, selectedItems = [], removeItem }) =>
               ))}
             </div>
           </Grid>
-          <Grid item xs={10} sm={2} mt={2}>
+          <Grid item xs={10} sm={2} mt={2} sx={{ width: "100%", display: "flex", alignItems: "center" }}>
             <button className="siCheckButton2" onClick={handleCalculatePrice}>
               คำนวนราคา
             </button>
           </Grid>
         </Grid>
-      </Root>
+      </Box>
       <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="md">
-        <Root1>
-          <DialogTitle style={{ backgroundColor: "#77B255", color: "white" }}>รายการที่เลือก</DialogTitle>
-          <DialogContent sx={{ mt: 2 }}>
-            {selectedItems.map((item) => (
-              <div key={item._id} className="selectedItem">
-                <div className="selectedItemContent">
-                  <Typography>{getLimitedTitle(item.title)}</Typography>
-                  <Typography>{item.price}</Typography>
-                </div>
+        <DialogTitle style={{ backgroundColor: "#77B255", color: "white" }}>รายการที่เลือก</DialogTitle>
+        <DialogContent sx={{ mt: 2 }}>
+          {selectedItems.map((item) => (
+            <div key={item._id} className="selectedItem">
+              <div className="selectedItemContent">
+                <Typography>{getLimitedTitle(item.title)}</Typography>
+                <Typography>{item.price}</Typography>
               </div>
-            ))}
-          </DialogContent>
-          <DialogActions style={{ backgroundColor: "#F0F0F0" }}>
-            <Typography variant="h6" style={{ flexGrow: 1, color: "#333" }}>
-              ราคารวม: {selectedItems.reduce((total, item) => total + item.price_no_thb, 0)} บาท
-            </Typography>
-            <button className="siCheckButton3" onClick={handleCloseDialog} color="primary">
-              ปิด
-            </button>
-          </DialogActions>
-        </Root1>
+            </div>
+          ))}
+        </DialogContent>
+        <DialogActions style={{ backgroundColor: "#F0F0F0" }}>
+          <Typography variant="h6" style={{ flexGrow: 1, color: "#333" }}>
+            ราคารวม: {selectedItems.reduce((total, item) => total + item.price_no_thb, 0)} บาท
+          </Typography>
+          <button className="siCheckButton3" onClick={handleCloseDialog} color="primary">
+            ปิด
+          </button>
+        </DialogActions>
       </Dialog>
 
       <Grid container component="main" sx={{ mt: 1, bgcolor: "#77B255" }}></Grid>

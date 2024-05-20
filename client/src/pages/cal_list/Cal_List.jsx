@@ -63,7 +63,7 @@ const Cal_List = () => {
         selectedItems={selectedItems} // Pass selectedItems to TopBar
         removeItem={removeItem}
       />
-      <Grid container component="main" sx={{ mt: 30, bgcolor: "#77B255" }}></Grid>
+      <Grid container component="main" sx={{ mt: 2, bgcolor: "#77B255" }}></Grid>
 
       <div className="listResult">
         {currentPageData.map((item) => (
