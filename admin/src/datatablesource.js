@@ -56,7 +56,7 @@ export const appointmentColumns = [
   },
   {
     field: "start_time",
-    headerName: "เวลาเริ้ม",
+    headerName: "เวลาเริ่ม",
     width: 100,
   },
   {
@@ -115,7 +115,7 @@ export const queueColumns = [
   },
   {
     field: "start_time",
-    headerName: "เวลาเริ้ม",
+    headerName: "เวลาเริ่ม",
     width: 150,
   },
   {
