@@ -283,7 +283,7 @@ const EditReserve = ({ setOpen, clinicId,appointmentId }) => {
               )}
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
                 <Button type="submit" variant="contained" sx={{ background: "#77B255" }} onClick={handleSubmit}>
-                  แก้ไข
+                  ยืนยัน
                 </Button>
               </Grid>
             </Box>
