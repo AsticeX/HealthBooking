@@ -94,8 +94,8 @@ const VaccineComponent = () => {
           console.error("Error fetching vaccine users:", error);
 
           Swal.fire({
-            title: "Error!",
-            text: "Failed to fetch vaccine users.",
+            title: "ผิดพลาด!",
+            text: "ไม่สามารถบันทึกข้อมูลวัคซีนได้.",
             icon: "error",
           });
         });
@@ -121,13 +121,14 @@ const VaccineComponent = () => {
 
   const handleDelete = (id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "ยืนยันการลบ?",
+      text: "คุณไม่สามารถย้อนกลับการกระทำนี้ได้!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "ยืนยันการลบ",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
         axios
@@ -137,12 +138,12 @@ const VaccineComponent = () => {
 
             setVaccineUsers(vaccineUsers.filter((user) => user._id !== id));
 
-            Swal.fire("Deleted!", "Your user has been deleted.", "success");
+            Swal.fire("ลบเรียบร้อย", "ข้อมูลถูกลบเรียบร้อยแล้ว", "success");
           })
           .catch((error) => {
             console.error("Error deleting user:", error);
 
-            Swal.fire("Error!", "Failed to delete user.", "error");
+            Swal.fire("ผิดพลาด!", "ไม่สามารถลบข้อมูลได้", "error");
           });
       }
     });
@@ -201,14 +202,14 @@ const VaccineComponent = () => {
         handleCloseFormModal2();
         handleCloseFormModal3();
         Swal.fire({
-          title: "Success",
+          title: "สำเร็จ",
           text: "บันทึกข้อมูลสำเร็จ",
           icon: "success",
         });
       })
       .catch((err) => {
         Swal.fire({
-          title: "Oops...",
+          title: "ผิดพลาด",
           text: err.response.data.error,
           icon: "error",
         });
@@ -275,14 +276,14 @@ const VaccineComponent = () => {
         setEditModalShow(false);
 
         Swal.fire({
-          title: "Success",
+          title: "สำเร็จ",
           text: "บันทึกข้อมูลสำเร็จ",
           icon: "success",
         });
       })
       .catch((err) => {
         Swal.fire({
-          title: "Oops...",
+          title: "ผิดพลาด",
           text: err.response.data.error,
           icon: "error",
         });
@@ -333,6 +334,14 @@ const VaccineComponent = () => {
   };
   const handleCloseFormModal3 = () => {
     setFormModalShow3(false);
+  };
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const day = `0${d.getDate()}`.slice(-2);
+    const month = `0${d.getMonth() + 1}`.slice(-2);
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
   const handleExpire = (user) => {
@@ -410,9 +419,9 @@ const VaccineComponent = () => {
               <TableHead sx={{ backgroundColor: "#77B255" }}>
                 <TableRow>
                   <TableCell align="center">ชื่อวัคซีน</TableCell>
-                  <TableCell align="center">วันหมดอายุ</TableCell>
+                  <TableCell align="center">วัน/เดือน/ปี หมดอายุ</TableCell>
                   <TableCell align="center">โรงพยาบาลที่เข้ารับการฉีดวัคซีน</TableCell>
-                  <TableCell align="center">วันที่เข้ารับการฉีดวัคซีน</TableCell>
+                  <TableCell align="center">วัน/เดือน/ปี ที่ฉีดวัคซีน</TableCell>
                   <TableCell align="center">จำนวนโดสที่ต้องฉีด</TableCell>
                   <TableCell align="center">สถานะ</TableCell>
                   {/* <th>Flag</th> */}
@@ -427,7 +436,7 @@ const VaccineComponent = () => {
                 {vaccineUsers.map((user) => (
                   <TableRow>
                     <TableCell align="center">{user.vaccine_name}</TableCell>
-                    <TableCell align="center">{user.expire ? new Date(user.expire).toLocaleDateString() : "ไม่มีวันหมดอายุ"}</TableCell>
+                    <TableCell align="center">{user.expire ? formatDate(user.expire) : "ไม่มีวันหมดอายุ"}</TableCell>
                     <TableCell align="center">
                       {user.hospital.map((doseTime, index) => (
                         <div key={index}>{doseTime}</div>
@@ -435,7 +444,12 @@ const VaccineComponent = () => {
                     </TableCell>
                     <TableCell align="center">
                       {user.dose_user.map((doseTime, index) => (
-                        <div key={index}>{new Date(doseTime).toLocaleDateString()}</div>
+                        <div key={index}>
+                          {" "}
+                          {user.dose_user.map((doseTime, index) => (
+                            <div key={index}>{formatDate(doseTime)}</div>
+                          ))}
+                        </div>
                       ))}
                     </TableCell>
                     <TableCell align="center">{user.dose_require}</TableCell>
@@ -462,12 +476,12 @@ const VaccineComponent = () => {
                     {/* <td>{user.user_id}</td> */}
                     <TableCell align="center">
                       <Button variant="outlined" color="primary" onClick={() => handleEdit(user)}>
-                        Edit
+                        แก้ไข
                       </Button>
                     </TableCell>
                     <TableCell align="center">
                       <Button variant="outlined" color="error" onClick={() => handleDelete(user._id)}>
-                        Delete
+                        ลบ
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -480,7 +494,7 @@ const VaccineComponent = () => {
 
       <Modal show={formModalShow} onHide={handleCloseFormModal} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Vaccine User</Modal.Title>
+          <Modal.Title>บันทึกวัคซีน</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={submitForm}>
@@ -490,15 +504,15 @@ const VaccineComponent = () => {
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีน</label>
-              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user} onChange={inputValue("dose_user")} />
+              <input required type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user} onChange={inputValue("dose_user")} />
             </div>
             <div className="form-group">
               <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีน</label>
-              <input type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
+              <input required type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
             </div>
 
             <br />
-            <input type="submit" value="บันทึก" className="btn btn-primary" />
+            <input type="submit" value="บันทึก" className="btn btn-success" />
           </form>
         </Modal.Body>
       </Modal>
@@ -515,11 +529,11 @@ const VaccineComponent = () => {
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 1</label>
-              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[0]} onChange={inputValue("dose_user_1")} />
+              <input required type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[0]} onChange={inputValue("dose_user_1")} />
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 2</label>
-              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[1]} onChange={inputValue("dose_user_2")} />
+              <input required type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[1]} onChange={inputValue("dose_user_2")} />
             </div>
             {/* <div className="form-group">
                 <label>โรงพยาบาล</label>
@@ -528,13 +542,13 @@ const VaccineComponent = () => {
               <br /> */}
             <div className="form-group">
               <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 1</label>
-              <input type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
+              <input required type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
             </div>
             <div className="form-group">
               <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 2</label>
-              <input type="text" className="form-control" value={hospital[1]} onChange={inputValue2("hospital_user_2")} />
+              <input required type="text" className="form-control" value={hospital[1]} onChange={inputValue2("hospital_user_2")} />
             </div>
-            <input type="submit" value="บันทึก" className="btn btn-primary" />
+            <input type="submit" value="บันทึก" className="btn btn-success" />
           </form>{" "}
         </Modal.Body>
       </Modal>
@@ -551,15 +565,15 @@ const VaccineComponent = () => {
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 1</label>
-              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[0]} onChange={inputValue("dose_user_1")} />
+              <input required type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[0]} onChange={inputValue("dose_user_1")} />
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 2</label>
-              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[1]} onChange={inputValue("dose_user_2")} />
+              <input required type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[1]} onChange={inputValue("dose_user_2")} />
             </div>
             <div className="form-group">
               <label>วันเข้ารับการฉีดวัคซีนเข็มที่ 3</label>
-              <input type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[2]} onChange={inputValue("dose_user_3")} />
+              <input required type="date" max={new Date().toISOString().split("T")[0]} className="form-control" value={dose_user[2]} onChange={inputValue("dose_user_3")} />
             </div>
             {/* <div className="form-group">
               <label>โรงพยาบาล</label>
@@ -568,34 +582,34 @@ const VaccineComponent = () => {
             <br /> */}
             <div className="form-group">
               <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 1</label>
-              <input type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
+              <input required type="text" className="form-control" value={hospital[0]} onChange={inputValue2("hospital_user_1")} />
             </div>
             <div className="form-group">
               <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 2</label>
-              <input type="text" className="form-control" value={hospital[1]} onChange={inputValue2("hospital_user_2")} />
+              <input required type="text" className="form-control" value={hospital[1]} onChange={inputValue2("hospital_user_2")} />
             </div>
             <div className="form-group">
               <label>โรงพยาบาลที่เข้ารับการฉีดวัคซีนเข็มที่ 3</label>
-              <input type="text" className="form-control" value={hospital[2]} onChange={inputValue2("hospital_user_3")} />
+              <input required type="text" className="form-control" value={hospital[2]} onChange={inputValue2("hospital_user_3")} />
             </div>
-            <input type="submit" value="บันทึก" className="btn btn-primary" />
+            <input type="submit" value="บันทึก" className="btn btn-success" />
           </form>{" "}
         </Modal.Body>
       </Modal>
 
       <Modal show={editModalShow} onHide={handleCloseEditModal} style={{ marginTop: "100px", zIndex: "1050" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Vaccine</Modal.Title>
+          <Modal.Title>แก้ไขข้อมูลวัคซีน</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {editUser && (
             <form onSubmit={submitEditForm}>
               <div className="form-group">
-                <label>Vaccine Name</label>
+                <label>ชื่อวัคซีน</label>
                 <input type="text" className="form-control" value={editUser.vaccine_name} readOnly />
               </div>
               <div className="form-group">
-                <label>Expire</label>
+                <label>วันหมดอายุ</label>
                 {editUser.expire ? (
                   <input type="date" className="form-control" value={editUser.expire?.split("T")[0]} onChange={(e) => setEditUser({ ...editUser, expire: e.target.value })} />
                 ) : (
@@ -705,12 +719,12 @@ const VaccineComponent = () => {
               </button>
 
               <div className="form-group">
-                <label>Dose Require</label>
+                <label>จำนวนโดสที่ต้องฉีด</label>
                 <input type="text" className="form-control" value={editUser.dose_require} readOnly />
               </div>
               <br />
-              <Button variant="contained" color="primary" type="submit">
-                Save Changes
+              <Button variant="contained" color="success" type="submit">
+                บันทึก
               </Button>
             </form>
           )}

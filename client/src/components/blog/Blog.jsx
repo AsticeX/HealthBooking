@@ -29,7 +29,8 @@ const BlogHome = () => {
     setDescription3(selectedOption ? selectedOption.description3 : "");
     setDescription4(selectedOption ? selectedOption.description4 : "");
     setDescription5(selectedOption ? selectedOption.description5 : "");
-
+    console.log(selectedValue);
+    console.log(selectedOption);
     setAge(selectedValue || "");
   };
 
