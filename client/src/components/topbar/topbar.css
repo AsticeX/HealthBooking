@@ -10,7 +10,7 @@
   }
 
   .selectedItemsContainer {
-    height: 110px; /* Set a fixed height */
+    height: 80px; /* Set a fixed height */
     overflow-y: auto;
     background-color: white; /* Enable vertical scrolling */
    
@@ -32,9 +32,65 @@
   
   .selectedItemTitle {
     flex-grow: 1; /* Allow title to grow to fill available space */
+    margin: 10px;
   }
 
   .descriptionBox{
     margin: 10px;
   }
   
+  .siCheckButton2 {
+    background-color: #f8be6c;
+    color: white;
+    font-weight: bold;
+    padding: 10px ;
+    font-size: 2vh;
+    height: 90%;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+
+  }
+
+  .siCheckButton2:hover {
+    background-color: #e0ac62;
+    color: white;
+    font-weight: bold;
+    padding: 10px ;
+    font-size: 2vh;
+    height: 90%;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+
+  }
+
+  .siCheckButton3 {
+    background-color: #f8be6c;
+    color: white;
+    font-weight: bold;
+    padding: 10px ;
+    font-size: 2vh;
+    height: 100%;
+    width: 15%;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+
+  }
+
+  .siCheckButton3:hover {
+    background-color: #e0ac62;
+    color: white;
+    font-weight: bold;
+    padding: 10px ;
+    font-size: 2vh;
+    height: 100%;
+    width: 15%;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+
+  }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Cal_SearchItem from "../../components/cal_searchItem/Cal_SearchItem";
-import { Button } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import useFetch from "../../hooks/useFetch";
 import "./cal_list.css";
 import TopBar from "../../components/topbar/Topbar";
@@ -63,6 +63,8 @@ const Cal_List = () => {
         selectedItems={selectedItems} // Pass selectedItems to TopBar
         removeItem={removeItem}
       />
+      <Grid container component="main" sx={{ mt: 30, bgcolor: "#77B255" }}></Grid>
+
       <div className="listResult">
         {currentPageData.map((item) => (
           <Cal_SearchItem key={item._id} item={item} addItem={addItem} />
@@ -75,6 +77,7 @@ const Cal_List = () => {
           </Button>
         </div>
       )}
+      <Grid container component="main" sx={{ mt: 3, bgcolor: "#77B255" }}></Grid>
     </div>
   );
 };
