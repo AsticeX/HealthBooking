@@ -64,7 +64,7 @@ const Datatable = ({ columns }) => {
             ? [
                 {
                   field: "action",
-                  headerName: "การกระทำ",
+                  headerName: "จัดการ",
                   width: 300,
                   renderCell: (params) => (
                     <div className="cellAction">
@@ -87,7 +87,7 @@ const Datatable = ({ columns }) => {
             : [
                 {
                   field: "action",
-                  headerName: "Action",
+                  headerName: "จัดการ",
                   width: 200,
                   renderCell: (params) => (
                     <div className="cellAction">

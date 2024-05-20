@@ -19,6 +19,7 @@ const BlogHome = () => {
   const [description2, setDescription2] = useState("");
   const [description3, setDescription3] = useState("");
   const [description4, setDescription4] = useState("");
+  const [description5, setDescription5] = useState("");
 
   const handleChange = (event) => {
     const selectedValue = event.target.value;
@@ -27,6 +28,7 @@ const BlogHome = () => {
     setDescription2(selectedOption ? selectedOption.description2 : "");
     setDescription3(selectedOption ? selectedOption.description3 : "");
     setDescription4(selectedOption ? selectedOption.description4 : "");
+    setDescription5(selectedOption ? selectedOption.description5 : "");
 
     setAge(selectedValue || "");
   };
@@ -45,6 +47,7 @@ const BlogHome = () => {
           setDescription2(options[0].description2);
           setDescription3(options[0].description3);
           setDescription4(options[0].description4);
+          setDescription5(options[0].description5);
         }
       })
       .catch((error) => {
@@ -101,6 +104,12 @@ const BlogHome = () => {
             </Typography>
             <Typography variant="body1" mt={2} ml={2} sx={{ fontSize: { xs: 14, sm: 16 } }}>
               {description4}
+            </Typography>
+            <Typography variant="body1" mt={2} sx={{ fontSize: 18, color: "#EEEEE6" }}>
+              ผู้ที่ควรหลีกเลี่ยง
+            </Typography>
+            <Typography variant="body1" mt={2} ml={2} sx={{ fontSize: { xs: 14, sm: 16 } }}>
+              {description5}
             </Typography>
           </CardContent>
         </Card>

@@ -11,6 +11,7 @@ const VaccineSchema = new mongoose.Schema(
     description2: String,
     description3: String,
     description4: String,
+    description5: String,
   },
   { timestamps: true }
 );

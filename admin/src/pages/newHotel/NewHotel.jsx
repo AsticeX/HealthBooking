@@ -190,7 +190,7 @@ const NewHotel = () => {
               <button type="button" onClick={addDepartmentInput}>
                 เพิ่มบริการ
               </button>
-              <button onClick={handleClick}>Add</button>
+              <button onClick={handleClick}>เพิ่มข้อมูล</button>
             </form>
           </div>
         </div>

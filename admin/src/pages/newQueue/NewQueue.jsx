@@ -106,7 +106,7 @@ const NewQueue = () => {
                 </select>
               </div>
               <div className="formInput">
-                <label>เวลาเริ้ม</label>
+                <label>เวลาเริ่ม</label>
                 <input type="time" id="startTime" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
               </div>
               <div className="formInput">
@@ -120,7 +120,7 @@ const NewQueue = () => {
                 </div>
               ))}
               <div className="submitBtn">
-                <button onClick={handleClick}>Submit</button>
+                <button onClick={handleClick}>เพิ่มข้อมูล</button>
               </div>
             </form>
           </div>
