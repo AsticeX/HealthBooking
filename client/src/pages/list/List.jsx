@@ -110,16 +110,16 @@ const List = () => {
             </Grid>
             <Grid item xs={12} sm={4} sx={{ display: "flex", alignItems: "center" }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">คลินิค</InputLabel>
+                <InputLabel id="demo-simple-select-label">บริการ</InputLabel>
                 <Select labelId="demo-simple-select-label" id="demo-simple-select" value={age} label="Age" onChange={handleChange} sx={{ backgroundColor: "white" }}>
                   <MenuItem value="">ทั้งหมด</MenuItem>
-                  <MenuItem value="คลินิกเวชกรรม">คลินิกเวชกรรม</MenuItem>
-                  <MenuItem value="คลินิกทันตกรรม">คลินิกทันตกรรม</MenuItem>
-                  <MenuItem value="คลินิกการพยาบาลและผดุงครรภ์">คลินิกการพยาบาลและผดุงครรภ์</MenuItem>
-                  <MenuItem value="คลินิกกายภาพบำบัด">คลินิกกายภาพบำบัด</MenuItem>
-                  <MenuItem value="คลินิกเทคนิคการแพทย์">คลินิกเทคนิคการแพทย์</MenuItem>
-                  <MenuItem value="คลินิกการแพทย์แผนไทย">คลินิกการแพทย์แผนไทย</MenuItem>
-                  <MenuItem value="คลินิกการประกอบโรคศิลปะ 7 สาขา">คลินิกการประกอบโรคศิลปะ 7 สาขา</MenuItem>
+                  <MenuItem value="คลินิกเวชกรรม">เวชกรรม</MenuItem>
+                  <MenuItem value="คลินิกทันตกรรม">ทันตกรรม</MenuItem>
+                  <MenuItem value="คลินิกการพยาบาลและผดุงครรภ์">การพยาบาลและผดุงครรภ์</MenuItem>
+                  <MenuItem value="คลินิกกายภาพบำบัด">กายภาพบำบัด</MenuItem>
+                  <MenuItem value="คลินิกเทคนิคการแพทย์">เทคนิคการแพทย์</MenuItem>
+                  <MenuItem value="คลินิกการแพทย์แผนไทย">การแพทย์แผนไทย</MenuItem>
+                  <MenuItem value="คลินิกการประกอบโรคศิลปะ 7 สาขา">การประกอบโรคศิลปะ 7 สาขา</MenuItem>
                   <MenuItem value="คลินิกเฉพาะด้าน">คลินิกเฉพาะด้าน</MenuItem>
                   <MenuItem value="สหคลินิก">สหคลินิก</MenuItem>
                   <MenuItem value="อื่นๆ">อื่นๆ</MenuItem>
@@ -129,14 +129,7 @@ const List = () => {
             <Grid item xs={12} sm={4} sx={{ display: "flex", alignItems: "center" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">ตัวกรอง</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={sortOrder}
-                  label="Sort Order"
-                  onChange={handleSortChange}
-                  sx={{ backgroundColor: "white" }}
-                >
+                <Select labelId="demo-simple-select-label" id="demo-simple-select" value={sortOrder} label="Sort Order" onChange={handleSortChange} sx={{ backgroundColor: "white" }}>
                   <MenuItem value="near">ใกล้-ไกล</MenuItem>
                   <MenuItem value="sortcharater">ชื่อ ก-ฮ</MenuItem>
                   {/* <MenuItem value="near">เรียงชื่อ ฮ-ก</MenuItem> */}

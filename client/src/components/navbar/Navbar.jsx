@@ -207,7 +207,7 @@ const Navbar = (props) => {
                       <AccessTimeIcon fontSize="medium" />
                     </ListItemIcon>
                     <Link to="/history" style={{ color: "black", textDecoration: "none" }}>
-                      ประวัติการรักษา
+                      ประวัติการรับบริการ
                     </Link>
                   </MenuItem>
                   <Divider />

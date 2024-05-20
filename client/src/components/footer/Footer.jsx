@@ -27,7 +27,7 @@ const Footer = () => {
           <li className="fListItem">สถานบริการ</li>
           <li className="fListItem">ค้นหาสถานบริการ</li>
           <li className="fListItem">คำนวณราคาวัคซีน</li>
-          <li className="fListItem">ประวัติการรักษา</li>
+          <li className="fListItem">ประวัติการรับบริการ</li>
         </ul>
         <ul className="fList">
           <li className="fListItem" style={{ fontSize: 18, color: "#000000", marginBottom: 24 }}>
