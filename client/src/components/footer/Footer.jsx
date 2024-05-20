@@ -5,7 +5,9 @@ const Footer = () => {
     <div className="footer">
       <div className="fLists">
         <ul className="fList">
-          <li className="fListItem" style={{ fontSize: 18, color: "#000000", marginBottom: 24 }}>ที่อยู่</li>
+          <li className="fListItem" style={{ fontSize: 18, color: "#000000", marginBottom: 24 }}>
+            ที่อยู่
+          </li>
           <li className="fListItem">9/1 หมู่ 5 ถนนพหลโยธิน ตำบลคลองหนึ่ง อำเภอคลองหลวง จังหวัดปทุมธานี 12120 </li>
           <li className="fListItem">ตำบลคลองหนึ่ง อำเภอคลองหลวง จังหวัดปทุมธานี</li>
           <li className="fListItem">รหัสไปรษณีย์ 12120 </li>
@@ -17,17 +19,20 @@ const Footer = () => {
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
-
         </ul>
         <ul className="fList">
-          <li className="fListItem" style={{ fontSize: 18, color: "#000000", marginBottom: 24 }}>บริการของเรา</li>
-          <li className="fListItem">จองคลินิค</li>
+          <li className="fListItem" style={{ fontSize: 18, color: "#000000", marginBottom: 24 }}>
+            บริการของเรา
+          </li>
+          <li className="fListItem">สถานบริการ</li>
           <li className="fListItem">ค้นหาสถานบริการ</li>
           <li className="fListItem">คำนวณราคาวัคซีน</li>
-          <li className="fListItem">ประวัติการรักษา</li>
+          <li className="fListItem">ประวัติการรับบริการ</li>
         </ul>
         <ul className="fList">
-          <li className="fListItem" style={{ fontSize: 18, color: "#000000", marginBottom: 24 }}>ติดต่อ</li>
+          <li className="fListItem" style={{ fontSize: 18, color: "#000000", marginBottom: 24 }}>
+            ติดต่อ
+          </li>
           <li className="fListItem">FACEBOOK </li>
           <li className="fListItem">INSTRAGRAM </li>
           <li className="fListItem">TWITTER </li>
@@ -42,9 +47,10 @@ const Footer = () => {
           <li className="fListItem">TEST </li>
         </ul>
         */}
-
       </div>
-      <div className="fText" style={{ display: "flex", justifyContent: "center" }}>Copyright ©  HealthBooking.</div>
+      <div className="fText" style={{ display: "flex", justifyContent: "center" }}>
+        Copyright © HealthBooking.
+      </div>
     </div>
   );
 };

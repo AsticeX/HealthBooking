@@ -19,8 +19,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import Alert from '@mui/material/Alert';
-
+import Alert from "@mui/material/Alert";
 
 const Reserve = ({ setOpen, clinicId }) => {
   const { dispatch, user } = useContext(AuthContext);
@@ -33,8 +32,6 @@ const Reserve = ({ setOpen, clinicId }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [available, setAvaliable] = useState(0);
 
-
-
   const isTimeInRange = (startTime, stopTime, selectedDate) => {
     const currentDate = new Date();
     const selectedDateObj = new Date(selectedDate);
@@ -43,37 +40,35 @@ const Reserve = ({ setOpen, clinicId }) => {
 
     // If the selected date is in the future, return false to indicate all times are selectable
     if (selectedDateTime > currentDateTime) {
-        return false;
+      return false;
     }
 
     const currentHour = currentDate.getHours();
     const currentMinute = currentDate.getMinutes();
 
-    const startHour = parseInt(startTime.split(':')[0], 10);
-    const startMinute = parseInt(startTime.split(':')[1], 10);
-    const stopHour = parseInt(stopTime.split(':')[0], 10);
-    const stopMinute = parseInt(stopTime.split(':')[1], 10);
+    const startHour = parseInt(startTime.split(":")[0], 10);
+    const startMinute = parseInt(startTime.split(":")[1], 10);
+    const stopHour = parseInt(stopTime.split(":")[0], 10);
+    const stopMinute = parseInt(stopTime.split(":")[1], 10);
 
     let currentMinutes = currentHour * 60 + currentMinute;
     const startMinutes = startHour * 60 + startMinute;
     let stopMinutes = stopHour * 60 + stopMinute;
 
     if (stopMinutes < startMinutes) {
-        stopMinutes += 24 * 60;
-        if (currentMinutes < startMinutes) {
-            currentMinutes += 24 * 60;
-        }
+      stopMinutes += 24 * 60;
+      if (currentMinutes < startMinutes) {
+        currentMinutes += 24 * 60;
+      }
     }
 
     return currentMinutes >= startMinutes && currentMinutes < stopMinutes;
-};
+  };
 
-
-  
   // Test cases
   console.log(isTimeInRange("19:00", "22:40")); // true
   console.log(isTimeInRange("23:00", "00:00")); // true
-  
+
   const navigate = useNavigate();
 
   const department = data.department;
@@ -97,7 +92,6 @@ const Reserve = ({ setOpen, clinicId }) => {
   };
 
   useEffect(() => {
-
     handleQueue();
   }, [queue]);
 
@@ -138,13 +132,13 @@ const Reserve = ({ setOpen, clinicId }) => {
           stop_time: queue.find((item) => item._id === selectedQueue)?.stop_time,
         };
         const res = await axios.post(`${process.env.REACT_APP_API}/appointment`, dataToSend);
-        setAvaliable(res.data.availableSlots)
-        setShowAlert(false)
+        setAvaliable(res.data.availableSlots);
+        setShowAlert(false);
         dispatch({ type: "APPOINTMENT_SUCCESS", payload: res.data.details });
         navigate("/main", { state: { fromLogin: true } });
       }
     } catch (err) {
-      setShowAlert(true)
+      setShowAlert(true);
       console.error("Appointment failed:", err);
       dispatch({ type: "APPOINTMENT_FAILURE", payload: err.response.data });
     }
@@ -221,7 +215,7 @@ const Reserve = ({ setOpen, clinicId }) => {
                 <Grid item xs={12} sm={12}>
                   {!loading && department && (
                     <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">แผนก</InputLabel>
+                      <InputLabel id="demo-simple-select-label">บริการ</InputLabel>
                       <Select labelId="demo-simple-select-label" id="demo-simple-select" value={departmentData} label="Age" onChange={handleChangeClick} sx={{ backgroundColor: "white" }}>
                         {department.map((clinic) => (
                           <MenuItem key={clinic} value={clinic}>
@@ -236,38 +230,27 @@ const Reserve = ({ setOpen, clinicId }) => {
                   {!loading && queue && departmentData && queue.length > 0 && (
                     <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label">คิว</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={selectedQueue}
-                        label="Age"
-                        onChange={handleQueueChange}
-                        sx={{ backgroundColor: "white" }}
-                      >
+                      <Select labelId="demo-simple-select-label" id="demo-simple-select" value={selectedQueue} label="Age" onChange={handleQueueChange} sx={{ backgroundColor: "white" }}>
                         {queue
-                          .filter((queueItem) => queueItem.department === departmentData) 
+                          .filter((queueItem) => queueItem.department === departmentData)
                           .sort((a, b) => a.start_time.localeCompare(b.start_time))
                           .map((queueItem) => {
                             const disabled = isTimeInRange(queueItem.start_time, queueItem.stop_time);
                             return (
-                              <MenuItem key={queueItem._id} value={queueItem._id} disabled={isTimeInRange(queueItem.start_time, queueItem.stop_time,date)}>
+                              <MenuItem key={queueItem._id} value={queueItem._id} disabled={isTimeInRange(queueItem.start_time, queueItem.stop_time, date)}>
                                 {queueItem.start_time} น. - {queueItem.stop_time} น.
                               </MenuItem>
                             );
                           })}
-
                       </Select>
                     </FormControl>
                   )}
-                  {(loading || !queue || queue.length === 0) && (
-                    <p>{loading ? 'Loading...' : 'No queues available'}</p>
-                  )}
+                  {(loading || !queue || queue.length === 0) && <p>{loading ? "Loading..." : "No queues available"}</p>}
                 </Grid>
 
                 <Grid item xs={12} sm={12}>
                   <TextField
                     margin="normal"
-                    required
                     fullWidth
                     id="description"
                     label="หมายเหตุ"

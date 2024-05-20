@@ -110,10 +110,10 @@ const EditQueue = () => {
               </div>
 
               <div className="formInput">
-                <label>เลือกแผนก</label>
+                <label>เลือกบริการ</label>
                 <select value={department} onChange={(e) => setDepartment(e.target.value)} required>
                   <option value="" disabled>
-                    เลือกแผนก
+                    เลือกบริการ
                   </option>
                   {departments.map((dept) => (
                     <option key={dept} value={dept}>
