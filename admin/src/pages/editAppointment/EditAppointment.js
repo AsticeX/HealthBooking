@@ -96,7 +96,7 @@ const EditQueue = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Edit Queue</h1>
+          <h1>แก้ไขการจอง</h1>
         </div>
         <div className="bottom">
           <div className="right">
