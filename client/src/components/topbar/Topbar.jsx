@@ -148,7 +148,7 @@ const TopBar = ({ handleSearch, handleSort, selectedItems = [], removeItem }) =>
           </DialogContent>
           <DialogActions style={{ backgroundColor: "#F0F0F0" }}>
             <Typography variant="h6" style={{ flexGrow: 1, color: "#333" }}>
-              ราคารวม: {selectedItems.reduce((total, item) => total + item.price_no_thb, 0)}
+              ราคารวม: {selectedItems.reduce((total, item) => total + item.price_no_thb, 0)} บาท
             </Typography>
             <button className="siCheckButton3" onClick={handleCloseDialog} color="primary">
               ปิด
