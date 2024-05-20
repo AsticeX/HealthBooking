@@ -12,6 +12,8 @@ const EditQueue = () => {
   const [clinicId, setClinicId] = useState("");
   const [name, setName] = useState("");
   const [lastname, setLastName] = useState("");
+  const [description, setDescription] = useState("");
+  const [phone, setPhone] = useState("");
   const [department, setDepartment] = useState("");
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
@@ -33,6 +35,8 @@ const EditQueue = () => {
         setStartTime(data.start_time);
         setStopTime(data.stop_time);
         setStatus(data.status); // Set status from fetched data
+        setPhone(data.phone);
+        setDescription(data.description);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching queue:", err);
@@ -98,6 +102,14 @@ const EditQueue = () => {
           <div className="right">
             <form onSubmit={handleUpdate}>
               <div className="formInput">
+                <label>สถานะ</label>
+                <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                  <option value="Complete">Complete</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Cancel">Cancel</option>
+                </select>
+              </div>
+              <div className="formInput">
                 <label>ชื่อ</label>
                 <input id="name" value={name} onChange={(e) => setName(e.target.value)} />
               </div>
@@ -114,15 +126,15 @@ const EditQueue = () => {
                 <input type="time" value={stopTime} onChange={(e) => setStopTime(e.target.value)} required />
               </div>
               <div className="formInput">
-                <label>สถานะ</label>
-                <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                  <option value="Complete">Complete</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Cancel">Cancel</option>
-                </select>
+                <label>เบอร์</label>
+                <input id="lastname" value={phone} onChange={(e) => setPhone(e.target.value)} />
+              </div>
+              <div className="formInput">
+                <label>หมายเหตุ</label>
+                <input id="lastname" value={description} onChange={(e) => setDescription(e.target.value)} />
               </div>
               <div className="submitBtn">
-                <button type="submit">Update</button>
+                <button type="submit">บันทึก</button>
               </div>
             </form>
           </div>

@@ -41,18 +41,22 @@ export const appointmentColumns = [
   {
     field: "name",
     headerName: "ชื่อ",
-    width: 150,
+    width: 110,
   },
   {
     field: "lastname",
     headerName: "นามสกุล",
-    width: 150,
+    width: 110,
   },
-
+  {
+    field: "phone",
+    headerName: "เบอร์",
+    width: 110,
+  },
   {
     field: "hospitalName",
     headerName: "สถานบริการ",
-    width: 200,
+    width: 220,
   },
   {
     field: "start_time",
@@ -67,7 +71,7 @@ export const appointmentColumns = [
   {
     field: "department",
     headerName: "บริการ",
-    width: 150,
+    width: 100,
   },
   {
     field: "status",
@@ -77,7 +81,7 @@ export const appointmentColumns = [
   {
     field: "description",
     headerName: "หมายเหตุ",
-    width: 200,
+    width: 220,
   },
 ];
 
