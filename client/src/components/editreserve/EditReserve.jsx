@@ -19,6 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Alert from '@mui/material/Alert';
+import { MuiTelInput } from 'mui-tel-input'
 
 
 const EditReserve = ({ setOpen, clinicId,appointmentId }) => {
@@ -31,7 +32,12 @@ const EditReserve = ({ setOpen, clinicId,appointmentId }) => {
   const [date, setDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [available, setAvaliable] = useState(0);
+  const [phone, setPhone] = useState(`+66${user.phone}`);
 
+
+  const handleChangeTel = (newPhone) => {
+    setPhone(newPhone);
+  };
 
 
   const isTimeInRange = (startTime, stopTime, selectedDate) => {
@@ -127,6 +133,7 @@ const EditReserve = ({ setOpen, clinicId,appointmentId }) => {
           hospital: clinicId,
           hospitalName: hospitalName,
           queue: selectedQueue,
+          phone: phone,
           start_time: queue.find((item) => item._id === selectedQueue)?.start_time,
           stop_time: queue.find((item) => item._id === selectedQueue)?.stop_time,
         };
@@ -256,7 +263,24 @@ const EditReserve = ({ setOpen, clinicId,appointmentId }) => {
                     <p>{loading ? 'Loading...' : 'No queues available'}</p>
                   )}
                 </Grid>
-                
+                <Grid item xs={12} sm={12}>
+                    <MuiTelInput
+                      fullWidth
+                      name="phone"
+                      label="เบอร์โทรศัพท์"
+                      type="phone"
+                      id="phone"
+                      defaultCountry="TH"
+                      autoComplete="current-phone"
+                      value={phone}
+                      onChange={handleChangeTel}
+                      onBlur={handleBlur}
+                      error={touched.phone && !!errors.phone}
+                      helperText={touched.phone && errors.phone}
+                      variant="outlined"
+                      className={touched.phone && errors.phone}
+                    />
+                  </Grid>
                 <Grid item xs={12} sm={12}>
                   <TextField
                     margin="normal"

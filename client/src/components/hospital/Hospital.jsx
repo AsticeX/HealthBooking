@@ -221,7 +221,7 @@ const HospitalFinderComponent = () => {
               label="Search"
               InputProps={{
                 endAdornment: (
-                  <IconButton sx={{ color: "blue" }}>
+                  <IconButton sx={{color:'blue'}}  >
                     <SearchIcon />
                   </IconButton>
                 ),

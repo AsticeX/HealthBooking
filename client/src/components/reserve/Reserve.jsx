@@ -131,7 +131,7 @@ const Reserve = ({ setOpen, clinicId }) => {
           hospitalName: hospitalName,
           user_Id: `${user._id}`,
           queue: selectedQueue,
-          phone_no: phone,
+          phone: phone,
           start_time: queue.find((item) => item._id === selectedQueue)?.start_time,
           stop_time: queue.find((item) => item._id === selectedQueue)?.stop_time,
         };

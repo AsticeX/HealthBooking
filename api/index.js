@@ -50,6 +50,7 @@ app.use(
   })
 );
 
+
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/clinics", clinicsRoute);
