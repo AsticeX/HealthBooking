@@ -52,33 +52,33 @@ const UserProfile = () => {
   const handleClick = async (values, actions) => {
 
     try {
+      const accessToken = localStorage.getItem('access_token');
       if (user) {
         const photo = await Promise.all(
           Object.values(files).map(async (file) => {
             const data = new FormData();
             data.append("file", file);
             data.append("upload_preset", "gijwryvm");
-            const uploadRes = await axios.post(
-              "https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload",
-              data,
-              {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-            );
-            console.log();
+            const uploadRes = await axios.post("https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload", data,
+             {
+              headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'multipart/form-data'
+              }
+            });
+            
+            console.log(uploadRes, "XXXXX");
             const { url } = uploadRes.data;
             return url;
           })
         );
-        const dataToSend = { ...values, birthday,photo:photo[0] };
+        const dataToSend = { ...values, birthday, photo: photo[0] };
         const res = await axios.put(`${process.env.REACT_APP_API}/users/${user._id}`, dataToSend);
         navigate("/main", { state: { fromLogin: true } });
         handleClickSnack();
       }
     } catch (err) {
-      console.error("Registration failed:", err);
+      console.error("Upload:", err);
       setShowAlert(true);
     }
   };
@@ -96,7 +96,7 @@ const UserProfile = () => {
   }
 
   return (
-    <Grid container component="main" sx={{ height: '100vh', display: "flex", justifyContent: "center" , backgroundColor:"#EEEEE6"}}>
+    <Grid container component="main" sx={{ height: '100vh', display: "flex", justifyContent: "center", backgroundColor: "#EEEEE6" }}>
       <Navbar />
       <CssBaseline />
       <Grid item xs={12} sm={8} md={5} elevation={6} square >
@@ -139,28 +139,26 @@ const UserProfile = () => {
                           alt=""
                         />
                       </div>
-                      
+
                     </div>
                     <div className="bottom">
-                        <form style={{ display: "flex", justifyContent: "center" }}>
-                          <div >
-                            <label htmlFor="file">
-                              อัพโหลด: <UploadIcon className="icon" />
-                            </label>
-                            <input
-                              type="file"
-                              id="file"
-                              // multiple
-                              onChange={(e) => setFiles(e.target.files)}
-                              style={{ display: "none" }}
-                            />
-                          </div>
-                        </form>
-                      </div>
+                      <form style={{ display: "flex", justifyContent: "center" }}>
+                        <div >
+                          <label htmlFor="file">
+                            อัพโหลด: <UploadIcon className="icon" />
+                          </label>
+                          <input
+                            type="file"
+                            id="file"
+                            // multiple
+                            onChange={(e) => setFiles(e.target.files)}
+                            style={{ display: "none" }}
+                          />
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
-
-
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField

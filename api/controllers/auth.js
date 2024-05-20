@@ -62,3 +62,4 @@ export const logout = async (req, res, next) => {
     next(err);
   }
 };
+
