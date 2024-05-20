@@ -91,10 +91,10 @@ const NewQueue = () => {
                 </select>
               </div>
               <div className="formInput">
-                <label>เลือกแผนก</label>
+                <label>เลือกบริการ</label>
                 <select id="department" onChange={(e) => setDepartment(e.target.value)} value={department || ""}>
                   <option value="" disabled>
-                    เลือกแผนก
+                    เลือกบริการ
                   </option>
                   {userClinics
                     .find((clinic) => clinic._id === clinicId)

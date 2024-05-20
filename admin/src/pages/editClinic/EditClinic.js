@@ -142,13 +142,13 @@ const EditClinic = () => {
                   <option value={type} disabled>
                     {type}
                   </option>
-                  <option value="คลินิกเวชกรรม">คลินิกเวชกรรม</option>
-                  <option value="คลินิกทันตกรรม">คลินิกทันตกรรม</option>
-                  <option value="คลินิกการพยาบาลและผดุงครรภ์">คลินิกการพยาบาลและผดุงครรภ์</option>
-                  <option value="คลินิกกายภาพบำบัด">คลินิกกายภาพบำบัด</option>
-                  <option value="คลินิกเทคนิคการแพทย์">คลินิกเทคนิคการแพทย์</option>
-                  <option value="คลินิกการแพทย์แผนไทย">คลินิกการแพทย์แผนไทย</option>
-                  <option value="คลินิกการประกอบโรคศิลปะ 7 สาขา">คลินิกการประกอบโรคศิลปะ 7 สาขา</option>
+                  <option value="คลินิกเวชกรรม">เวชกรรม</option>
+                  <option value="คลินิกทันตกรรม">ทันตกรรม</option>
+                  <option value="คลินิกการพยาบาลและผดุงครรภ์">การพยาบาลและผดุงครรภ์</option>
+                  <option value="คลินิกกายภาพบำบัด">กายภาพบำบัด</option>
+                  <option value="คลินิกเทคนิคการแพทย์">เทคนิคการแพทย์</option>
+                  <option value="คลินิกการแพทย์แผนไทย">การแพทย์แผนไทย</option>
+                  <option value="คลินิกการประกอบโรคศิลปะ 7 สาขา">การประกอบโรคศิลปะ 7 สาขา</option>
                   <option value="คลินิกเฉพาะด้าน">คลินิกเฉพาะด้าน</option>
                   <option value="สหคลินิก">สหคลินิก</option>
                   <option value="สหคลินิก">อื่นๆ</option>
@@ -168,12 +168,12 @@ const EditClinic = () => {
               {/* Department Inputs */}
               {departmentInputs.map((input, index) => (
                 <div className="formInput" key={index}>
-                  <label htmlFor={`department${index}`}>แผนกที่ {index + 1}</label>
+                  <label htmlFor={`department${index}`}>บริการที่ {index + 1}</label>
                   <input id={`department${index}`} value={input} onChange={(e) => handleDepartmentInputChange(index, e.target.value)} type="text" placeholder="" />
                 </div>
               ))}
               <button type="button" onClick={addDepartmentInput}>
-                เพิ่มแผนก
+                เพิ่มบริการ
               </button>
               <div className="selectRooms">
                 <label>Queue </label>

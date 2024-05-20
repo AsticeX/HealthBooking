@@ -8,7 +8,6 @@ const VaccineCal = () => {
     <div style={{ backgroundColor: "#EEEEE6", minHeight: "100vh" }}>
       <div sx={{ mt: 8, p: 4 }}>
         <Navbar />
-        <Topbar />
         <Cal_List />
         <Footer />
       </div>

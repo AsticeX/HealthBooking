@@ -134,7 +134,7 @@ const EditReserve = ({ setOpen, clinicId,appointmentId }) => {
         setAvaliable(res.data.availableSlots)
         setShowAlert(false)
         dispatch({ type: "APPOINTMENT_SUCCESS", payload: res.data.details });
-        navigate("/main", { state: { fromLogin: true } });
+        setOpen(false)
       }
     } catch (err) {
       setShowAlert(true)
@@ -147,7 +147,7 @@ const EditReserve = ({ setOpen, clinicId,appointmentId }) => {
     <div className="reserve">
       <div className="rContainer">
         <FontAwesomeIcon icon={faCircleXmark} className="rClose" onClick={() => setOpen(false)} />
-        <span>กรอกข้อมูลการจอง</span>
+        <span>แก้ไขข้อมูลการจอง</span>
         <Formik
           validationSchema={schema}
           initialValues={{

@@ -19,19 +19,19 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Grid, CircularProgress, Avatar, Menu, MenuItem, ListItemIcon, Tooltip } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import VaccinesIcon from "@mui/icons-material/Vaccines";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = [
-  { name: 'หน้าหลัก', href: '/' },
-  { name: 'คำนวณราคาวัคซีน', href: '/vaccinecalculate' },
-  { name: 'ค้นหาสถานบริการ', href: '/hospital' },
-  { name: 'จองคลินิค', href: '/Main' }
+  { name: "หน้าหลัก", href: "/" },
+  { name: "คำนวณราคาวัคซีน", href: "/vaccinecalculate" },
+  { name: "ค้นหาสถานบริการ", href: "/hospital" },
+  { name: "สถานบริการ", href: "/Main" },
 ];
 
 const Navbar = (props) => {
@@ -46,7 +46,10 @@ const Navbar = (props) => {
       try {
         setLoading(true);
         if (user && user._id) {
-          const res = await axios.get(`${process.env.REACT_APP_API}/users/${user._id}`);
+          const token = localStorage.getItem("access_token");
+          const res = await axios.get(`${process.env.REACT_APP_API}/users/${user._id}`, {
+            headers: { access_token: token },
+          });
           if (res && res.data) {
             setProfile(res.data);
           } else {
@@ -187,19 +190,25 @@ const Navbar = (props) => {
                     <ListItemIcon>
                       <PersonOutlineIcon fontSize="medium" />
                     </ListItemIcon>
-                    <Link to='/profile' style={{ color: "black", textDecoration: "none" }}>โปรไฟล์</Link>
+                    <Link to="/profile" style={{ color: "black", textDecoration: "none" }}>
+                      โปรไฟล์
+                    </Link>
                   </MenuItem>
                   <MenuItem onClick={handleCloseAvatar}>
                     <ListItemIcon>
                       <VaccinesIcon fontSize="medium" />
                     </ListItemIcon>
-                    <Link to='/vaccine' style={{ color: "black", textDecoration: "none" }}>บันทึกวัคซีน</Link>
+                    <Link to="/vaccine" style={{ color: "black", textDecoration: "none" }}>
+                      บันทึกวัคซีน
+                    </Link>
                   </MenuItem>
                   <MenuItem onClick={handleCloseAvatar}>
                     <ListItemIcon>
                       <AccessTimeIcon fontSize="medium" />
                     </ListItemIcon>
-                    <Link to='/history' style={{ color: "black", textDecoration: "none" }}>ประวัติการรักษา</Link>
+                    <Link to="/history" style={{ color: "black", textDecoration: "none" }}>
+                      ประวัติการรับบริการ
+                    </Link>
                   </MenuItem>
                   <Divider />
                   <MenuItem onClick={handleLogout}>

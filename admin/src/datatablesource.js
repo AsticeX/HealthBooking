@@ -66,7 +66,7 @@ export const appointmentColumns = [
   },
   {
     field: "department",
-    headerName: "แผนก",
+    headerName: "บริการ",
     width: 150,
   },
   {
@@ -110,7 +110,7 @@ export const queueColumns = [
 
   {
     field: "department",
-    headerName: "ชื่อแผนก",
+    headerName: "บริการ",
     width: 150,
   },
   {

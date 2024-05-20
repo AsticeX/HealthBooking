@@ -5,68 +5,63 @@ import axios from "axios";
 import { Formik } from "formik";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Alert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Navbar from "../../components/navbar/Navbar";
 import useFetch from "../../hooks/useFetch";
-import UploadIcon from '@mui/icons-material/Upload';
+import UploadIcon from "@mui/icons-material/Upload";
 const UserProfile = () => {
   const { dispatch, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [open, setOpen] = useState(false);
-  const [phone, setPhone] = React.useState('');
+  const [phone, setPhone] = React.useState("");
   const [birthday, setBirthday] = React.useState(null);
-  const [profile, setProfile] = React.useState('');
+  const [profile, setProfile] = React.useState("");
   const [files, setFiles] = useState("");
-
-
 
   const handleChangeTel = (newPhone) => {
     setPhone(newPhone);
   };
-
 
   const handleClickSnack = () => {
     setOpen(true);
   };
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
 
   const handleClick = async (values, actions) => {
-
     try {
-      const accessToken = localStorage.getItem('access_token');
+      const accessToken = localStorage.getItem("access_token");
       if (user) {
         const photo = await Promise.all(
           Object.values(files).map(async (file) => {
             const data = new FormData();
             data.append("file", file);
             data.append("upload_preset", "gijwryvm");
-            const uploadRes = await axios.post("https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload", data,
-             {
+            const uploadRes = await axios.post("https://api.cloudinary.com/v1_1/dahdw7wqc/image/upload", data, {
               headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'multipart/form-data'
-              }
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "multipart/form-data",
+              },
             });
-            
+
             console.log(uploadRes, "XXXXX");
             const { url } = uploadRes.data;
             return url;
@@ -84,11 +79,8 @@ const UserProfile = () => {
   };
 
   const schema = Yup.object().shape({
-    name: Yup.string()
-      .required("Name is a required field"),
-    lastname: Yup.string()
-      .required("Lastname is a required field"),
-
+    name: Yup.string().required("Name is a required field"),
+    lastname: Yup.string().required("Lastname is a required field"),
   });
 
   if (!user) {
@@ -96,17 +88,17 @@ const UserProfile = () => {
   }
 
   return (
-    <Grid container component="main" sx={{ height: '100vh', display: "flex", justifyContent: "center", backgroundColor: "#EEEEE6" }}>
+    <Grid container component="main" sx={{ height: "100vh", display: "flex", justifyContent: "center", backgroundColor: "#EEEEE6" }}>
       <Navbar />
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} elevation={6} square >
+      <Grid item xs={12} sm={8} md={5} elevation={6} square>
         <Box
           sx={{
             my: 8,
             mx: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
@@ -114,36 +106,21 @@ const UserProfile = () => {
           </Typography>
           <Formik
             // validationSchema={schema}
-            initialValues={{ name: '', lastname: '', disease: '' }}
+            initialValues={{ name: "", lastname: "", disease: "" }}
             onSubmit={(values, actions) => handleClick(values, actions)}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-            }) => (
-              <Box component="form" onSubmit={handleSubmit} noValidate  >
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+              <Box component="form" onSubmit={handleSubmit} noValidate>
                 <div className="new">
                   <div className="newContainer">
                     <div className="bottom">
                       <div className="left">
-                        <img
-                          src={
-                            files
-                              ? URL.createObjectURL(files[0])
-                              : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                          }
-                          alt=""
-                        />
+                        <img src={files ? URL.createObjectURL(files[0]) : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"} alt="" />
                       </div>
-
                     </div>
                     <div className="bottom">
                       <form style={{ display: "flex", justifyContent: "center" }}>
-                        <div >
+                        <div>
                           <label htmlFor="file">
                             อัพโหลด: <UploadIcon className="icon" />
                           </label>
@@ -196,7 +173,7 @@ const UserProfile = () => {
                       className={touched.lastname && errors.lastname}
                     />
                   </Grid>
-                  <Grid item xs={12} >
+                  <Grid item xs={12}>
                     <TextField
                       margin="normal"
                       fullWidth
@@ -230,21 +207,11 @@ const UserProfile = () => {
                     </LocalizationProvider>
                   </Grid>
                 </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2, background: '#77B255', }}
-                >
+                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, background: "#77B255" }}>
                   บันทึก
                 </Button>
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                  <Alert
-                    onClose={handleClose}
-                    severity="success"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                  >
+                  <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: "100%" }}>
                     This is a success Alert inside a Snackbar!
                   </Alert>
                 </Snackbar>
