@@ -70,8 +70,6 @@ const List = () => {
 
       if (sortOrder === "near") {
         return distanceA - distanceB;
-      } else if (sortOrder === "far") {
-        return distanceB - distanceA;
       }
     }
     return 0;
@@ -128,9 +126,18 @@ const List = () => {
             <Grid item xs={12} sm={4} sx={{ display: "flex", alignItems: "center" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">ตัวกรอง</InputLabel>
-                <Select labelId="demo-simple-select-label" id="demo-simple-select" value={sortOrder} label="Sort Order" onChange={handleSortChange} sx={{ backgroundColor: "white" }}>
-                  <MenuItem value="near">ใกล้สุด-ไกลสุด</MenuItem>
-                  <MenuItem value="far">ไกลสุด-ใกล้สุด</MenuItem>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={sortOrder}
+                  label="Sort Order"
+                  onChange={handleSortChange}
+                  sx={{ backgroundColor: "white" }}
+                >
+                  <MenuItem value="near">ใกล้-ไกล</MenuItem>
+                  <MenuItem value="near">เรียงชื่อ ก-ฮ</MenuItem>
+                  {/* <MenuItem value="near">เรียงชื่อ ฮ-ก</MenuItem> */}
+                  {/* <MenuItem value="far">ไกลสุด-ใกล้สุด</MenuItem> */}
                 </Select>
               </FormControl>
             </Grid>
