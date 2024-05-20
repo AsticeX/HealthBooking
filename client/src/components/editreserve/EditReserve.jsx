@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { Formik } from "formik";
-import "./reserve.css";
+import "./editreserve.css";
 import useFetch from "../../hooks/useFetch";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
@@ -18,11 +18,10 @@ import MenuItem from "@mui/material/MenuItem";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import Alert from "@mui/material/Alert";
-import { MuiTelInput } from 'mui-tel-input'
+import Alert from '@mui/material/Alert';
 
 
-const Reserve = ({ setOpen, clinicId }) => {
+const EditReserve = ({ setOpen, clinicId,appointmentId }) => {
   const { dispatch, user } = useContext(AuthContext);
   // const [selectedRooms, setSelectedRooms] = useState([]);
   const { data, loading, error } = useFetch(`${process.env.REACT_APP_API}/clinics/find/${clinicId}`);
@@ -32,11 +31,8 @@ const Reserve = ({ setOpen, clinicId }) => {
   const [date, setDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [available, setAvaliable] = useState(0);
-  const [phone, setPhone] = useState(`+66${user.phone}`);
 
-  const handleChangeTel = (newPhone) => {
-    setPhone(newPhone);
-  };
+
 
   const isTimeInRange = (startTime, stopTime, selectedDate) => {
     const currentDate = new Date();
@@ -44,34 +40,38 @@ const Reserve = ({ setOpen, clinicId }) => {
     const currentDateTime = currentDate.setHours(0, 0, 0, 0);
     const selectedDateTime = selectedDateObj.setHours(0, 0, 0, 0);
 
+    // If the selected date is in the future, return false to indicate all times are selectable
     if (selectedDateTime > currentDateTime) {
-      return false;
+        return false;
     }
 
     const currentHour = currentDate.getHours();
     const currentMinute = currentDate.getMinutes();
 
-    const startHour = parseInt(startTime.split(":")[0], 10);
-    const startMinute = parseInt(startTime.split(":")[1], 10);
-    const stopHour = parseInt(stopTime.split(":")[0], 10);
-    const stopMinute = parseInt(stopTime.split(":")[1], 10);
+    const startHour = parseInt(startTime.split(':')[0], 10);
+    const startMinute = parseInt(startTime.split(':')[1], 10);
+    const stopHour = parseInt(stopTime.split(':')[0], 10);
+    const stopMinute = parseInt(stopTime.split(':')[1], 10);
 
     let currentMinutes = currentHour * 60 + currentMinute;
     const startMinutes = startHour * 60 + startMinute;
     let stopMinutes = stopHour * 60 + stopMinute;
 
     if (stopMinutes < startMinutes) {
-      stopMinutes += 24 * 60;
-      if (currentMinutes < startMinutes) {
-        currentMinutes += 24 * 60;
-      }
+        stopMinutes += 24 * 60;
+        if (currentMinutes < startMinutes) {
+            currentMinutes += 24 * 60;
+        }
     }
 
     return currentMinutes >= startMinutes && currentMinutes < stopMinutes;
-  };
+};
 
 
+  
+  // Test cases
 
+  
   const navigate = useNavigate();
 
   const department = data.department;
@@ -95,12 +95,10 @@ const Reserve = ({ setOpen, clinicId }) => {
   };
 
   useEffect(() => {
+
     handleQueue();
   }, [queue]);
 
-  // useEffect(() => {
-  //   // console.log(queue);
-  // }, [])
 
   const schema = Yup.object().shape({
     name: Yup.string().required("Name is a required field"),
@@ -124,26 +122,22 @@ const Reserve = ({ setOpen, clinicId }) => {
       if (user) {
         const dataToSend = {
           ...values,
-          hospital_user_Id: hospitalUserIdData,
           date: date,
           department: departmentData,
           hospital: clinicId,
           hospitalName: hospitalName,
-          user_Id: `${user._id}`,
           queue: selectedQueue,
-          phone_no: phone,
           start_time: queue.find((item) => item._id === selectedQueue)?.start_time,
           stop_time: queue.find((item) => item._id === selectedQueue)?.stop_time,
         };
-        console.log(dataToSend);
-        const res = await axios.post(`${process.env.REACT_APP_API}/appointment`, dataToSend);
-        setAvaliable(res.data.availableSlots);
-        setShowAlert(false);
+        const res = await axios.put(`${process.env.REACT_APP_API}/appointment/${appointmentId}`, dataToSend);
+        setAvaliable(res.data.availableSlots)
+        setShowAlert(false)
         dispatch({ type: "APPOINTMENT_SUCCESS", payload: res.data.details });
-        navigate("/main", { state: { fromLogin: true } });
+        setOpen(false)
       }
     } catch (err) {
-      setShowAlert(true);
+      setShowAlert(true)
       console.error("Appointment failed:", err);
       dispatch({ type: "APPOINTMENT_FAILURE", payload: err.response.data });
     }
@@ -153,7 +147,7 @@ const Reserve = ({ setOpen, clinicId }) => {
     <div className="reserve">
       <div className="rContainer">
         <FontAwesomeIcon icon={faCircleXmark} className="rClose" onClick={() => setOpen(false)} />
-        <span>กรอกข้อมูลการจอง</span>
+        <span>แก้ไขข้อมูลการจอง</span>
         <Formik
           validationSchema={schema}
           initialValues={{
@@ -220,7 +214,7 @@ const Reserve = ({ setOpen, clinicId }) => {
                 <Grid item xs={12} sm={12}>
                   {!loading && department && (
                     <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">บริการ</InputLabel>
+                      <InputLabel id="demo-simple-select-label">แผนก</InputLabel>
                       <Select labelId="demo-simple-select-label" id="demo-simple-select" value={departmentData} label="Age" onChange={handleChangeClick} sx={{ backgroundColor: "white" }}>
                         {department.map((clinic) => (
                           <MenuItem key={clinic} value={clinic}>
@@ -235,44 +229,38 @@ const Reserve = ({ setOpen, clinicId }) => {
                   {!loading && queue && departmentData && queue.length > 0 && (
                     <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label">คิว</InputLabel>
-                      <Select labelId="demo-simple-select-label" id="demo-simple-select" value={selectedQueue} label="Age" onChange={handleQueueChange} sx={{ backgroundColor: "white" }}>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={selectedQueue}
+                        label="Age"
+                        onChange={handleQueueChange}
+                        sx={{ backgroundColor: "white" }}
+                      >
                         {queue
-                          .filter((queueItem) => queueItem.department === departmentData)
+                          .filter((queueItem) => queueItem.department === departmentData) 
                           .sort((a, b) => a.start_time.localeCompare(b.start_time))
                           .map((queueItem) => {
                             const disabled = isTimeInRange(queueItem.start_time, queueItem.stop_time);
                             return (
-                              <MenuItem key={queueItem._id} value={queueItem._id} disabled={isTimeInRange(queueItem.start_time, queueItem.stop_time, date)}>
+                              <MenuItem key={queueItem._id} value={queueItem._id} disabled={isTimeInRange(queueItem.start_time, queueItem.stop_time,date)}>
                                 {queueItem.start_time} น. - {queueItem.stop_time} น.
                               </MenuItem>
                             );
                           })}
+
                       </Select>
                     </FormControl>
                   )}
-                  {(loading || !queue || queue.length === 0) && <p>{loading ? "Loading..." : "No queues available"}</p>}
+                  {(loading || !queue || queue.length === 0) && (
+                    <p>{loading ? 'Loading...' : 'No queues available'}</p>
+                  )}
                 </Grid>
-                <Grid item xs={12} sm={12}>
-                    <MuiTelInput
-                      fullWidth
-                      name="phone"
-                      label="เบอร์โทรศัพท์"
-                      type="phone"
-                      id="phone"
-                      defaultCountry="TH"
-                      autoComplete="current-phone"
-                      value={phone}
-                      onChange={handleChangeTel}
-                      onBlur={handleBlur}
-                      error={touched.phone && !!errors.phone}
-                      helperText={touched.phone && errors.phone}
-                      variant="outlined"
-                      className={touched.phone && errors.phone}
-                    />
-                  </Grid>
+                
                 <Grid item xs={12} sm={12}>
                   <TextField
                     margin="normal"
+                    required
                     fullWidth
                     id="description"
                     label="หมายเหตุ"
@@ -295,7 +283,7 @@ const Reserve = ({ setOpen, clinicId }) => {
               )}
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
                 <Button type="submit" variant="contained" sx={{ background: "#77B255" }} onClick={handleSubmit}>
-                  จอง
+                  ยืนยัน
                 </Button>
               </Grid>
             </Box>
@@ -306,4 +294,4 @@ const Reserve = ({ setOpen, clinicId }) => {
   );
 };
 
-export default Reserve;
+export default EditReserve;
