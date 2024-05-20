@@ -71,6 +71,9 @@ const List = () => {
       if (sortOrder === "near") {
         return distanceA - distanceB;
       }
+      if (sortOrder === "sortcharater") {
+        return a.name.localeCompare(b.name);
+      }
     }
     return 0;
   });
@@ -135,7 +138,7 @@ const List = () => {
                   sx={{ backgroundColor: "white" }}
                 >
                   <MenuItem value="near">ใกล้-ไกล</MenuItem>
-                  <MenuItem value="near">เรียงชื่อ ก-ฮ</MenuItem>
+                  <MenuItem value="sortcharater">ชื่อ ก-ฮ</MenuItem>
                   {/* <MenuItem value="near">เรียงชื่อ ฮ-ก</MenuItem> */}
                   {/* <MenuItem value="far">ไกลสุด-ใกล้สุด</MenuItem> */}
                 </Select>

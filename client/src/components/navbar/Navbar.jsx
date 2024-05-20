@@ -46,7 +46,10 @@ const Navbar = (props) => {
       try {
         setLoading(true);
         if (user && user._id) {
-          const res = await axios.get(`${process.env.REACT_APP_API}/users/${user._id}`);
+          const token = localStorage.getItem("access_token");
+          const res = await axios.get(`${process.env.REACT_APP_API}/users/${user._id}`, {
+            headers: { 'access_token': token }
+          });
           if (res && res.data) {
             setProfile(res.data);
           } else {

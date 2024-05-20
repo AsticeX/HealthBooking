@@ -99,7 +99,7 @@ export const forgetPassword = async (req, res, next) => {
                                               <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
                                                   คุณทำการร้องขอการเปลี่ยนรหัสผ่านใหม่กดปุ่มด้านล่างเพื่อทำการเปลี่ยนรหัสผ่านใหม่  แต่ถ้าไม่ใช่คุณโปรดเพิกเฉยต่อการร้องขอนี้ 🎉
                                               </p>
-                                              <a href="https://healthbooking-client.vercel.app/${user._id}/${token}"
+                                              <a href="https://healthbooking-client.vercel.app/reset_password/${user._id}/${token}"
                                                   style="background:#77B255;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">เปลี่ยนรหัสผ่าน</a>
                                           </td>
                                       </tr>

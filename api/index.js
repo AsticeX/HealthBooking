@@ -45,7 +45,7 @@ app.use((req, res, next) => {
 app.use(
   cors({
     origin: [`${process.env.CLIENT_URL}`,`${process.env.ADMIN_URL}`,`${process.env.ADMIN_URL_LOCAL}`,`${process.env.CLIENT_URL_LOCAL}`],
-    allowedHeaders: ['Content-Type', 'Authorization', 'access_token'],
+    // allowedHeaders: ['Content-Type', 'Authorization', 'access_token'],
     credentials: true,
   })
 );

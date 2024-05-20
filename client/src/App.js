@@ -16,7 +16,7 @@ import { useEffect } from "react";
 
 import axios from "axios";
 
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 function App() {
   useEffect(() => {
