@@ -107,7 +107,7 @@ const Sidebar = () => {
           </li> */}
           <li onClick={handleLogout}>
             <ExitToAppIcon className="icon" />
-            <span>Logout</span>
+            <span>ออกจากระบบ</span>
           </li>
         </ul>
       </div>

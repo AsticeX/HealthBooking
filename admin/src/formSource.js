@@ -80,7 +80,7 @@ export const clinicInputs = [
     id: "title",
     label: "หัวข้อ",
     type: "text",
-    placeholder: "The best Clinic ",
+    placeholder: "",
   },
   // {
   //   id: "address",
@@ -92,13 +92,13 @@ export const clinicInputs = [
     id: "description",
     label: "คำอธิบาย",
     type: "textarea",
-    placeholder: "description",
+    placeholder: "",
   },
   {
     id: "contract",
     label: "ติดต่อ",
     type: "text",
-    placeholder: "0953215652",
+    placeholder: "",
   },
   // {
   //   id: "department",
