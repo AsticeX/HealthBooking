@@ -13,11 +13,11 @@ import axios from "axios";
 import { Button } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import moment from "moment";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { Grid, TextField } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -34,10 +34,6 @@ const History = () => {
   const [idAppoint, setIdAppoint] = useState(null);
 
   const [openModal, setOpenModal] = useState(false);
-
-
-
-
 
   useEffect(() => {
     handleQueue();
@@ -84,8 +80,8 @@ const History = () => {
     }
   };
 
-  function createData(id, date, name, hospitalName, department, time, status,hospitalId) {
-    return { id, date, name, hospitalName, department, time, status,hospitalId };
+  function createData(id, date, name, hospitalName, department, time, status, hospitalId) {
+    return { id, date, name, hospitalName, department, time, status, hospitalId };
   }
 
   const rows = queue.map((queueItem) =>
@@ -104,14 +100,13 @@ const History = () => {
   const handleClick = (row) => {
     if (user) {
       setOpenModal(true);
-    } 
-    setIdClinic(row.hospitalId)
-    setIdAppoint(row.id)
+    }
+    setIdClinic(row.hospitalId);
+    setIdAppoint(row.id);
   };
 
   return (
     <div>
-      
       <div style={{ backgroundColor: "#EEEEE6", minHeight: "100vh" }}>
         <TableContainer sx={{ mt: 8, p: 4 }}>
           <Navbar />
@@ -120,7 +115,7 @@ const History = () => {
             <TableHead sx={{ backgroundColor: "#77B255" }}>
               <TableRow>
                 <TableCell>ชื่อ-นามสกุล</TableCell>
-                <TableCell align="center">วัน/เดือน/ปีเกิด</TableCell>
+                <TableCell align="center">วัน/เดือน/ปี</TableCell>
                 <TableCell align="center">สถานบริการ</TableCell>
                 <TableCell align="center">บริการ</TableCell>
                 <TableCell align="center">เวลา</TableCell>
@@ -188,12 +183,7 @@ const History = () => {
                         <Button variant="outlined" color="error" onClick={() => handleCancel(row)}>
                           ยกเลิก
                         </Button>
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          sx={{ ml: 2 }}
-                          onClick={() => handleClick(row)}
-                        >
+                        <Button variant="outlined" color="primary" sx={{ ml: 2 }} onClick={() => handleClick(row)}>
                           แก้ไข
                         </Button>
                       </div>
@@ -206,7 +196,7 @@ const History = () => {
                         <Button variant="outlined" color="error" onClick={() => handleCancel(row)} disabled>
                           ยกเลิก
                         </Button>
-                        <Button variant="outlined" color="primary" sx={{ ml: 2 }} disabled >
+                        <Button variant="outlined" color="primary" sx={{ ml: 2 }} disabled>
                           แก้ไข
                         </Button>
                       </div>
@@ -218,9 +208,8 @@ const History = () => {
           </Table>
         </TableContainer>
       </div>
-      {openModal && <EditReserve setOpen={setOpenModal} clinicId={idClinic}  appointmentId={idAppoint}/>}
+      {openModal && <EditReserve setOpen={setOpenModal} clinicId={idClinic} appointmentId={idAppoint} />}
     </div>
-
   );
 };
 
