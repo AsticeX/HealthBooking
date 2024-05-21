@@ -444,12 +444,7 @@ const VaccineComponent = () => {
                     </TableCell>
                     <TableCell align="center">
                       {user.dose_user.map((doseTime, index) => (
-                        <div key={index}>
-                          {" "}
-                          {user.dose_user.map((doseTime, index) => (
-                            <div key={index}>{formatDate(doseTime)}</div>
-                          ))}
-                        </div>
+                        <div key={index}>{formatDate(doseTime)}</div>
                       ))}
                     </TableCell>
                     <TableCell align="center">{user.dose_require}</TableCell>

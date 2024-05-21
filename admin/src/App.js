@@ -19,7 +19,7 @@ import EditAppointment from "./pages/editAppointment/EditAppointment";
 import { useEffect } from "react";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);

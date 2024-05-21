@@ -9,8 +9,10 @@ import { clinicInputs } from "../../formSource";
 import useFetch from "../../hooks/useFetch";
 import Select from "react-select";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const EditClinic = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [type, setTypes] = useState(""); // State for status dropdown
   const [clinicData, setClinicData] = useState({});
@@ -92,6 +94,7 @@ const EditClinic = () => {
 
       const res = await axios.put(`${process.env.REACT_APP_API}/clinics/${id}`, updatedClinic);
       console.log(res.data);
+      navigate("/clinics"); // Navigate to /appointment after successful update
     } catch (error) {
       console.error("Error updating clinic:", error);
     }
@@ -190,7 +193,7 @@ const EditClinic = () => {
                     ))}
               </div>
 
-              <button type="submit">Update</button>
+              <button type="submit">บันทึก</button>
             </form>
           </div>
         </div>

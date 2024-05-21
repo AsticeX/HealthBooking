@@ -40,9 +40,8 @@ const BlogHome = () => {
       .then((response) => {
         const options = response.data;
         setData(options);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
         if (options.length > 0) {
-          // Set default value to the first option if data is available
           setAge(options[0]._id);
           setDescription(options[0].description);
           setDescription2(options[0].description2);
@@ -53,7 +52,7 @@ const BlogHome = () => {
       })
       .catch((error) => {
         console.error("Error fetching vaccine options:", error);
-        setLoading(false); // Ensure loading is set to false even on error
+        setLoading(false);
       });
   }, []);
 
