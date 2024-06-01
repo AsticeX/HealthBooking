@@ -89,7 +89,7 @@ function App() {
                 }
               />
             </Route> */}
-            <Route path="appointment">
+            <Route path="/appointment">
               <Route
                 index
                 element={
@@ -181,6 +181,7 @@ function App() {
                 /> */}
             {/* </Route> */}
           </Route>
+          
           <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>

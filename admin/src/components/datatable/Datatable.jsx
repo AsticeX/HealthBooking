@@ -9,7 +9,7 @@ import "./datatable.scss";
 const Datatable = ({ columns }) => {
   const { user } = useContext(AuthContext);
   const location = useLocation();
-  const path = location.pathname.split("/")[1];
+  // const path = location.pathname.split("/")[1];
   const [list, setList] = useState([]);
   const { data, loading, error } = useFetch(`/${path}/auth/${user.username}`);
 
@@ -52,7 +52,7 @@ const Datatable = ({ columns }) => {
     <div className="datatable">
       <div className="datatableTitle">
         {path === "clinics" ? "สถานบริการ" : path === "queue" ? "เวลาให้บริการ" : path === "appointment" ? "การจอง" : path}
-        <Link to={`/${path}/new`} className="link">
+        <Link to={`/${process.env.ADMIN_URL}/new`} className="link">
           เพิ่มข้อมูล
         </Link>
       </div>
