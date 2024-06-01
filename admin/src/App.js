@@ -56,7 +56,7 @@ function App() {
               }
             />
             <Route
-              path="/new"
+              path="new"
               element={
                 <ProtectedRoute>
                   <New inputs={userInputs} title="Add New User" />
@@ -89,7 +89,7 @@ function App() {
                 }
               />
             </Route> */}
-            <Route path="/appointment">
+            <Route path="appointment">
               <Route
                 index
                 element={
@@ -107,7 +107,7 @@ function App() {
                 }
               />
               <Route
-                path="/new"
+                path="new"
                 element={
                   <ProtectedRoute>
                     <New inputs={userInputs} title="Add New User" />
@@ -115,7 +115,7 @@ function App() {
                 }
               />
             </Route>
-            <Route path="/clinics">
+            <Route path="clinics">
               <Route
                 index
                 element={
@@ -133,7 +133,7 @@ function App() {
                 }
               />
               <Route
-                path="/new"
+                path="new"
                 element={
                   <ProtectedRoute>
                     <NewHotel />
@@ -142,7 +142,7 @@ function App() {
               />
             </Route>
 
-            <Route path="/queue">
+            <Route path="queue">
               <Route
                 index
                 element={
@@ -162,7 +162,7 @@ function App() {
               />
 
               <Route
-                path="/new"
+                path="new"
                 element={
                   <ProtectedRoute>
                     <NewQueue />
