@@ -1,5 +1,7 @@
+import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import List from "./pages/list/List";
+import Single from "./pages/single/Single";
 import New from "./pages/new/New";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { productInputs, userInputs } from "./formSource";
@@ -9,7 +11,7 @@ import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
 import { hotelColumns, userColumns, queueColumns, appointmentColumns } from "./datatablesource";
 import NewHotel from "./pages/newHotel/NewHotel";
-import Appointment from "./pages/appointment/appointment";
+// import NewRoom from "./pages/newRoom/NewRoom";
 import NewQueue from "./pages/newQueue/NewQueue";
 import EditQueue from "./pages/editQueue/EditQueue";
 import EditClinic from "./pages/editClinic/EditClinic";
@@ -36,9 +38,15 @@ function App() {
     <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
-       
-            <Route path="/" element={<Appointment />} />
-
+          <Route path="/">
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <List columns={appointmentColumns} />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/appointment/:id"
               element={
@@ -172,6 +180,8 @@ function App() {
                   }
                 /> */}
             {/* </Route> */}
+          </Route>
+          
           <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
