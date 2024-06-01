@@ -36,7 +36,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link to="/appointment" style={{ textDecoration: "none" }}>
           <span className="logo">HealthBooking</span>
         </Link>
       </div>
@@ -50,7 +50,7 @@ const Sidebar = () => {
               <span>Users</span>
             </li> 
           </Link> */}
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/appointment" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
               <span>การจอง</span>
