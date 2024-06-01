@@ -39,153 +39,26 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route
-              index
-              element={
-                <ProtectedRoute>
-                  <List columns={appointmentColumns} />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/appointment/:id"
-              element={
-                <ProtectedRoute>
-                  <EditAppointment />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="new"
-              element={
-                <ProtectedRoute>
-                  <New inputs={userInputs} title="Add New User" />
-                </ProtectedRoute>
-              }
-            />
-            {/* <Route path="users">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <List columns={userColumns} />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path=":userId"
-                element={
-                  <ProtectedRoute>
-                    <Single />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="new"
-                element={
-                  <ProtectedRoute>
-                    <New inputs={userInputs} title="Add New User" />
-                  </ProtectedRoute>
-                }
-              />
-            </Route> */}
-            <Route path="/appointment">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <List columns={appointmentColumns} />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/appointment/:id"
-                element={
-                  <ProtectedRoute>
-                    <EditAppointment />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="new"
-                element={
-                  <ProtectedRoute>
-                    <New inputs={userInputs} title="Add New User" />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-            <Route path="/clinics">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <List columns={hotelColumns} />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/clinics/:id"
-                element={
-                  <ProtectedRoute>
-                    <EditClinic />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="new"
-                element={
-                  <ProtectedRoute>
-                    <NewHotel />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-
-            <Route path="/queue">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <List columns={queueColumns} />
-                  </ProtectedRoute>
-                }
-              />
-
-              <Route
-                path="/queue/:id"
-                element={
-                  <ProtectedRoute>
-                    <EditQueue />
-                  </ProtectedRoute>
-                }
-              />
-
-              <Route
-                path="new"
-                element={
-                  <ProtectedRoute>
-                    <NewQueue />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-            {/* <Route path="queue">
-                <Route
-                  index
-                  element={
-                    <ProtectedRoute>
-                      <List columns={queueColumns} />
-                    </ProtectedRoute>
-                  }
-                /> */}
-            {/* </Route> */}
+            <Route index element={<ProtectedRoute><List columns={appointmentColumns} /></ProtectedRoute>} />
+            <Route path="/appointment/:id" element={<ProtectedRoute><EditAppointment /></ProtectedRoute>} />
+            <Route path="new" element={<ProtectedRoute><New inputs={userInputs} title="Add New User" /></ProtectedRoute>} />
           </Route>
-          
+
+          <Route path="/clinics">
+            <Route index element={<ProtectedRoute><List columns={hotelColumns} /></ProtectedRoute>} />
+            <Route path=":id" element={<ProtectedRoute><EditClinic /></ProtectedRoute>} />
+            <Route path="new" element={<ProtectedRoute><NewHotel /></ProtectedRoute>} />
+          </Route>
+
+          <Route path="/queue">
+            <Route index element={<ProtectedRoute><List columns={queueColumns} /></ProtectedRoute>} />
+            <Route path=":id" element={<ProtectedRoute><EditQueue /></ProtectedRoute>} />
+            <Route path="new" element={<ProtectedRoute><NewQueue /></ProtectedRoute>} />
+          </Route>
+
           <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
-
     </div>
   );
 }

@@ -52,7 +52,7 @@ const Datatable = ({ columns }) => {
     <div className="datatable">
       <div className="datatableTitle">
         {path === "clinics" ? "สถานบริการ" : path === "queue" ? "เวลาให้บริการ" : path === "appointment" ? "การจอง" : path}
-        <Link to={`/${process.env.ADMIN_URL}/new`} className="link">
+        <Link to={`/${path}/new`} className="link">
           เพิ่มข้อมูล
         </Link>
       </div>
