@@ -38,15 +38,15 @@ function App() {
     <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/"> */}
-            {/* <Route
+          <Route path="/">
+            <Route
               index
               element={
                 <ProtectedRoute>
                   <List columns={appointmentColumns} />
                 </ProtectedRoute>
               }
-            /> */}
+            />
             <Route
               path="/appointment/:id"
               element={
@@ -180,7 +180,7 @@ function App() {
                   }
                 /> */}
             {/* </Route> */}
-          {/* </Route> */}
+          </Route>
           
           <Route path="/login" element={<Login />} />
         </Routes>
