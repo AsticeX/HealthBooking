@@ -9,9 +9,9 @@ import "./datatable.scss";
 const Datatable = ({ columns }) => {
   const { user } = useContext(AuthContext);
   const location = useLocation();
-  // const path = location.pathname.split("/")[1];
+  const path = location.pathname.split("/")[1];
   const [list, setList] = useState([]);
-  const { data, loading, error } = useFetch(`/${path}/auth/${user.username}`);
+  const { data, loading, error } = useFetch(`/${process.env.REACT_APP_API}/auth/${user.username}`);
 
   useEffect(() => {
     if (data) {
