@@ -20,10 +20,14 @@ import { useEffect } from "react";
 import axios from "axios";
 
 // axios.defaults.withCredentials = true;
-
 function App() {
   const { darkMode } = useContext(DarkModeContext);
-
+  // useEffect(() => {
+  //   const token = localStorage.getItem("access_token");
+  //   if (token) {
+  //     axios.defaults.headers.common["access_token"] = token;
+  //   }
+  // }, []);
   const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
 
@@ -39,7 +43,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route
+            {/* <Route
               index
               element={
                 <ProtectedRoute>
@@ -62,33 +66,8 @@ function App() {
                   <New inputs={userInputs} title="Add New User" />
                 </ProtectedRoute>
               }
-            />
-            {/* <Route path="users">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <List columns={userColumns} />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path=":userId"
-                element={
-                  <ProtectedRoute>
-                    <Single />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="new"
-                element={
-                  <ProtectedRoute>
-                    <New inputs={userInputs} title="Add New User" />
-                  </ProtectedRoute>
-                }
-              />
-            </Route> */}
+            /> */}
+
             <Route path="/appointment">
               <Route
                 index
@@ -181,7 +160,7 @@ function App() {
                 /> */}
             {/* </Route> */}
           </Route>
-          
+
           <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>

@@ -11,13 +11,14 @@ const Datatable = ({ columns }) => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
   const [list, setList] = useState([]);
-  const { data, loading, error } = useFetch(`/${process.env.REACT_APP_API}/auth/${user.username}`);
+  const { data, loading, error } = useFetch(`${process.env.REACT_APP_API}/users/${user._id}`);
 
   useEffect(() => {
     if (data) {
-      setList(data.map((item, index) => ({ ...item, _id: item._id || index }))); // Generate a unique id if _id is missing
+      setList(data);
+      console.log("XXXX",error);
     }
-  }, [data]);
+  }, [data,list]);
 
   const handleDelete = async (id) => {
     try {
@@ -31,6 +32,7 @@ const Datatable = ({ columns }) => {
   const handleApprove = async (id) => {
     try {
       await axios.put(`${process.env.REACT_APP_API}/appointment/${id}`, { status: "Complete" });
+      // Update the status of the appointment locally without refreshing
       setList((prevList) => prevList.map((item) => (item._id === id ? { ...item, status: "Complete" } : item)));
     } catch (err) {
       console.error("Error approving appointment:", err);
@@ -40,6 +42,7 @@ const Datatable = ({ columns }) => {
   const handleReject = async (id) => {
     try {
       await axios.put(`${process.env.REACT_APP_API}/appointment/${id}`, { status: "Cancel" });
+      // Update the status of the appointment locally without refreshing
       setList((prevList) => prevList.map((item) => (item._id === id ? { ...item, status: "Cancel" } : item)));
     } catch (err) {
       console.error("Error rejecting appointment:", err);

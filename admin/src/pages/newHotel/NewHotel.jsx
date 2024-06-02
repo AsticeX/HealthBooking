@@ -44,30 +44,21 @@ const NewHotel = () => {
     searchPlace();
   }, []);
 
-  const searchPlace = (value) => {
-    axios
-      .get("https://api.longdo.com/POIService/json/search?", {
-        params: {
-          key: "79e088d5668d8e7316d055233c8cf1c4",
-          keyword: value,
-          tag: "hospital",
-          limit: 5,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        const hospitals = response.data.data.map((hospital) => {
-          return hospital;
-        });
-        // const suggest = document.getElementById('result');
-        // suggest.style.display = 'none';
-        setSearchResults(hospitals);
-      })
-
-      .catch((error) => {
-        console.error("Error searching nearby:", error);
+  const searchPlace = async (value) => {
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API}/longdo-proxy`);
+      console.log(res.data);
+      const hospitals = res.data.data.map((hospital) => {
+        return hospital;
       });
+      // const suggest = document.getElementById('result');
+      // suggest.style.display = 'none';
+      setSearchResults(hospitals);
+    } catch (error) {
+      console.error("Error searching nearby:", error);
+    }
   };
+  
 
   const handleDepartmentInputChange = (index, value) => {
     const newInputs = [...departmentInputs];
@@ -115,7 +106,7 @@ const NewHotel = () => {
         queue,
         photos: list,
       };
-      const res = await axios.post("/clinics", newclinic);
+      const res = await axios.post(`${process.env.REACT_APP_API}/clinics`, newclinic);
       // console.log(res,"xxxxxx");
       navigate("/clinics"); // Navigate to /appointment after successful update
     } catch (err) {
