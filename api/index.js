@@ -32,8 +32,7 @@ mongoose.connection.on("disconnected", () => {
 });
 
 const app = express();
-const express = require('express');
-const axios = require('axios');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -43,25 +42,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/api/longdo-proxy', async (req, res) => {
-  try {
-    const response = await axios.get('https://api.longdo.com/POIService/json/search', {
-      params: {
-        key: '79e088d5668d8e7316d055233c8cf1c4',
-        keyword: '',
-        tag: 'hospital',
-        limit: 5
-      }
-    });
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+
 
 app.use(
   cors({
-    origin: [`${process.env.CLIENT_URL}`,`${process.env.ADMIN_URL}`,`${process.env.ADMIN_URL_LOCAL}`,`${process.env.CLIENT_URL_LOCAL}`],
+    origin: [`${process.env.CLIENT_URL}`,`${process.env.ADMIN_URL}`,`${process.env.ADMIN_URL_LOCAL}`,`${process.env.CLIENT_URL_LOCAL}`,`${process.env.LONGDO_API}`],
     // allowedHeaders: ['Content-Type', 'Authorization', 'access_token'],
     credentials: true,
   })
