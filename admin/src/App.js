@@ -20,10 +20,14 @@ import { useEffect } from "react";
 import axios from "axios";
 
 // axios.defaults.withCredentials = true;
-
 function App() {
   const { darkMode } = useContext(DarkModeContext);
-
+  // useEffect(() => {
+  //   const token = localStorage.getItem("access_token");
+  //   if (token) {
+  //     axios.defaults.headers.common["access_token"] = token;
+  //   }
+  // }, []);
   const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
 
