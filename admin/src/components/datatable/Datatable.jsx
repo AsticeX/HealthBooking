@@ -11,15 +11,13 @@ const Datatable = ({ columns }) => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
   const [list, setList] = useState([]);
-  const { data, loading, error } = useFetch(`${process.env.REACT_APP_API}/users/${user._id}`);
+  const { data, loading, error } = useFetch(`${process.env.REACT_APP_API}/${path}/auth/${user.username}`);
 
   useEffect(() => {
     if (data) {
       setList(data);
-      console.log("XXXX",error);
     }
   }, [data,list]);
-
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/${path}/${id}`);
