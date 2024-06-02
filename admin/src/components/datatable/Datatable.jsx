@@ -20,7 +20,7 @@ const Datatable = ({ columns }) => {
   }, [data,list]);
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/${path}/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API}/${path}/${id}`);
       setList((prevList) => prevList.filter((item) => item._id !== id));
     } catch (err) {
       console.error("Error deleting appointment:", err);
