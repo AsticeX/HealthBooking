@@ -28,7 +28,7 @@ const Login = () => {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
         localStorage.setItem('access_token', res.data.token);
         axios.defaults.headers.common['access_token'] = res.data.token;
-        navigate("/");
+        navigate("/appointment");
       } else {
         dispatch({
           type: "LOGIN_FAILURE",
