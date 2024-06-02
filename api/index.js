@@ -14,7 +14,7 @@ import vaccine_userRoute from "./routes/vaccine_user.js";
 import queueRoute from "./routes/queue.js";
 import appointmentRoute from "./routes/appointment.js";
 import expirationChecker from "./utils/expirationChecker.js";
-import axios from "axios";
+
 dotenv.config();
 mongoose.set("strictQuery", false);
 
@@ -32,6 +32,8 @@ mongoose.connection.on("disconnected", () => {
 });
 
 const app = express();
+const express = require('express');
+const axios = require('axios');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
