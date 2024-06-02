@@ -106,7 +106,7 @@ const NewHotel = () => {
         queue,
         photos: list,
       };
-      const res = await axios.post("/clinics", newclinic);
+      const res = await axios.post(`${process.env.REACT_APP_API}/clinics`, newclinic);
       // console.log(res,"xxxxxx");
       navigate("/clinics"); // Navigate to /appointment after successful update
     } catch (err) {
