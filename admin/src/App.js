@@ -43,30 +43,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            {/* <Route
-              index
-              element={
-                <ProtectedRoute>
-                  <List columns={appointmentColumns} />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/appointment/:id"
-              element={
-                <ProtectedRoute>
-                  <EditAppointment />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="new"
-              element={
-                <ProtectedRoute>
-                  <New inputs={userInputs} title="Add New User" />
-                </ProtectedRoute>
-              }
-            /> */}
 
             <Route path="/appointment">
               <Route

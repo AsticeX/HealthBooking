@@ -14,7 +14,7 @@ import vaccine_userRoute from "./routes/vaccine_user.js";
 import queueRoute from "./routes/queue.js";
 import appointmentRoute from "./routes/appointment.js";
 import expirationChecker from "./utils/expirationChecker.js";
-import axios from "axios";
+
 dotenv.config();
 mongoose.set("strictQuery", false);
 
@@ -32,6 +32,7 @@ mongoose.connection.on("disconnected", () => {
 });
 
 const app = express();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -41,25 +42,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/api/longdo-proxy', async (req, res) => {
-  try {
-    const response = await axios.get('https://api.longdo.com/POIService/json/search', {
-      params: {
-        key: '79e088d5668d8e7316d055233c8cf1c4',
-        keyword: '',
-        tag: 'hospital',
-        limit: 5
-      }
-    });
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+
 
 app.use(
   cors({
-    origin: [`${process.env.CLIENT_URL}`,`${process.env.ADMIN_URL}`,`${process.env.ADMIN_URL_LOCAL}`,`${process.env.CLIENT_URL_LOCAL}`],
+    origin: [`${process.env.CLIENT_URL}`,`${process.env.ADMIN_URL}`,`${process.env.ADMIN_URL_LOCAL}`,`${process.env.CLIENT_URL_LOCAL}`,`${process.env.LONGDO_API}`],
     // allowedHeaders: ['Content-Type', 'Authorization', 'access_token'],
     credentials: true,
   })
